@@ -22,6 +22,7 @@ dist/
 build/
 inplace_abn/
 inplace_abn.egg-info/
+.venv/
 
 # IDE
 .vscode/
@@ -37,10 +38,8 @@ Thumbs.db
 .gemini/
 
 # Eval outputs (large)
-eval_results/*.png
-eval_results/*.json
+eval_results/
 
 # Shell scripts (temporary)
 run_pooled_after.sh
-CCNet/
-CCNet/
+pooled_queue.log
