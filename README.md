@@ -236,19 +236,6 @@ cat data_analysis.md
 | Uniform vs weighted BER | Weighted training: +0.55% clean, +2.95% at BER=0.3 |
 | Entropy vs Learned scorer | Learned: 4× more unique masks. Entropy: better BER robustness |
 
----
-
-## Citation
-
-```bibtex
-@inproceedings{spikeadaptsc2026,
-  title     = {SpikeAdapt-SC: Content-Adaptive Bandwidth Allocation 
-               for SNN-Based Semantic Communication},
-  author    = {},
-  booktitle = {IEEE Global Communications Conference (GLOBECOM)},
-  year      = {2026}
-}
-```
 
 ---
 
