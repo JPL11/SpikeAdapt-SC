@@ -183,16 +183,6 @@ See [docs/data_analysis.md](docs/data_analysis.md) for the full analysis with al
 
 ---
 
-## Citation
-
-```bibtex
-@inproceedings{spikeadaptsc2026,
-  title     = {SpikeAdapt-SC: Content-Adaptive Bandwidth Allocation 
-               for SNN-Based Semantic Communication},
-  booktitle = {IEEE Global Communications Conference (GLOBECOM)},
-  year      = {2026}
-}
-```
 
 ## License
 
