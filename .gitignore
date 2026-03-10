@@ -1,0 +1,46 @@
+# Data & Datasets
+data/
+FoodSeg103/
+CCNet/
+*.zip
+
+# Model checkpoints
+snapshots_*/
+*.pth
+
+# Logs
+*.log
+nohup.out
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.eggs/
+*.egg-info/
+dist/
+build/
+inplace_abn/
+inplace_abn.egg-info/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Gemini agent
+.gemini/
+
+# Eval outputs (large)
+eval_results/*.png
+eval_results/*.json
+
+# Shell scripts (temporary)
+run_pooled_after.sh
+CCNet/
+CCNet/
