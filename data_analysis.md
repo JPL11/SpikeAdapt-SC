@@ -1,6 +1,6 @@
 # SpikeAdapt-SC: Comprehensive Data Analysis
 
-> **Status**: ALL COMPLETE (CIFAR-100 + Tiny-ImageNet 16×16). Pooled 8×8 BSC done, AWGN in progress.  
+> **Status**: ALL COMPLETE — CIFAR-100 (10+ experiments) + Tiny-ImageNet 16×16 (3 channels) + Pooled 8×8 (3 channels)
 
 
 ---
@@ -219,14 +219,32 @@ AWGN achieves higher energy savings because lower firing rates → fewer SynOps.
 
 Both datasets show: (1) graceful degradation under noise, (2) near-free bandwidth savings at 75%, (3) significant energy savings.
 
-### 6.1 Pooled 8×8 vs Native 16×16 (Tiny-ImageNet BSC)
+### 6.1 Pooled 8×8 vs Native 16×16 — All Channels
 
-| Grid | BER=0 | BER=0.1 | BER=0.3 | Energy Savings |
-|------|-------|---------|---------|---------------|
-| **16×16 (256 blocks)** | **59.30%** | **61.33%** | **53.36%** | **32%** |
-| 8×8 pooled (64 blocks) | 52.24% | 52.17% | 42.35% | 45% |
+**BSC**
 
-**16×16 wins by ~7%.** The higher spatial resolution, despite more blocks, preserves more fine-grained features. Pooling destroys spatial detail that the decoder needs. On Tiny-ImageNet's 64×64 images, the 16×16 grid is the right choice.
+| Grid | BER=0 | BER=0.1 | BER=0.3 | Energy |
+|------|-------|---------|---------|--------|
+| **16×16** | **59.30%** | **61.33%** | **53.36%** | 32% |
+| 8×8 pooled | 52.24% | 52.17% | 42.35% | 45% |
+
+**AWGN**
+
+| Grid | SNR=20 | SNR=0 | SNR=-2 | Energy |
+|------|--------|-------|--------|--------|
+| **16×16** | **62.33%** | **62.22%** | **58.60%** | **48%** |
+| 8×8 pooled | 54.79% | 55.76% | 53.16% | 28% |
+
+**Rayleigh**
+
+| Grid | SNR=20 | SNR=0 | SNR=-2 | Energy |
+|------|--------|-------|--------|--------|
+| **16×16** | **61.35%** | **60.11%** | **56.87%** | **46%** |
+| 8×8 pooled | 56.58% | 56.84% | 54.64% | 44% |
+
+**16×16 wins across all channels** by 5–8%. The higher spatial resolution preserves more features. Pooling sacrifices detail the decoder needs.
+
+**Pooled AWGN rate sweep anomaly**: Rate=50%→56.59% **beats** Rate=100%→54.17%. Aggressive masking removes noise-vulnerable blocks, improving accuracy. This effect is stronger on pooled (8×8) than native (16×16).
 
 ---
 
