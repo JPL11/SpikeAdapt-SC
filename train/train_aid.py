@@ -78,58 +78,114 @@ class AIDDataset(Dataset):
         print(f"  AID {split}: {len(self.samples)} images, {len(classes)} classes")
 
     def _download(self, root):
-        """Download AID from HuggingFace datasets."""
-        import subprocess
+        """Download AID dataset. Tries multiple sources."""
+        import subprocess, shutil
         os.makedirs(root, exist_ok=True)
+        aid_dir = os.path.join(root, 'AID')
         
-        # Try huggingface_hub first
+        # Method 1: HuggingFace (blanchon/AID — verified working)
         try:
-            print("  Trying HuggingFace download...")
+            print("  Trying HuggingFace (blanchon/AID)...")
             subprocess.run([
                 sys.executable, '-c',
                 f"""
 import os
 from huggingface_hub import snapshot_download
 snapshot_download(
-    repo_id="jonathan-roberts1/Aerial-Image-Dataset-AID",
+    repo_id="blanchon/AID",
     repo_type="dataset",
-    local_dir="{os.path.join(root, 'AID_HF')}",
-    local_dir_use_symlinks=False
+    local_dir="{os.path.join(root, 'AID_HF')}"
 )
 """
-            ], check=True, timeout=600)
+            ], check=True, timeout=1200)
             
-            # Reorganize into class folders
             hf_dir = os.path.join(root, 'AID_HF')
-            aid_dir = os.path.join(root, 'AID')
             if os.path.exists(hf_dir):
-                # Check if already in class folder structure
-                if os.path.exists(os.path.join(hf_dir, 'data')):
-                    os.rename(os.path.join(hf_dir, 'data'), aid_dir)
-                else:
-                    os.rename(hf_dir, aid_dir)
-            return
+                # Find where the class folders are
+                for candidate in [hf_dir, os.path.join(hf_dir, 'data'),
+                                  os.path.join(hf_dir, 'AID')]:
+                    if os.path.isdir(candidate):
+                        subdirs = [d for d in os.listdir(candidate) 
+                                   if os.path.isdir(os.path.join(candidate, d))
+                                   and not d.startswith('.')]
+                        if len(subdirs) >= 20:  # AID has 30 classes
+                            if candidate != aid_dir:
+                                shutil.copytree(candidate, aid_dir, dirs_exist_ok=True)
+                            print(f"  ✓ AID downloaded: {len(subdirs)} classes")
+                            return
+                # If HF downloaded as parquet/arrow, convert
+                try:
+                    print("  Converting HF dataset format...")
+                    subprocess.run([
+                        sys.executable, '-c',
+                        f"""
+import os
+from datasets import load_dataset
+ds = load_dataset("blanchon/AID", split="train")
+aid_dir = "{aid_dir}"
+os.makedirs(aid_dir, exist_ok=True)
+for i, item in enumerate(ds):
+    label = item.get('label', item.get('labels', 0))
+    if isinstance(label, int):
+        label_name = ds.features.get('label', ds.features.get('labels')).int2str(label)
+    else:
+        label_name = str(label)
+    cls_dir = os.path.join(aid_dir, label_name)
+    os.makedirs(cls_dir, exist_ok=True)
+    img = item['image']
+    img.save(os.path.join(cls_dir, f"{{i:05d}}.jpg"))
+print(f"Converted {{i+1}} images")
+"""
+                    ], check=True, timeout=600)
+                    return
+                except Exception as e2:
+                    print(f"  HF conversion failed: {e2}")
         except Exception as e:
             print(f"  HuggingFace download failed: {e}")
         
-        # Fallback: try direct download
+        # Method 2: Direct download from captain-whu (original source)
         try:
-            print("  Trying direct download from source...")
+            print("  Trying direct download...")
             import urllib.request, zipfile
-            url = "https://zenodo.org/records/3464441/files/AID.zip"
+            urls = [
+                "https://captain-whu.github.io/AID/AID.zip",
+                "https://1drv.ms/u/s!AthY3vMZmuxChNR0Co7QHpJ56M-SvQ",
+            ]
             zip_path = os.path.join(root, "AID.zip")
-            if not os.path.exists(zip_path):
-                urllib.request.urlretrieve(url, zip_path)
-            with zipfile.ZipFile(zip_path, 'r') as z:
-                z.extractall(root)
-            print("  ✓ AID downloaded and extracted")
+            for url in urls:
+                try:
+                    if not os.path.exists(zip_path):
+                        print(f"    Downloading from {url[:50]}...")
+                        urllib.request.urlretrieve(url, zip_path)
+                    if os.path.exists(zip_path) and os.path.getsize(zip_path) > 1000000:
+                        break
+                except Exception:
+                    continue
+            if os.path.exists(zip_path) and os.path.getsize(zip_path) > 1000000:
+                with zipfile.ZipFile(zip_path, 'r') as z:
+                    z.extractall(root)
+                print("  ✓ AID downloaded and extracted")
+                return
         except Exception as e:
             print(f"  Direct download failed: {e}")
-            print("\n  MANUAL DOWNLOAD REQUIRED:")
-            print("  1. Download AID.zip from https://zenodo.org/records/3464441")
-            print(f"  2. Extract to {root}/AID/")
-            print("  3. Directory should have 30 class folders")
-            sys.exit(1)
+        
+        # Method 3: Kaggle
+        try:
+            print("  Trying Kaggle download...")
+            subprocess.run(["kaggle", "datasets", "download", "-d",
+                          "jiayuanchengala/aid-scene-classification-datasets",
+                          "-p", root, "--unzip"], check=True, timeout=600)
+            print("  ✓ AID downloaded from Kaggle")
+            return
+        except Exception as e:
+            print(f"  Kaggle failed: {e}")
+        
+        print("\n  ❌ ALL DOWNLOAD METHODS FAILED.")
+        print("  Please download manually:")
+        print("  Option A: pip install datasets && python -c \"from datasets import load_dataset; ds = load_dataset('blanchon/AID')\"")
+        print("  Option B: kaggle datasets download -d jiayuanchengala/aid-scene-classification-datasets")
+        print(f"  Then extract class folders to {aid_dir}/")
+        sys.exit(1)
 
     def __len__(self):
         return len(self.samples)
