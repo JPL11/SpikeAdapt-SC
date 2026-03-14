@@ -4,6 +4,14 @@ FoodSeg103/
 CCNet/
 *.zip
 
+# Paper source (LaTeX) - keep figures, exclude source
+paper/*.tex
+paper/*.bib
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.synctex*
+
 # Model checkpoints
 snapshots_*/
 *.pth
