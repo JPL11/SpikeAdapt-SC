@@ -8,7 +8,6 @@
 
 > **SpikeAdapt-SC** is a spiking neural network (SNN) framework for content-adaptive semantic communication in UAV aerial networks. It encodes deep features as binary spike trains, learns per-image spatial masking to drop unimportant blocks, and achieves **96%+ accuracy on 30 aerial scene classes** with **25% bandwidth savings** and **32–48% estimated energy savings** — robust down to BER=0.3 and SNR=−2 dB.
 
-> 📄 *Paper submitted to IEEE GLOBECOM 2026 — Aerial Communications Track*
 
 ---
 
@@ -172,20 +171,7 @@ python eval/eval_jpeg_sweep.py
 
 Each channel model (BSC, AWGN, Rayleigh) is trained independently with noise-weighted curriculum sampling.
 
----
 
-## Citation
-
-If you use this code, please cite:
-
-```bibtex
-@inproceedings{spikeadapt2026,
-  title={Content-Adaptive Neuromorphic Semantic Communication for Collaborative Aerial Intelligence},
-  author={Anonymous},
-  booktitle={Proc. IEEE GLOBECOM},
-  year={2026}
-}
-```
 
 ---
 
