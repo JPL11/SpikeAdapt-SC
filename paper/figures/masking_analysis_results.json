@@ -1,0 +1,193 @@
+{
+  "random_dist": {
+    "mean": 95.72349999999999,
+    "std": 0.16339446135043886,
+    "min": 95.35,
+    "max": 96.2,
+    "p05": 95.45,
+    "p95": 96.0,
+    "learned_acc": 96.1,
+    "percentile_rank": 98.0
+  },
+  "rho_050": {
+    "learned": 94.5,
+    "random_mean": 93.82099999999998,
+    "random_std": 0.22183101676726613,
+    "percentile_rank": 100.0
+  },
+  "score_stats": {
+    "mean_var": 0.0009884731844067574,
+    "mean_cov": 0.03411293402314186,
+    "mean_entropy": 4.158255577087402,
+    "max_entropy": 4.1588830833596715,
+    "mean_gini": 0.01859932942318188
+  },
+  "margin": {
+    "mean": 0.05460105463862419,
+    "std": 0.014715864323079586,
+    "min": 0.017794549465179443,
+    "max": 0.11613011360168457
+  },
+  "ablation": {
+    "pearson_r": 0.011023319450618838,
+    "pearson_p": 0.3779281952976393,
+    "spearman_rho": -0.01670084353804566,
+    "spearman_p": 0.18158206904295543
+  },
+  "stability": {
+    "unique_masks": 1982,
+    "mean_overlap": 0.8264583349227905,
+    "class_stats": {
+      "Airport": {
+        "unique": 56,
+        "total": 56,
+        "intra_overlap": 0.8037280440330505
+      },
+      "BareLand": {
+        "unique": 57,
+        "total": 57,
+        "intra_overlap": 0.8432018160820007
+      },
+      "BaseballField": {
+        "unique": 45,
+        "total": 45,
+        "intra_overlap": 0.8278508186340332
+      },
+      "Beach": {
+        "unique": 90,
+        "total": 91,
+        "intra_overlap": 0.8552631735801697
+      },
+      "Bridge": {
+        "unique": 79,
+        "total": 79,
+        "intra_overlap": 0.8234649300575256
+      },
+      "Center": {
+        "unique": 49,
+        "total": 49,
+        "intra_overlap": 0.8530701994895935
+      },
+      "Church": {
+        "unique": 52,
+        "total": 52,
+        "intra_overlap": 0.8037281036376953
+      },
+      "Commercial": {
+        "unique": 66,
+        "total": 66,
+        "intra_overlap": 0.8662281036376953
+      },
+      "DenseResidential": {
+        "unique": 88,
+        "total": 88,
+        "intra_overlap": 0.8947368264198303
+      },
+      "Desert": {
+        "unique": 52,
+        "total": 52,
+        "intra_overlap": 0.8804824352264404
+      },
+      "Farmland": {
+        "unique": 65,
+        "total": 65,
+        "intra_overlap": 0.8815789222717285
+      },
+      "Forest": {
+        "unique": 43,
+        "total": 47,
+        "intra_overlap": 0.8980262875556946
+      },
+      "Industrial": {
+        "unique": 95,
+        "total": 95,
+        "intra_overlap": 0.8388158082962036
+      },
+      "Meadow": {
+        "unique": 55,
+        "total": 57,
+        "intra_overlap": 0.8837720155715942
+      },
+      "MediumResidential": {
+        "unique": 65,
+        "total": 65,
+        "intra_overlap": 0.8059210777282715
+      },
+      "Mountain": {
+        "unique": 74,
+        "total": 74,
+        "intra_overlap": 0.8804824352264404
+      },
+      "Park": {
+        "unique": 69,
+        "total": 69,
+        "intra_overlap": 0.8717105388641357
+      },
+      "Parking": {
+        "unique": 75,
+        "total": 75,
+        "intra_overlap": 0.8497806191444397
+      },
+      "Playground": {
+        "unique": 74,
+        "total": 74,
+        "intra_overlap": 0.8486841917037964
+      },
+      "Pond": {
+        "unique": 77,
+        "total": 77,
+        "intra_overlap": 0.8366227149963379
+      },
+      "Port": {
+        "unique": 75,
+        "total": 75,
+        "intra_overlap": 0.7982456088066101
+      },
+      "RailwayStation": {
+        "unique": 64,
+        "total": 64,
+        "intra_overlap": 0.8618420958518982
+      },
+      "Resort": {
+        "unique": 60,
+        "total": 60,
+        "intra_overlap": 0.8300438523292542
+      },
+      "River": {
+        "unique": 81,
+        "total": 81,
+        "intra_overlap": 0.8092105388641357
+      },
+      "School": {
+        "unique": 53,
+        "total": 53,
+        "intra_overlap": 0.8015351295471191
+      },
+      "SparseResidential": {
+        "unique": 46,
+        "total": 46,
+        "intra_overlap": 0.8574560880661011
+      },
+      "Square": {
+        "unique": 67,
+        "total": 67,
+        "intra_overlap": 0.8037280440330505
+      },
+      "Stadium": {
+        "unique": 71,
+        "total": 71,
+        "intra_overlap": 0.8410087823867798
+      },
+      "StorageTanks": {
+        "unique": 77,
+        "total": 77,
+        "intra_overlap": 0.7872806787490845
+      },
+      "Viaduct": {
+        "unique": 73,
+        "total": 73,
+        "intra_overlap": 0.8092105984687805
+      }
+    }
+  }
+}
