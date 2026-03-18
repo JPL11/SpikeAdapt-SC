@@ -1,0 +1,102 @@
+{
+  "sinusoidal": {
+    "name": "Sinusoidal",
+    "mean_ber": 0.15,
+    "adaptive": {
+      "acc": 95.0,
+      "bw": 0.75
+    },
+    "fixed_1.0": {
+      "acc": 95.8,
+      "bw": 1.0
+    },
+    "fixed_0.75": {
+      "acc": 94.85,
+      "bw": 0.75
+    },
+    "fixed_0.50": {
+      "acc": 92.75,
+      "bw": 0.5
+    }
+  },
+  "step_changes": {
+    "name": "Step Changes",
+    "mean_ber": 0.1625,
+    "adaptive": {
+      "acc": 95.15,
+      "bw": 0.8125
+    },
+    "fixed_1.0": {
+      "acc": 94.7,
+      "bw": 1.0
+    },
+    "fixed_0.75": {
+      "acc": 95.65,
+      "bw": 0.75
+    },
+    "fixed_0.50": {
+      "acc": 92.3,
+      "bw": 0.5
+    }
+  },
+  "ramp_up": {
+    "name": "Ramp Up",
+    "mean_ber": 0.16,
+    "adaptive": {
+      "acc": 95.5,
+      "bw": 0.76875
+    },
+    "fixed_1.0": {
+      "acc": 95.6,
+      "bw": 1.0
+    },
+    "fixed_0.75": {
+      "acc": 95.55,
+      "bw": 0.75
+    },
+    "fixed_0.50": {
+      "acc": 93.9,
+      "bw": 0.5
+    }
+  },
+  "urban_canyon": {
+    "name": "Urban Canyon",
+    "mean_ber": 0.19341915088562495,
+    "adaptive": {
+      "acc": 94.35,
+      "bw": 0.85125
+    },
+    "fixed_1.0": {
+      "acc": 96.05,
+      "bw": 1.0
+    },
+    "fixed_0.75": {
+      "acc": 93.8,
+      "bw": 0.75
+    },
+    "fixed_0.50": {
+      "acc": 92.9,
+      "bw": 0.5
+    }
+  },
+  "rural_stable": {
+    "name": "Rural Stable",
+    "mean_ber": 0.05156101647709498,
+    "adaptive": {
+      "acc": 94.45,
+      "bw": 0.515
+    },
+    "fixed_1.0": {
+      "acc": 96.9,
+      "bw": 1.0
+    },
+    "fixed_0.75": {
+      "acc": 95.95,
+      "bw": 0.75
+    },
+    "fixed_0.50": {
+      "acc": 95.0,
+      "bw": 0.5
+    }
+  }
+}
