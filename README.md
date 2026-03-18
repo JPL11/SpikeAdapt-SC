@@ -6,7 +6,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 
-> **SpikeAdapt-SC** is a spiking neural network (SNN) framework for content-adaptive semantic communication in UAV aerial networks. It encodes deep features as binary spike trains, learns per-image spatial masking to drop unimportant blocks, and achieves **96%+ accuracy on 30 aerial scene classes** with **25% bandwidth savings** and **32–48% estimated energy savings** — robust down to BER=0.3 and SNR=−2 dB.
+> **SpikeAdapt-SC** is a spiking neural network (SNN) framework for content-adaptive semantic communication in UAV aerial networks. It encodes deep features as binary spike trains, learns per-image spatial masking on a **14×14 feature grid** (196 blocks), and achieves **96.35% accuracy on 30 aerial scene classes** while **outperforming full-rate SNN-SC by 0.65 pp** with **25% bandwidth savings** — robust down to BER=0.3 (92.90%).
 
 
 ---
@@ -35,17 +35,18 @@
   <img src="paper/figures/fig2_mask_diversity.png" alt="Content-Adaptive Masks" width="100%">
 </p>
 
-The learned importance scorer generates **unique masks per image** — structured scenes (airports, harbors) retain distributed blocks for object detail, while uniform scenes (desert, farmland) are aggressively pruned. Across 10,000 test images, **8,987 unique masks** are generated at 75% transmission rate.
+The learned importance scorer generates **unique masks per image** — structured scenes (airports, harbors) retain distributed blocks for object detail, while uniform scenes (desert, farmland) are aggressively pruned. Across 2,000 test images, **2,000 unique masks** are generated at 75% transmission rate (100%).
 
 ### Channel Robustness (AID, 30 Aerial Scene Classes)
 
-| Method | Clean | Mid-Noise | Severe | Rate |
-|--------|-------|-----------|--------|------|
-| **SpikeAdapt-SC** (ρ=0.75) | **96.10%** | 96.05% (BER=0.15) | 95.30% (BER=0.3) | 75% |
-| Fixed-rate SNN-SC (ρ=1.0) | 96.15% | 95.90% (BER=0.15) | 95.40% (BER=0.3) | 100% |
-| JPEG + Channel Coding | 76.86% | 1.00% (BER=0.15) | 1.00% (BER=0.3) | — |
+| Method | Clean | BER=0.15 | BER=0.30 | Rate |
+|--------|-------|----------|----------|------|
+| **SpikeAdapt-SC** (ρ=0.75) | **96.35%** | **95.85%** | **92.90%** | 75% |
+| SNN-SC (ρ=1.0) | 95.70% | 95.35% | 92.20% | 100% |
+| CNN-Uni 8-bit | 92.50% | 92.40% | 67.25% | 100% |
+| JPEG + Channel Coding | 76.86% | 1.00% | 1.00% | — |
 
-> SpikeAdapt-SC **matches full-rate SNN-SC at 75% bandwidth**. JPEG collapses below BER=0.01.
+> SpikeAdapt-SC **beats full-rate SNN-SC at 75% bandwidth** (96.35% > 95.70%). CNN-Uni collapses at BER=0.30 (67.25%).
 
 ### Semantic Feature Resilience
 
@@ -73,11 +74,11 @@ Feature-level MSE increases with channel noise, but **classification confidence 
 
 | Variant | Accuracy | BW Saved | Δ |
 |---------|----------|----------|---|
-| SpikeAdapt-SC (ρ=0.75) | **96.10%** | 25% | — |
-| No masking (ρ=1.0) | 96.15% | 0% | +0.05 |
-| Random mask (ρ=0.75) | 95.85% | 25% | −0.25 |
-| Learned mask + BER=0.15 | 95.85% | 25% | −0.25 |
-| Random mask + BER=0.15 | 95.65% | 25% | −0.45 |
+| SpikeAdapt-SC (ρ=0.75) | **96.35%** | 25% | — |
+| SNN-SC (ρ=1.0) | 95.70% | 0% | −0.65 |
+| Random mask (ρ=0.75) | 94.85 ± 0.17% | 25% | −1.50 |
+| SpikeAdapt-SC (ρ=0.50) | 95.35% | 50% | −1.00 |
+| Random mask (ρ=0.50) | 84.41 ± 0.45% | 50% | −11.94 |
 
 ### Cross-Channel Comparison
 
@@ -110,7 +111,8 @@ SpikeAdapt-SC/
 │   └── energy.py                    #   SynOp energy counter
 │
 ├── train/                           # Training scripts
-│   ├── train_aid.py                 #   AID aerial dataset (primary)
+│   ├── train_aid.py                 #   AID aerial dataset (v1, 8×8 grid)
+│   ├── train_aid_v2.py              #   AID v2 (14×14 grid, channel scorer, baselines)
 │   ├── train_L3_robust.py           #   BER-robust Layer3 on CIFAR-100
 │   ├── train_tinyimagenet.py        #   Tiny-ImageNet + AWGN/Rayleigh
 │   └── train_baselines.py           #   CNN-Uni, CNN-Bern, SNN-SC, JPEG

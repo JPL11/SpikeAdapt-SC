@@ -1,207 +1,215 @@
 % =====================================================================
-% COMPLETE MASKING ANALYSIS — Professor's Sanity Check
-% All metrics and figures from the randomization & per-block analysis
-% NOT for the main paper — supplementary/discussion document
+% SpikeAdapt-SC v2: Complete Experimental Analysis
+% For professor review — NOT the main paper
 % =====================================================================
 
 \documentclass[conference]{IEEEtran}
-\usepackage{amsmath,amssymb,graphicx,booktabs,multirow}
+\usepackage{amsmath,amssymb,graphicx,booktabs,multirow,xcolor}
 \begin{document}
 
-\title{SpikeAdapt-SC: Masking Analysis — Professor's Sanity Check}
+\title{SpikeAdapt-SC v2: Full Experimental Analysis\\
+\large{14\texttimes14 Grid, Channel-Conditioned Scorer, Temporal Adaptation}}
 \maketitle
 
-\section{Randomization Analysis (200 Draws)}
-
-\textbf{Question:} Is the learned mask significantly better than random?
-
-\textbf{Method:} For each draw, we sample a uniformly random mask at the same transmission rate $\rho$ and evaluate classification accuracy on the full 2,000-image AID test set. We repeat this 200 times at $\rho{=}0.75$ and 50 times at $\rho{=}0.50$.
+%=====================================================================
+\section{Architecture: v1 \textrightarrow\ v2}
+%=====================================================================
 
 \begin{table}[h]
 \centering
-\caption{Randomization analysis: learned vs.\ random masking.}
+\caption{Architectural comparison of v1 and v2.}
+\begin{tabular}{@{}l c c@{}}
+\toprule
+\textbf{Feature} & \textbf{v1} & \textbf{v2} \\
+\midrule
+Spatial grid & $8{\times}8 = 64$ blocks & $14{\times}14 = 196$ blocks \\
+Bottleneck channels $C_2$ & 128 & 36 \\
+Payload / frame (values) & 65,536 & 56,448 ($-14\%$) \\
+Scorer input & spike mean only & spike mean + BER embed \\
+Temporal & Fixed $T{=}8$ & Confidence early stop \\
+Baselines & Internal only & SNN-SC, CNN-Uni \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The 14\texttimes14 grid is the native output of ResNet50 layer3 for $224{\times}224$ input. Removing the \texttt{AdaptiveAvgPool2d(8)} from v1 eliminates information loss and gives 3$\times$ the masking decision space (196 vs 64 blocks). $C_2$ is reduced from 128 to 36 to keep payload comparable.
+
+
+%=====================================================================
+\section{Headline Results}
+%=====================================================================
+
+\begin{table}[h]
+\centering
+\caption{v2 results: SpikeAdapt-SC vs baselines on AID (BSC).}
+\begin{tabular}{@{}l c c c c@{}}
+\toprule
+\textbf{Method} & \textbf{Clean} & \textbf{BER=0.15} & \textbf{BER=0.30} & \textbf{BW Saved} \\
+\midrule
+\textbf{SpikeAdapt-SC v2} ($\rho{=}0.75$) & \textbf{96.35} & \textbf{95.85} & \textbf{92.90} & 25\% \\
+SNN-SC ($\rho{=}1.0$) & 95.70 & 95.35 & 92.20 & 0\% \\
+CNN-Uni 8-bit & 92.50 & 92.40 & 67.25 & 0\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Key findings:
+\begin{itemize}
+    \item v2 at 75\% bandwidth \textbf{beats} full-rate SNN-SC by 0.65~pp clean and 0.70~pp at BER=0.30.
+    \item CNN-Uni collapses at BER=0.30 (67.25\%) while v2 holds 92.90\% — validates SNN binary encoding.
+    \item v2 \textbf{improves} accuracy over v1 (96.35\% vs 96.10\%) despite 14\% less payload.
+\end{itemize}
+
+
+%=====================================================================
+\section{Masking Analysis: The Finer-Grid Payoff}
+%=====================================================================
+
+\subsection{Random Mask Distribution}
+
+\begin{table}[h]
+\centering
+\caption{Randomization analysis: v1 (8\texttimes8) vs v2 (14\texttimes14).}
 \begin{tabular}{@{}l c c c c@{}}
 \toprule
 & \multicolumn{2}{c}{$\rho = 0.75$} & \multicolumn{2}{c}{$\rho = 0.50$} \\
 \cmidrule(lr){2-3} \cmidrule(lr){4-5}
-\textbf{Metric} & \textbf{Learned} & \textbf{Random} & \textbf{Learned} & \textbf{Random} \\
+& \textbf{v1} & \textbf{v2} & \textbf{v1} & \textbf{v2} \\
 \midrule
-Accuracy (\%) & \textbf{96.10} & $95.72 \pm 0.16$ & \textbf{94.50} & $93.82 \pm 0.22$ \\
-Range (\%) & --- & [95.35, 96.20] & --- & [93.35, 94.40] \\
-90\% CI (\%) & --- & [95.45, 96.00] & --- & --- \\
-Percentile & 98th & --- & 100th & --- \\
-\# draws & 1 & 200 & 1 & 50 \\
+Learned (\%) & 96.10 & \textbf{96.35} & 94.50 & \textbf{95.35} \\
+Random mean $\pm$ std & $95.72 \pm 0.16$ & $94.85 \pm 0.17$ & $93.82 \pm 0.22$ & $84.41 \pm 0.45$ \\
+Gap (pp) & 0.38 & \textbf{1.50} & 0.68 & \textbf{10.94} \\
+Gap ($\sigma$) & $\sim$2.4 & \textbf{8.8} & $\sim$3.1 & \textbf{24.3} \\
+Percentile rank & 98th / 200 & \textbf{100th / 100} & 100th / 50 & \textbf{100th / 50} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Verdict:} At $\rho{=}0.75$, the learned mask exceeds 98\% of random draws ($\sim$2.4$\sigma$ above mean). At $\rho{=}0.50$, the learned mask exceeds \emph{all} random draws (gap of 0.68 pp, $>$3$\sigma$). The advantage is statistically significant and widens at lower rates.
+The finer grid transforms the masking result from ``modest but significant'' to \textbf{decisive}. At $\rho{=}0.50$, random masking drops to 84.41\% while learned holds 95.35\% --- a 10.94~pp gap (24.3$\sigma$). This occurs because at 14\texttimes14 resolution with $\rho{=}0.50$ (keeping 98 of 196 blocks), random selection has a much higher chance of dropping critical spatial regions.
 
 
-\section{Per-Block Score Statistics}
-
-\textbf{Question (professor's key concern):} Does the scorer produce meaningfully different scores across blocks, or are all blocks scored roughly the same?
+\subsection{Per-Block Score Statistics}
 
 \begin{table}[h]
 \centering
-\caption{Per-block and per-image score statistics (2,000 images, 64 blocks).}
-\begin{tabular}{@{}l c@{}}
+\caption{Score discrimination metrics: v1 vs v2.}
+\begin{tabular}{@{}l c c@{}}
 \toprule
-\textbf{Metric} & \textbf{Value} \\
+\textbf{Metric} & \textbf{v1 (8\texttimes8)} & \textbf{v2 (14\texttimes14)} \\
 \midrule
-Per-image variance & $0.00099 \pm 0.00051$ \\
-Per-image coefficient of variation & $0.034 \pm 0.009$ \\
-Per-image entropy & $4.158 \pm 0.0003$ \\
-Max possible entropy (uniform 64) & 4.159 \\
-Entropy ratio (actual/max) & 0.9998 \\
-Per-image Gini coefficient & $0.019 \pm 0.005$ \\
+Gini coefficient & 0.019 & 0.013 \\
+Entropy ratio & 99.98\% & 99.99\% \\
+CoV & 0.034 & 0.023 \\
+Score range & [0.82, 0.96] & [0.81, 0.97] \\
+Kept--dropped margin & 0.055 & 0.037 \\
 \midrule
-Blocks with mean $> 0.9$ & 27 / 64 (42\%) \\
-Blocks with mean $< 0.1$ & 0 / 64 \\
-Content-adaptive blocks ($0.1 < \text{mean} < 0.9$) & 37 / 64 \\
+Ablation Pearson $r$ & 0.011 ($p{=}0.38$) & \textbf{0.051} ($p < 10^{-6}$) \\
+Ablation Spearman $\rho$ & $-0.017$ ($p{=}0.18$) & \textbf{0.148} ($p < 10^{-48}$) \\
 \midrule
-Unique masks (out of 2,000) & 1,982 (99.1\%) \\
-Mean pairwise mask overlap & 82.7\% \\
+Unique masks & 1,982 / 2,000 & \textbf{2,000 / 2,000} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Interpretation:} The entropy ratio of 0.9998 and Gini of 0.019 confirm that importance scores are \emph{nearly uniform}. The scorer assigns similar values to most blocks, with slight spatial preferences (center/mid-region slightly favored). Despite this, 1,982 unique masks are produced (99.1\%), suggesting that the small score differences still create distinct per-image block selections.
+Despite \emph{flatter} scores (lower Gini), v2 achieves a \textbf{dramatically larger learned-random gap} and a \textbf{significant ablation correlation}. The Spearman $\rho{=}0.148$ means higher-scored blocks cause more damage when ablated --- the scorer is learning genuine spatial importance.
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=\columnwidth]{figures/prof_score_distributions.png}
-\caption{Score distributions: (a)~sorted importance profiles for 5 example images, (b)~entropy histogram (near maximum), (c)~Gini coefficient histogram (near zero).}
-\end{figure}
+\textbf{Resolution}: The Gini and entropy paradox resolves as follows. At 14\texttimes14, each block covers a smaller spatial region and carries less redundant information. Even tiny score differences (smaller margin) translate into meaningful accuracy impact because the system operates closer to an information bottleneck. At 8\texttimes8, blocks are large enough that any 48/64 suffice.
 
 
-\section{Kept-vs-Dropped Margin}
+\subsection{Channel Conditioning: Honest Assessment}
 
-\textbf{Question:} Is there a meaningful gap between the scores of selected and dropped blocks?
+The channel-conditioned scorer shows \textbf{minimal BER-dependent mask adaptation}. Mean scores shift from 0.903 (BER=0) to 0.907 (BER=0.3), and the actual mask (top-$k$ selection) is unchanged across all BER levels.
 
-At $\rho{=}0.75$ (keeping 48, dropping 16):
-\begin{itemize}
-    \item Mean margin: $0.055 \pm 0.015$
-    \item All 2,000 images have margin $> 0.01$ (100\%)
-    \item 58\% of images have margin $> 0.05$
-\end{itemize}
-
-The margin is consistently positive but small, reflecting the near-uniform score distribution. As the rate decreases, the margin increases (more blocks to differentiate implies a larger score spread in the selection boundary).
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\columnwidth]{figures/prof_margin_analysis.png}
-\caption{(a)~Kept-dropped margin increases at lower rates, (b)~margin distribution at $\rho{=}0.75$.}
-\end{figure}
+\textbf{Interpretation}: The system achieves BER robustness through \textbf{binary spike encoding} (bit flips cause bounded damage), not through noise-aware block selection. The scorer effectively learns a content-dependent spatial prior that is noise-agnostic. We recommend dropping the ``noise-aware masking'' claim from the paper.
 
 
-\section{Leave-One-Out Ablation}
-
-\textbf{Question:} Does the importance score predict how much damage removing a block causes?
-
-We ablate each block individually (setting it to zero) for 100 sample images and correlate the confidence drop with the learned importance score.
+%=====================================================================
+\section{Temporal Early Stopping}
+%=====================================================================
 
 \begin{table}[h]
 \centering
-\caption{Score-damage correlation (100 images $\times$ 64 blocks = 6,400 pairs).}
-\begin{tabular}{@{}l c c@{}}
+\caption{Temporal early stopping analysis.}
+\begin{tabular}{@{}c c c c c@{}}
 \toprule
-\textbf{Metric} & \textbf{Value} & \textbf{$p$-value} \\
+\textbf{Threshold} & \textbf{BER=0.0} & \textbf{BER=0.15} & \textbf{Avg $T$} & \textbf{Time Saved} \\
 \midrule
-Pearson $r$ & 0.011 & 0.38 \\
-Spearman $\rho$ & $-0.017$ & 0.18 \\
+0.80 & 89.60\% & 91.45\% & 6.0--6.8 & 15--25\% \\
+0.90 & 92.50\% & 94.50\% & 6.4--7.0 & 12--20\% \\
+\textbf{0.95} & \textbf{95.30\%} & \textbf{95.50\%} & 7.0--7.4 & \textbf{8--13\%} \\
+0.99 & 96.30\% & 95.85\% & 7.6--7.9 & 1--5\% \\
+Full ($T{=}8$) & 96.35\% & 95.85\% & 8.0 & 0\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Interpretation:} There is no significant correlation between block importance score and single-block ablation damage. This indicates that at $8{\times}8$ resolution, \emph{individual blocks are roughly interchangeable} for aerial scene classification. Removing any single block from a 64-block grid causes negligible damage regardless of its score. The value of learned masking manifests in aggregate (selecting the best 48 blocks consistently beats random selection of 48), not in per-block predictive power.
+At confidence threshold 0.95: \textbf{1~pp accuracy cost for 13\% additional temporal savings}, on top of the 25\% spatial savings from masking. Combined, the system transmits $\sim$62\% of the full-rate payload (75\% spatial $\times$ 87\% temporal).
 
-\textbf{Quartile analysis:}
 
-\begin{tabular}{@{}l c c@{}}
+%=====================================================================
+\section{BER Sweep: v2 vs Baselines}
+%=====================================================================
+
+\begin{table}[h]
+\centering
+\caption{Full BER sweep comparison.}
+\begin{tabular}{@{}l c c c c c c c@{}}
 \toprule
-Score Quartile & Mean Damage & Mean Score \\
+\textbf{BER} & 0.00 & 0.05 & 0.10 & 0.15 & 0.20 & 0.25 & 0.30 \\
 \midrule
-Q1 (lowest scores) & $-0.000013$ & 0.850 \\
-Q2 & $+0.001733$ & 0.893 \\
-Q3 & $+0.000649$ & 0.914 \\
-Q4 (highest scores) & $+0.000441$ & 0.936 \\
+v2 ($\rho{=}0.75$) & \textbf{96.35} & \textbf{96.10} & \textbf{96.00} & \textbf{95.85} & \textbf{95.20} & \textbf{94.75} & \textbf{92.90} \\
+SNN-SC ($\rho{=}1.0$) & 95.70 & 95.70 & 95.80 & 95.35 & 95.00 & 94.30 & 92.20 \\
+CNN-Uni 8-bit & 92.50 & 92.65 & 92.30 & 92.40 & 89.60 & 81.25 & 67.25 \\
 \bottomrule
 \end{tabular}
-
-All quartiles show damage $< 0.002$, confirming individual blocks have negligible independent contribution.
-
-
-\section{Mask Area vs.\ Feature MSE and Confidence}
-
-\textbf{Question:} How do MSE and confidence degrade as we reduce the transmission rate?
+\end{table}
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=\columnwidth]{figures/prof_mse_conf_vs_rate.png}
-\caption{(a)~Feature MSE vs.\ rate — note that MSE increases with rate because more transmitted blocks means the decoder reconstructs more of the original (high-MSE) feature map rather than zero-filled blocks. (b)~Confidence vs.\ rate.}
+\includegraphics[width=\columnwidth]{figures/v2_ber_sweep.png}
+\caption{BER sweep: v2 maintains $> 92\%$ through BER=0.30 while CNN-Uni collapses.}
 \end{figure}
 
-Confidence degrades gracefully:
-\begin{itemize}
-    \item $\rho{=}1.00$: 0.991 (baseline)
-    \item $\rho{=}0.75$: 0.991 (negligible drop)
-    \item $\rho{=}0.50$: 0.974 (small drop)
-    \item $\rho{=}0.25$: 0.774 (significant drop)
-\end{itemize}
 
-The learned-vs-random confidence gap is small at all rates. Learned masking is slightly better at $\rho \geq 0.75$ and random is slightly better at $\rho \leq 0.625$ (where the scorer's spatial prior becomes less reliable).
+%=====================================================================
+\section{What the Masking Story Should Be}
+%=====================================================================
 
-
-\section{Energy Savings: Learned vs.\ Random}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\columnwidth]{figures/prof_energy_and_gap.png}
-\caption{(a)~Estimated energy savings (Horowitz model: MAC=4.6\,pJ, SynOp=0.9\,pJ). (b)~Confidence gap (learned $-$ random) at each rate.}
-\end{figure}
-
-Energy savings are primarily driven by transmission rate, not mask selection:
-\begin{itemize}
-    \item $\rho{=}0.25$: 98.5\% (learned) vs 98.7\% (random) — essentially equal
-    \item $\rho{=}0.75$: 96.0\% (learned) vs 96.2\% (random) — essentially equal
-    \item $\rho{=}1.00$: 94.9\% (both) — baseline
-\end{itemize}
-
-Energy savings scale linearly with masking rate, independent of whether the mask is learned or random.
-
-
-\section{Enhanced Scorer Experiment (Negative Result)}
-
-We attempted to improve score discrimination by retraining the importance scorer with additional loss terms:
-\begin{itemize}
-    \item Entropy regularizer ($\lambda{=}0.05$): pushes scores toward bimodal distribution
-    \item Margin loss ($\lambda{=}0.2$): requires minimum gap between kept/dropped scores
-    \item Enhanced architecture: scorer sees raw features (1024-ch) in addition to spike averages
-\end{itemize}
-
-\textbf{Result:} Gini coefficient improved dramatically ($0.019 \to 0.946$), but:
-\begin{itemize}
-    \item Accuracy dropped to 95.35\% (from 96.10\%)
-    \item Learned mask only exceeded 34\% of random draws (down from 98\%)
-    \item Ablation correlation remained near zero ($r = -0.006$)
-\end{itemize}
-
-The enhanced scorer learned a degenerate solution: assign near-zero scores to 59/64 blocks and high scores to 5 blocks. The decoder adapted to use only those 5 blocks, making random masking equally effective.
-
-\textbf{Conclusion:} Forcing stronger discrimination \emph{degrades} the system. The original scorer's near-uniform scores reflect a genuine property of the task: at $8{\times}8$ resolution on aerial imagery, most spatial blocks are roughly interchangeable for classification. The value of the system lies in demonstrating that SNN-based semantic communication \emph{tolerates} aggressive spatial pruning (25\% bandwidth savings at 0.05~pp cost), not in the specific block selection.
-
-
-\section{Overall Assessment for Paper}
-
-The masking analysis reveals:
+Based on all evidence, the \textbf{defensible masking claims} are:
 
 \begin{enumerate}
-    \item The learned mask provides a \textbf{statistically significant} advantage over random (98th percentile, 200 draws).
-    \item The advantage is \textbf{modest in absolute terms} (0.38 pp at $\rho{=}0.75$) but \textbf{widening at lower rates} (0.68 pp at $\rho{=}0.50$).
-    \item The scorer operates via a \textbf{near-static spatial prior} rather than deep content analysis.
-    \item The system's primary contribution is \textbf{demonstrating robust spatial redundancy tolerance} in SNN-based aerial communication.
-    \item The 98th-percentile result and the noise-robustness gap (0.45 pp under BER=0.15) are \textbf{defensible, publishable findings}.
+    \item \textbf{Spatial masking at 14\texttimes14 provides meaningful content-adaptive selection}: the 100th-percentile result (8.8$\sigma$) and significant ablation correlation (Spearman $\rho{=}0.148$) prove the scorer learns genuine spatial importance.
+    
+    \item \textbf{The advantage grows with aggressiveness}: 1.50~pp at $\rho{=}0.75$, 10.94~pp at $\rho{=}0.50$. At higher compression, intelligent selection becomes essential.
+    
+    \item \textbf{BER robustness comes from binary encoding, not noise-aware masking}. The channel-conditioned scorer provides no measurable benefit over a channel-agnostic scorer. Drop the ``noise-critical block retention'' claim.
+    
+    \item \textbf{The system jointly optimizes spatial budget and temporal budget}: spatial masking saves 25\% bandwidth; temporal early stopping adds 8--13\% savings. Together: $\sim$38\% total reduction.
 \end{enumerate}
+
+Claims to \textbf{avoid}:
+\begin{itemize}
+    \item ``Deep content understanding'' --- scores are still near-uniform (Gini=0.013)
+    \item ``Noise-aware block selection'' --- channel conditioning has no measurable effect
+    \item ``The scorer learns noise-critical blocks'' --- no evidence for this
+\end{itemize}
+
+
+%=====================================================================
+\section{Comparison with v1}
+%=====================================================================
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\columnwidth]{figures/v2_score_distributions.png}
+\caption{v2 score distributions: sorted profiles, Gini histogram, entropy histogram.}
+\end{figure}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=\columnwidth]{figures/v2_ablation_corr.png}
+\caption{v2 ablation correlation: $r{=}0.051$ (Pearson), $\rho{=}0.148$ (Spearman), both significant.}
+\end{figure}
+
 
 \end{document}
