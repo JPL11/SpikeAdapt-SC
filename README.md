@@ -6,7 +6,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 
-> **SpikeAdapt-SC** is a spiking neural network (SNN) framework for content-adaptive semantic communication in UAV aerial networks. It encodes deep features as binary spike trains, learns per-image spatial masking on a **14×14 feature grid** (196 blocks), and achieves **96.35% accuracy on 30 aerial scene classes** while **outperforming full-rate SNN-SC by 0.65 pp** with **25% bandwidth savings** — robust down to BER=0.3 (92.90%).
+> **SpikeAdapt-SC** is a spiking neural network (SNN) framework for content-adaptive semantic communication in UAV aerial networks. It encodes deep features as binary spike trains, learns per-image spatial masking on a **14×14 feature grid** (196 blocks), and achieves **96.35% accuracy on 30 aerial scene classes** while **outperforming the full-rate unmasked baseline by 0.65 pp** with **25% bandwidth savings** — robust down to BER=0.3 (92.90%).
 
 
 ---
@@ -42,11 +42,11 @@ The learned importance scorer generates **unique masks per image** — structure
 | Method | Clean | BER=0.15 | BER=0.30 | Rate |
 |--------|-------|----------|----------|------|
 | **SpikeAdapt-SC** (ρ=0.75) | **96.35%** | **95.85%** | **92.90%** | 75% |
-| SNN-SC (ρ=1.0) | 95.70% | 95.35% | 92.20% | 100% |
+| SNN (no mask, ρ=1.0) | 95.70% | 95.35% | 92.20% | 100% |
 | CNN-Uni 8-bit | 92.50% | 92.40% | 67.25% | 100% |
 | JPEG + Channel Coding | 76.86% | 1.00% | 1.00% | — |
 
-> SpikeAdapt-SC **beats full-rate SNN-SC at 75% bandwidth** (96.35% > 95.70%). CNN-Uni collapses at BER=0.30 (67.25%).
+> SpikeAdapt-SC **beats the full-rate unmasked baseline at 75% bandwidth** (96.35% > 95.70%). CNN-Uni collapses at BER=0.30 (67.25%).
 
 ### Semantic Feature Resilience
 
@@ -75,7 +75,7 @@ Feature-level MSE increases with channel noise, but **classification confidence 
 | Variant | Accuracy | BW Saved | Δ |
 |---------|----------|----------|---|
 | SpikeAdapt-SC (ρ=0.75) | **96.35%** | 25% | — |
-| SNN-SC (ρ=1.0) | 95.70% | 0% | −0.65 |
+| SNN (no mask, ρ=1.0) | 95.70% | 0% | −0.65 |
 | Random mask (ρ=0.75) | 94.85 ± 0.17% | 25% | −1.50 |
 | SpikeAdapt-SC (ρ=0.50) | 95.35% | 50% | −1.00 |
 | Random mask (ρ=0.50) | 84.41 ± 0.45% | 50% | −11.94 |

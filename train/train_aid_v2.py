@@ -33,28 +33,20 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 # ############################################################################
-# ARGS
+# ARGS (parsed at module level only when run directly, not when imported)
 # ############################################################################
-parser = argparse.ArgumentParser()
-parser.add_argument('--seed', type=int, default=42)
-parser.add_argument('--baselines', action='store_true')
-parser.add_argument('--epochs_s2', type=int, default=60)
-parser.add_argument('--epochs_s3', type=int, default=30)
-parser.add_argument('--target_rate', type=float, default=0.75)
-parser.add_argument('--T_max', type=int, default=8, help='Max timesteps')
-parser.add_argument('--C2', type=int, default=36, help='Bottleneck channels')
-parser.add_argument('--grid', type=int, default=14, help='Spatial grid size')
-args = parser.parse_args()
+def _parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--seed', type=int, default=42)
+    parser.add_argument('--baselines', action='store_true')
+    parser.add_argument('--epochs_s2', type=int, default=60)
+    parser.add_argument('--epochs_s3', type=int, default=30)
+    parser.add_argument('--target_rate', type=float, default=0.75)
+    parser.add_argument('--T_max', type=int, default=8, help='Max timesteps')
+    parser.add_argument('--C2', type=int, default=36, help='Bottleneck channels')
+    parser.add_argument('--grid', type=int, default=14, help='Spatial grid size')
+    return parser.parse_args()
 
-# Seed everything
-torch.manual_seed(args.seed)
-np.random.seed(args.seed)
-random.seed(args.seed)
-torch.cuda.manual_seed_all(args.seed)
-
-SNAP_DIR = f"./snapshots_aid_v2_seed{args.seed}/"
-os.makedirs(SNAP_DIR, exist_ok=True)
-print(f"Device: {device} | Seed: {args.seed} | Grid: {args.grid}×{args.grid} | C2: {args.C2}")
 
 
 # ############################################################################
@@ -494,6 +486,15 @@ def evaluate(front, model, back, loader, noise_param=0.0, is_baseline=False):
 # MAIN
 # ############################################################################
 if __name__ == "__main__":
+    args = _parse_args()
+    torch.manual_seed(args.seed)
+    np.random.seed(args.seed)
+    random.seed(args.seed)
+    torch.cuda.manual_seed_all(args.seed)
+    SNAP_DIR = f"./snapshots_aid_v2_seed{args.seed}/"
+    os.makedirs(SNAP_DIR, exist_ok=True)
+    print(f"Device: {device} | Seed: {args.seed} | Grid: {args.grid}×{args.grid} | C2: {args.C2}")
+
     NC = 30; IS = 224
 
     train_tf = T.Compose([

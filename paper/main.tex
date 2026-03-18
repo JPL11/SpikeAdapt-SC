@@ -221,7 +221,9 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}128$ cha
 
 \textbf{Training.} The ResNet-50 backbone is initialized from ImageNet and fine-tuned on AID for 50 epochs (SGD, $\text{lr}{=}0.01$). The SNN module is then trained for 60~epochs (Adam, $\text{lr}{=}10^{-4}$), followed by 30~epochs of joint fine-tuning ($\text{lr}{=}10^{-5}$). \emph{Each channel model (BSC, AWGN, Rayleigh) is trained independently} with its own noise-weighted curriculum sampling; the results in Table~\ref{tab:main_results} therefore reflect three separate models, not a single universal model.
 
-\textbf{Baselines.} We compare against: (1)~\emph{Fixed-rate SNN-SC}~\cite{wang2024snnsc}: the same SNN architecture without importance masking ($\rho{=}1.0$), directly comparable to the original SNN-SC framework; (2)~\emph{Random masking}: blocks dropped uniformly at random at the same rate; (3)~\emph{JPEG+channel coding}: traditional separate source--channel coding. We omit a conventional ANN-based JSCC baseline (e.g., DeepSC~\cite{xie2021deep}) as the SNN-vs-ANN comparison is established in~\cite{wang2024snnsc}; our focus is the benefit of content-adaptive masking \emph{within} the SNN paradigm.
+\textbf{Baselines.} We compare against three baselines: (1)~\emph{SNN (no mask)}: our own SNN encoder/decoder architecture with masking disabled ($\rho{=}1.0$), i.e.\ all blocks transmitted at full rate. This is architecturally similar to SNN-SC~\cite{wang2024snnsc} but trained with our pipeline, so we label it distinctly. (2)~\emph{CNN-Uni}: a conventional ANN encoder with 8-bit uniform quantization, matched bottleneck dimensions, and the same BSC channel---representing a strong digital baseline. (3)~\emph{JPEG+channel coding}: traditional separate source--channel coding.
+
+\textbf{Matched payload.} To ensure a fair comparison between spatial resolutions, we match the transmitted payload per timestep. With an $8{\times}8$ grid and $C_2{=}128$ bottleneck channels, each timestep carries $64{\times}128 = 8{,}192$ binary values. With the $14{\times}14$ grid and $C_2{=}36$, each timestep carries $196{\times}36 = 7{,}056$ values ($-14\%$). Over $T{=}8$ timesteps, the full payloads are 65,536 vs.\ 56,448 bits. The finer grid thus offers a strictly lower transmission budget while providing 3$\times$ the spatial decision granularity for the importance scorer.
 
 \subsection{Channel Robustness}
 
@@ -235,16 +237,16 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}128$ cha
 \textbf{Method} & \textbf{Clean} & \textbf{BER=0.15} & \textbf{BER=0.30} & \textbf{Rate} \\
 \midrule
 \textbf{SpikeAdapt-SC} ($\rho{=}0.75$) & \textbf{96.35} & \textbf{95.85} & \textbf{92.90} & 75\% \\
-SNN-SC ($\rho{=}1.0$) & 95.70 & 95.35 & 92.20 & 100\% \\
+SNN (no mask, $\rho{=}1.0$) & 95.70 & 95.35 & 92.20 & 100\% \\
 CNN-Uni 8-bit & 92.50 & 92.40 & 67.25 & 100\% \\
 JPEG+Channel & 76.86 & 1.00 & 1.00 & --- \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:main_results} presents the headline results on AID (30 aerial scene classes) under BSC channel. We compare SpikeAdapt-SC against three baselines: SNN-SC (same SNN encoder/decoder but no masking, $\rho{=}1.0$), CNN-Uni (ANN encoder with 8-bit uniform quantization), and JPEG+Channel (separate source-channel coding).
+Table~\ref{tab:main_results} presents the headline results on AID (30 aerial scene classes) under BSC channel. We compare SpikeAdapt-SC against three baselines: SNN (no mask)---our architecture with masking disabled ($\rho{=}1.0$, all 196 blocks transmitted), CNN-Uni (ANN encoder with 8-bit uniform quantization), and JPEG+Channel (separate source-channel coding).
 
-\textbf{SpikeAdapt-SC beats full-rate SNN-SC at 75\% bandwidth.} Our masked system (96.35\%) outperforms the unmasked baseline (95.70\%) by 0.65~pp while transmitting 25\% fewer bits. Under noise, the advantage persists: +0.50~pp at BER$=$0.15, +0.70~pp at BER$=$0.30.
+\textbf{SpikeAdapt-SC beats full-rate SNN at 75\% bandwidth.} Our masked system (96.35\%) outperforms the unmasked baseline (95.70\%) by 0.65~pp while transmitting 25\% fewer bits. Under noise, the advantage persists: +0.50~pp at BER$=$0.15, +0.70~pp at BER$=$0.30.
 
 \textbf{Binary encoding provides natural noise robustness.} SpikeAdapt-SC degrades only 3.45~pp from clean to BER$=$0.30. CNN-Uni collapses from 92.50\% to 67.25\% under the same conditions---a 25.25~pp drop. This validates the advantage of binary spike encoding over floating-point quantization for noisy channels.
 
@@ -335,7 +337,7 @@ To isolate the contribution of each system component, we evaluate architectural 
 \textbf{Variant} & \textbf{Acc (\%)} & \textbf{BW Saved} & $\Delta$ \\
 \midrule
 SpikeAdapt-SC ($\rho{=}0.75$) & \textbf{96.35} & 25\% & --- \\
-SNN-SC ($\rho{=}1.0$) & 95.70 & 0\% & $-$0.65 \\
+SNN (no mask, $\rho{=}1.0$) & 95.70 & 0\% & $-$0.65 \\
 Random mask ($\rho{=}0.75$) & $94.85 \pm 0.17$ & 25\% & $-$1.50 \\
 SpikeAdapt-SC ($\rho{=}0.50$) & 95.35 & 50\% & $-$1.00 \\
 Random mask ($\rho{=}0.50$) & $84.41 \pm 0.45$ & 50\% & $-$11.94 \\
@@ -343,7 +345,7 @@ Random mask ($\rho{=}0.50$) & $84.41 \pm 0.45$ & 50\% & $-$11.94 \\
 \end{tabular}
 \end{table}
 
-Three key observations emerge. First, \textbf{learned masking outperforms full-rate transmission}: SpikeAdapt-SC at $\rho{=}0.75$ (96.35\%) surpasses the unmasked SNN-SC baseline at $\rho{=}1.0$ (95.70\%) by 0.65~pp, demonstrating that intelligent spatial selection can improve accuracy while reducing bandwidth.
+Three key observations emerge. First, \textbf{learned masking outperforms full-rate transmission}: SpikeAdapt-SC at $\rho{=}0.75$ (96.35\%) surpasses the unmasked baseline at $\rho{=}1.0$ (95.70\%) by 0.65~pp, demonstrating that intelligent spatial selection can improve accuracy while reducing bandwidth.
 
 Second, the learned mask is \textbf{decisively better than random} at the $14{\times}14$ grid. Over 100 draws at $\rho{=}0.75$, the learned mask (96.35\%) exceeds \emph{all} random realizations (mean $94.85 \pm 0.17$\%, 8.8$\sigma$ gap). At $\rho{=}0.50$, the gap widens to 10.94~pp: learned masking holds 95.35\% while random drops to $84.41 \pm 0.45$\% ($>$24$\sigma$). This demonstrates that the importance scorer captures genuine spatial selectivity.
 
@@ -379,7 +381,7 @@ Rayleigh & 94.95 & 95.05 & 95.05 & 93.50 & --- \\
 \label{sec:conclusion}
 %=====================================================================
 
-We presented SpikeAdapt-SC, a spiking neural network framework for semantic communication in aerial networks. By encoding semantic features as binary spike trains and intelligently masking spatial blocks on a $14{\times}14$ feature grid, the system simultaneously addresses the power and bandwidth constraints of UAV edge AI. Key findings include: (i)~learned spatial masking at $\rho{=}0.75$ achieves 96.35\% accuracy, \emph{outperforming} full-rate SNN-SC (95.70\%) and CNN-Uni (92.50\%) baselines while saving 25\% bandwidth; (ii)~a randomization analysis confirms learned masking exceeds all 100 random draws at $\rho{=}0.75$ (8.8$\sigma$) and achieves a 10.94~pp advantage at $\rho{=}0.50$; (iii)~confidence-based temporal early stopping provides $\sim$13\% additional savings; and (iv)~binary spike encoding maintains $>$92\% accuracy through BER$=$0.30 while CNN-based quantization collapses to 67\%.
+We presented SpikeAdapt-SC, a spiking neural network framework for semantic communication in aerial networks. By encoding semantic features as binary spike trains and intelligently masking spatial blocks on a $14{\times}14$ feature grid, the system simultaneously addresses the power and bandwidth constraints of UAV edge AI. Key findings include: (i)~learned spatial masking at $\rho{=}0.75$ achieves 96.35\% accuracy, \emph{outperforming} the full-rate unmasked baseline (95.70\%) and CNN-Uni (92.50\%) while saving 25\% bandwidth; (ii)~a randomization analysis confirms learned masking exceeds all 100 random draws at $\rho{=}0.75$ (8.8$\sigma$) and achieves a 10.94~pp advantage at $\rho{=}0.50$; (iii)~confidence-based temporal early stopping provides $\sim$13\% additional savings; and (iv)~binary spike encoding maintains $>$92\% accuracy through BER$=$0.30 while CNN-based quantization collapses to 67\%.
 
 Future directions include extending SpikeAdapt-SC to object detection and segmentation tasks relevant to UAV missions~\cite{hayat2022uavrs}, exploring multi-UAV cooperative semantic communication with federated importance scoring, and validating the theoretical energy savings on neuromorphic hardware such as Intel Loihi~\cite{davies2018loihi} for true SynOp-based acceleration on aerial platforms.
 

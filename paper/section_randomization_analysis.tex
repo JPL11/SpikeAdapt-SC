@@ -27,7 +27,7 @@ Bottleneck channels $C_2$ & 128 & 36 \\
 Payload / frame (values) & 65,536 & 56,448 ($-14\%$) \\
 Scorer input & spike mean only & spike mean + BER embed \\
 Temporal & Fixed $T{=}8$ & Confidence early stop \\
-Baselines & Internal only & SNN-SC, CNN-Uni \\
+Baselines & Internal only & SNN (no mask), CNN-Uni \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -47,7 +47,7 @@ The 14\texttimes14 grid is the native output of ResNet50 layer3 for $224{\times}
 \textbf{Method} & \textbf{Clean} & \textbf{BER=0.15} & \textbf{BER=0.30} & \textbf{BW Saved} \\
 \midrule
 \textbf{SpikeAdapt-SC v2} ($\rho{=}0.75$) & \textbf{96.35} & \textbf{95.85} & \textbf{92.90} & 25\% \\
-SNN-SC ($\rho{=}1.0$) & 95.70 & 95.35 & 92.20 & 0\% \\
+SNN (no mask, $\rho{=}1.0$) & 95.70 & 95.35 & 92.20 & 0\% \\
 CNN-Uni 8-bit & 92.50 & 92.40 & 67.25 & 0\% \\
 \bottomrule
 \end{tabular}
@@ -55,7 +55,7 @@ CNN-Uni 8-bit & 92.50 & 92.40 & 67.25 & 0\% \\
 
 Key findings:
 \begin{itemize}
-    \item v2 at 75\% bandwidth \textbf{beats} full-rate SNN-SC by 0.65~pp clean and 0.70~pp at BER=0.30.
+    \item v2 at 75\% bandwidth \textbf{beats} the full-rate unmasked baseline by 0.65~pp clean and 0.70~pp at BER=0.30.
     \item CNN-Uni collapses at BER=0.30 (67.25\%) while v2 holds 92.90\% — validates SNN binary encoding.
     \item v2 \textbf{improves} accuracy over v1 (96.35\% vs 96.10\%) despite 14\% less payload.
 \end{itemize}
@@ -158,7 +158,7 @@ At confidence threshold 0.95: \textbf{1~pp accuracy cost for 13\% additional tem
 \textbf{BER} & 0.00 & 0.05 & 0.10 & 0.15 & 0.20 & 0.25 & 0.30 \\
 \midrule
 v2 ($\rho{=}0.75$) & \textbf{96.35} & \textbf{96.10} & \textbf{96.00} & \textbf{95.85} & \textbf{95.20} & \textbf{94.75} & \textbf{92.90} \\
-SNN-SC ($\rho{=}1.0$) & 95.70 & 95.70 & 95.80 & 95.35 & 95.00 & 94.30 & 92.20 \\
+SNN (no mask, $\rho{=}1.0$) & 95.70 & 95.70 & 95.80 & 95.35 & 95.00 & 94.30 & 92.20 \\
 CNN-Uni 8-bit & 92.50 & 92.65 & 92.30 & 92.40 & 89.60 & 81.25 & 67.25 \\
 \bottomrule
 \end{tabular}
