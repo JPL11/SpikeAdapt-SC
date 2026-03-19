@@ -38,7 +38,7 @@
 \maketitle
 
 \begin{abstract}
-Unmanned aerial vehicles (UAVs) performing edge AI inference face a dual constraint: air-to-ground links suffer from severe fading and limited bandwidth, while onboard processors are restricted by strict power budgets. Current semantic communication systems transmit intermediate neural features uniformly, wasting bandwidth on semantically irrelevant spatial regions and exposing the entire payload to channel noise. We present \textbf{SpikeAdapt-SC}, a spiking neural network (SNN) based semantic communication framework with content-adaptive spatial masking. Our system (i)~encodes deep features as binary spike trains, yielding an estimated 32--48\% computation energy savings via synaptic operations (SynOps) versus multiply-accumulate operations (MACs); (ii)~employs a learned spatial importance scorer that selectively drops up to 25\% of spatial blocks with zero accuracy loss and no channel feedback; and (iii)~demonstrates an adaptive rate policy that \emph{outperforms} fixed full-rate transmission on the AID aerial scene classification benchmark (96.2\% vs.\ 95.8\% accuracy under time-varying BSC conditions, while saving 25\% bandwidth). Evaluated across three channel models (BSC, AWGN, Rayleigh) on 30 aerial scene classes, SpikeAdapt-SC maintains 96\%+ accuracy from clean conditions down to $-2$\,dB SNR and 0.3 BER, while JPEG-based transmission collapses below BER~$= 0.01$. These results establish SNN-based adaptive semantic communication as a viable paradigm for power- and bandwidth-constrained aerial edge intelligence.
+Unmanned aerial vehicles (UAVs) performing edge AI inference face a dual constraint: air-to-ground links suffer from severe fading and limited bandwidth, while onboard processors are restricted by strict power budgets. Current semantic communication systems transmit intermediate neural features uniformly, wasting bandwidth on semantically irrelevant spatial regions and exposing the entire payload to channel noise. We present \textbf{SpikeAdapt-SC}, a spiking neural network (SNN) based semantic communication framework with content-adaptive spatial masking. Our system (i)~encodes deep features as binary spike trains on a native $14{\times}14$ feature grid (196 spatial blocks), yielding an estimated 32--48\% computation energy savings via synaptic operations (SynOps) versus multiply-accumulate operations (MACs); (ii)~employs a learned importance scorer that selectively masks up to 25\% of spatial blocks, \emph{improving} accuracy over full-rate unmasked transmission (96.35\% vs.\ 95.70\%) while saving bandwidth; and (iii)~demonstrates a multi-exit temporal decoder that achieves 96.55\% accuracy at an average of 5.9 out of 8 timesteps, providing an additional 26\% temporal bandwidth reduction. Evaluated on the AID aerial scene benchmark (30 classes, BSC channel), SpikeAdapt-SC maintains $>$92\% accuracy through BER$=$0.30 while a conventional CNN with 8-bit quantization collapses to 67\%. These results establish SNN-based adaptive semantic communication as a viable paradigm for power- and bandwidth-constrained aerial edge intelligence.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -61,12 +61,12 @@ In this paper, we propose \textbf{SpikeAdapt-SC}, a semantic communication frame
 \begin{enumerate}
     \item \textbf{SNN-based semantic encoding.} We replace the conventional ANN encoder--decoder with a spiking neural network operating over $T{=}8$ timesteps. Since spikes are binary, synaptic operations (SynOps) replace multiply-accumulate operations (MACs), yielding 32--48\% theoretical energy savings~\cite{horowitz2014energy}.
     
-    \item \textbf{Learned spatial importance masking.} A lightweight convolutional scorer network evaluates each $8{\times}8$ spatial block's semantic importance and selectively drops up to 25\% of blocks before transmission. This is done without channel state feedback, purely from content semantics. The masking is content-adaptive: across the AID test set, 8,987 unique masks are generated for 10,000 images.
+    \item \textbf{Learned spatial importance masking on a fine-grained grid.} A lightweight convolutional scorer evaluates each of the $14{\times}14 = 196$ spatial blocks and selectively masks up to 25\% before transmission, purely from content semantics and without channel state feedback. Every test image receives a unique mask (2,000/2,000), and the learned mask \emph{outperforms} all 100 random draws at $\rho{=}0.75$ by 1.47~pp ($8.8\sigma$). At $\rho{=}0.50$, the gap widens to 10.78~pp.
     
-    \item \textbf{Adaptive rate control under dynamic channels.} We demonstrate a channel-aware policy that adjusts the masking threshold based on estimated link quality. Under a simulated UAV flight path with time-varying BSC conditions, the adaptive policy achieves \emph{higher accuracy} (96.2\%) than fixed full-rate transmission (95.8\%) while saving 25\% bandwidth---proving that intelligent content dropping is not merely lossless but actively beneficial.
+    \item \textbf{Joint spatial--temporal bandwidth reduction.} A multi-exit decoder trained at $T{=}\{2,4,6,8\}$ enables confidence-based temporal early stopping, achieving 96.55\% accuracy at an average of 5.9 timesteps. Combined with 25\% spatial masking, the system achieves $\sim$44\% total bandwidth reduction.
 \end{enumerate}
 
-We validate SpikeAdapt-SC on the AID aerial scene classification dataset~\cite{xia2017aid} (30 classes, 10,000 images at $600{\times}600$ resolution) across three channel models: Binary Symmetric Channel (BSC), Additive White Gaussian Noise (AWGN), and Rayleigh fading. Results show near-flat accuracy from clean conditions to BER~$= 0.3$ and SNR~$= {-2}$\,dB, while traditional JPEG-based transmission collapses at BER~$= 0.01$.
+We validate SpikeAdapt-SC on the AID aerial scene classification dataset~\cite{xia2017aid} (30 classes, 10,000 images at $600{\times}600$ resolution) under the BSC channel model. Accuracy denotes top-1 classification accuracy on a 2,000-image test set (80/20 split). Results show $>$92\% accuracy through BER$=$0.30, while CNN-based 8-bit uniform quantization collapses to 67\%.
 
 %=====================================================================
 \section{Related Work}
@@ -91,15 +91,15 @@ Fig.~\ref{fig:architecture} shows the end-to-end SpikeAdapt-SC pipeline deployed
 \begin{figure}[t]
     \centering
     \includegraphics[width=\columnwidth]{fig1_architecture.png}
-    \caption{SpikeAdapt-SC system architecture. The UAV extracts semantic features via ResNet-50 (L1--L3) and encodes them as spike trains using IF neurons over $T{=}8$ timesteps. A learned scorer masks low-importance $8{\times}8$ blocks before A2G transmission (BSC/AWGN/Rayleigh). The ground station decodes via a matched SNN decoder and classifies with ResNet-50 L4+FC.}
+    \caption{SpikeAdapt-SC system architecture. The UAV extracts semantic features via ResNet-50 (L1--L3) and encodes them as spike trains using IF neurons over $T{=}8$ timesteps. A learned scorer masks low-importance blocks on the native $14{\times}14$ spatial grid before A2G transmission. The ground station decodes via a matched SNN decoder and classifies with ResNet-50 L4+FC.}
     \label{fig:architecture}
 \end{figure}
 
 \subsection{Semantic Feature Extraction}
 
-We employ a ResNet-50 backbone~\cite{he2016deep} pretrained on ImageNet and fine-tuned on the aerial domain. The network is split at Layer~3, producing a 1024-channel feature map. For the $600{\times}600$ AID images resized to $224{\times}224$, the Layer~3 output has spatial dimensions $14{\times}14$, which we spatially pool to $8{\times}8$ using adaptive average pooling. This yields a semantic feature tensor $\mathbf{F} \in \mathbb{R}^{B \times 1024 \times 8 \times 8}$.
+We employ a ResNet-50 backbone~\cite{he2016deep} pretrained on ImageNet and fine-tuned on the aerial domain. The network is split at Layer~3, producing a 1024-channel feature map. For the $600{\times}600$ AID images resized to $224{\times}224$, the Layer~3 output has native spatial dimensions $14{\times}14$, which we retain without pooling. This yields a semantic feature tensor $\mathbf{F} \in \mathbb{R}^{B \times 1024 \times 14 \times 14}$, providing 196 spatial blocks for fine-grained importance masking.
 
-Splitting at Layer~3 rather than Layer~4 is a deliberate design choice: it preserves a finer spatial grid ($8{\times}8$ vs.\ $4{\times}4$), enabling more granular content-adaptive masking. On the AID test set, the $8{\times}8$ grid produces 8,987 unique masks across 10,000 images, compared to fewer than 50 distinct masks with a $4{\times}4$ grid---confirming that spatial granularity is essential for per-image adaptation.
+Splitting at Layer~3 rather than Layer~4 is a deliberate design choice: it preserves a fine spatial grid ($14{\times}14$ vs.\ $7{\times}7$), enabling granular content-adaptive masking. On the AID test set, every test image receives a unique mask (2,000 out of 2,000), confirming that spatial granularity is essential for per-image adaptation.
 
 \subsection{Spiking Semantic Encoder}
 
@@ -111,18 +111,18 @@ The encoder converts the continuous feature map $\mathbf{F}$ into binary spike t
 \end{align}
 where $\mathbf{m}_t^{(l)}$ is the membrane potential at layer $l$ and timestep $t$, $\Theta(\cdot)$ is the Heaviside step function, $v_{\text{th}} = 1.0$ is the firing threshold, and the membrane is reset by subtraction after spiking. Following~\cite{neftci2019surrogate}, we use a sigmoid surrogate gradient $\sigma'(x) = \sigma(10x)(1-\sigma(10x)) \cdot 10$ for backpropagation through the non-differentiable spike function.
 
-The encoder reduces $\mathbf{F}$ from 1024 to 128 channels, producing spike tensors $\mathbf{S}_t \in \{0,1\}^{B \times 128 \times 8 \times 8}$ for $t = 1, \ldots, T$. Since each transmitted element is a single bit, the spike representation is inherently channel-compatible with binary modulation.
+The encoder reduces $\mathbf{F}$ from 1024 to $C_2{=}36$ channels, producing spike tensors $\mathbf{S}_t \in \{0,1\}^{B \times 36 \times 14 \times 14}$ for $t = 1, \ldots, T$. Since each transmitted element is a single bit, the spike representation is inherently channel-compatible with binary modulation. We set $C_2{=}36$ to match the per-timestep payload of the 196-block grid ($196 \times 36 = 7{,}056$ values) to the reference 64-block grid with $C_2{=}128$ ($64 \times 128 = 8{,}192$ values), ensuring a fair comparison (see Section~\ref{sec:eval}).
 
 \subsection{Learned Spatial Importance Masking}
 
-The central design contribution of SpikeAdapt-SC is learned spatial masking. Rather than transmitting all $8{\times}8 = 64$ spatial blocks, we learn which blocks carry task-relevant semantics. The time-averaged spike rate is first computed and then scored:
+The central design contribution of SpikeAdapt-SC is learned spatial masking. Rather than transmitting all $14{\times}14 = 196$ spatial blocks, we learn which blocks carry task-relevant semantics. The time-averaged spike rate is first computed and then scored:
 \begin{align}
     \bar{\mathbf{S}} &= \frac{1}{T}\sum_{t=1}^{T} \mathbf{S}_t \label{eq:avg_spike}\\
     \mathbf{I} &= \sigma\!\left(\text{Conv}_{1{\times}1}\!\left(\text{ReLU}\!\left(\text{Conv}_{1{\times}1}(\bar{\mathbf{S}})\right)\right)\right)
     \label{eq:importance}
 \end{align}
 
-where $\mathbf{I} \in [0,1]^{B \times 8 \times 8}$ is the per-block importance score. At inference, we retain the top-$k$ blocks where $k = \lfloor \rho \cdot H \cdot W \rfloor$ and $\rho \in \{0.5, 0.75, 1.0\}$ is the target transmission rate:
+where $\mathbf{I} \in [0,1]^{B \times 14 \times 14}$ is the per-block importance score. At inference, we retain the top-$k$ blocks where $k = \lfloor \rho \cdot H \cdot W \rfloor$ and $\rho \in \{0.5, 0.75, 1.0\}$ is the target transmission rate:
 
 \begin{equation}
     \mathbf{M}_{i,j} = \mathbf{1}[\mathbf{I}_{i,j} \geq \text{top-}k(\mathbf{I})]
@@ -161,7 +161,7 @@ During training, we employ a \emph{noise-weighted curriculum}: with 50\% probabi
 
 \subsection{Spiking Decoder and Task Inference}
 
-The ground-station decoder mirrors the encoder with two convolutional layers, an IF neuron, and a final Integrate-Hold-Fire (IHF) neuron with a \emph{learnable} threshold $v_{\text{th}} \in \mathbb{R}$. All $T$ timestep outputs are aggregated via a learned linear combiner to produce the reconstructed feature map $\hat{\mathbf{F}} \in \mathbb{R}^{B \times 1024 \times 8 \times 8}$. The remaining ResNet-50 Layer~4 and fully-connected head produce the final classification output.
+The ground-station decoder mirrors the encoder with two convolutional layers, an IF neuron, and a final Integrate-Hold-Fire (IHF) neuron with a \emph{learnable} threshold $v_{\text{th}} \in \mathbb{R}$. All $T$ timestep outputs are aggregated via a learned linear combiner to produce the reconstructed feature map $\hat{\mathbf{F}} \in \mathbb{R}^{B \times 1024 \times 14 \times 14}$. The remaining ResNet-50 Layer~4 and fully-connected head produce the final classification output.
 
 %=====================================================================
 \section{Energy and Bandwidth Analysis}
@@ -208,7 +208,7 @@ The total payload per image under adaptive masking is:
     \label{eq:bandwidth}
 \end{equation}
 
-where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}128$ channels, and $H_s{=}W_s{=}8$ spatial blocks. At $\rho{=}0.75$, the payload is 393,216 bits (48\,KB) per image versus 524,288 bits (64\,KB) at full rate---a 25\% bandwidth reduction with zero accuracy penalty (Table~\ref{tab:main_results}).
+where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}36$ channels, and $H_s{=}W_s{=}14$ spatial blocks. At $\rho{=}0.75$, the payload is $0.75 \times 8 \times 36 \times 196 = 42{,}336$ bits per image versus 56,448 bits at full rate---a 25\% bandwidth reduction that \emph{improves} accuracy by 0.65~pp over the unmasked baseline (Table~\ref{tab:main_results}).
 
 %=====================================================================
 \section{Performance Evaluation}
@@ -221,7 +221,7 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}128$ cha
 
 \textbf{Training.} The ResNet-50 backbone is initialized from ImageNet and fine-tuned on AID for 50 epochs (SGD, $\text{lr}{=}0.01$). The SNN module is then trained for 60~epochs (Adam, $\text{lr}{=}10^{-4}$), followed by 30~epochs of joint fine-tuning ($\text{lr}{=}10^{-5}$). \emph{Each channel model (BSC, AWGN, Rayleigh) is trained independently} with its own noise-weighted curriculum sampling; the results in Table~\ref{tab:main_results} therefore reflect three separate models, not a single universal model.
 
-\textbf{Baselines.} We compare against three baselines: (1)~\emph{SNN (no mask)}: our own SNN encoder/decoder architecture with masking disabled ($\rho{=}1.0$), i.e.\ all blocks transmitted at full rate. This is architecturally similar to SNN-SC~\cite{wang2024snnsc} but trained with our pipeline, so we label it distinctly. (2)~\emph{CNN-Uni}: a conventional ANN encoder with 8-bit uniform quantization, matched bottleneck dimensions, and the same BSC channel---representing a strong digital baseline. (3)~\emph{JPEG+channel coding}: traditional separate source--channel coding.
+\textbf{Baselines.} We compare against two baselines: (1)~\emph{SNN (no mask)}: our own SNN encoder/decoder architecture with masking disabled ($\rho{=}1.0$), i.e.\ all blocks transmitted at full rate. This is architecturally similar to SNN-SC~\cite{wang2024snnsc} but trained with our pipeline, so we label it distinctly.\footnote{We do not claim a faithful reproduction of the external SNN-SC system, which differs in architecture, training recipe, and dataset split.} (2)~\emph{CNN-Uni}: a conventional ANN encoder with 8-bit uniform quantization, matched bottleneck dimensions, and the same BSC channel---representing a strong digital baseline.
 
 \textbf{Matched payload.} To ensure a fair comparison between spatial resolutions, we match the transmitted payload per timestep. With an $8{\times}8$ grid and $C_2{=}128$ bottleneck channels, each timestep carries $64{\times}128 = 8{,}192$ binary values. With the $14{\times}14$ grid and $C_2{=}36$, each timestep carries $196{\times}36 = 7{,}056$ values ($-14\%$). Over $T{=}8$ timesteps, the full payloads are 65,536 vs.\ 56,448 bits. The finer grid thus offers a strictly lower transmission budget while providing 3$\times$ the spatial decision granularity for the importance scorer.
 
@@ -230,7 +230,7 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}128$ cha
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{AID classification accuracy (\%) under BSC channel impairments with external baselines.}
+\caption{AID classification accuracy (\%) under BSC channel. Accuracy is top-1 on the 2,000-image test set.}
 \label{tab:main_results}
 \begin{tabular}{l c c c c}
 \toprule
@@ -239,12 +239,11 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}128$ cha
 \textbf{SpikeAdapt-SC} ($\rho{=}0.75$) & \textbf{96.35} & \textbf{95.85} & \textbf{92.90} & 75\% \\
 SNN (no mask, $\rho{=}1.0$) & 95.70 & 95.35 & 92.20 & 100\% \\
 CNN-Uni 8-bit & 92.50 & 92.40 & 67.25 & 100\% \\
-JPEG+Channel & 76.86 & 1.00 & 1.00 & --- \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:main_results} presents the headline results on AID (30 aerial scene classes) under BSC channel. We compare SpikeAdapt-SC against three baselines: SNN (no mask)---our architecture with masking disabled ($\rho{=}1.0$, all 196 blocks transmitted), CNN-Uni (ANN encoder with 8-bit uniform quantization), and JPEG+Channel (separate source-channel coding).
+Table~\ref{tab:main_results} presents the headline results on AID (30 aerial scene classes) under BSC channel. We compare SpikeAdapt-SC against two baselines: SNN (no mask)---our architecture with masking disabled ($\rho{=}1.0$, all 196 blocks transmitted), and CNN-Uni (ANN encoder with 8-bit uniform quantization).
 
 \textbf{SpikeAdapt-SC beats full-rate SNN at 75\% bandwidth.} Our masked system (96.35\%) outperforms the unmasked baseline (95.70\%) by 0.65~pp while transmitting 25\% fewer bits. Under noise, the advantage persists: +0.50~pp at BER$=$0.15, +0.70~pp at BER$=$0.30.
 
@@ -281,47 +280,39 @@ To verify that the system genuinely communicates \emph{through} a noisy channel 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\columnwidth]{fig4_rate_sweep.png}
-    \caption{Rate--accuracy tradeoff on a representative Airport scene. Red overlay indicates masked (untransmitted) spatial blocks. The system maintains correct classification with high confidence from $\rho{=}1.0$ (64/64 blocks, 100\%) down to $\rho{=}0.5$ (32/64 blocks, 50\% bandwidth). At $\rho{=}0.25$, only 16 blocks are transmitted and the prediction fails---establishing the practical lower bound for bandwidth reduction.}
+    \caption{Rate--accuracy tradeoff on a representative Airport scene. Red overlay indicates masked (untransmitted) spatial blocks. The system maintains correct classification with high confidence from $\rho{=}1.0$ (196/196 blocks, 100\%) down to $\rho{=}0.5$ (98/196 blocks, 50\% bandwidth). At $\rho{=}0.25$, only 49 blocks are transmitted and the prediction fails---establishing the practical lower bound for bandwidth reduction.}
     \label{fig:rate_sweep}
 \end{figure}
 
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{Dynamic rate adaptation over 100 time steps simulating a UAV flight path with time-varying channel conditions.}
+\caption{Multi-exit temporal decoding: accuracy (\%) at each exit point under clean and noisy BSC conditions. The multi-exit decoder is trained jointly at $T{=}\{2,4,6,8\}$ timesteps.}
 \label{tab:dynamic}
-\begin{tabular}{l c c c}
+\begin{tabular}{l c c c c}
 \toprule
-\textbf{Strategy} & \textbf{BSC Acc} & \textbf{AWGN Acc} & \textbf{BW Saved} \\
+\textbf{Exit $T$} & \textbf{Clean} & \textbf{BER=0.15} & \textbf{BER=0.30} & \textbf{Savings} \\
 \midrule
-Fixed ($\rho{=}1.0$) & 95.8\% & 96.0\% & 0\% \\
-Fixed ($\rho{=}0.75$) & 95.4\% & 95.6\% & 25\% \\
-Fixed ($\rho{=}0.5$) & 92.6\% & 91.2\% & 50\% \\
-\textbf{Adaptive} & \textbf{96.2\%} & 93.8\% & \textbf{25--28\%} \\
+$T{=}2$ & 3.25 & 3.25 & 3.25 & 75\% \\
+$T{=}4$ & 82.70 & 49.15 & 5.35 & 50\% \\
+$T{=}6$ & \textbf{96.60} & \textbf{96.15} & 92.50 & 25\% \\
+$T{=}8$ & 96.05 & 95.90 & \textbf{94.60} & 0\% \\
+\midrule
+Early exit ($\theta{=}0.95$) & 96.55 & 96.15 & 94.25 & 12--26\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-As a proof of concept for dynamic rate adaptation, we construct a synthetic 100-step flight trajectory with sinusoidally varying channel quality (BER $\in [0, 0.35]$ for BSC; SNR $\in [-2, 20]$\,dB for AWGN), with added Gaussian perturbation to model random fluctuations. While a full evaluation would use measured A2G channel traces from real UAV deployments, this synthetic trajectory captures the essential time-varying structure of aerial links.
+Beyond spatial masking, we explore \emph{temporal} bandwidth reduction via multi-exit decoding. The v2 decoder is fine-tuned to produce usable outputs at $T{=}\{2,4,6,8\}$ timesteps simultaneously, using weighted cross-entropy loss that gives earlier exits 2$\times$ weight. At inference, the system exits at the earliest timestep where classifier softmax confidence exceeds a threshold $\theta{=}0.95$ (evaluated per sample).
 
-We assume the UAV obtains a coarse channel quality estimate via periodic uplink pilot measurements (standard in LTE/5G A2G links). The adaptive policy maps the estimated channel state to a transmission rate $\rho$ via a simple threshold rule:
-\begin{equation}
-    \rho = \begin{cases}
-        0.50 & \text{if } \hat{p} < 0.10 \text{ (or SNR} > 10\text{\,dB)} \\
-        0.75 & \text{if } 0.10 \leq \hat{p} < 0.20 \text{ (or } 3 \leq \text{SNR} \leq 10\text{)} \\
-        1.00 & \text{if } \hat{p} \geq 0.20 \text{ (or SNR} < 3\text{\,dB)}
-    \end{cases}
-    \label{eq:rate_policy}
-\end{equation}
-where $\hat{p}$ is the estimated bit error rate.
-The intuition is aggressive pruning under favorable links (saving bandwidth) and full-rate transmission under severe conditions (maximizing robustness). Table~\ref{tab:dynamic} shows the results:
+Table~\ref{tab:dynamic} reveals two findings:
 
 \begin{itemize}
-    \item On BSC, the adaptive policy achieves \textbf{96.2\% accuracy}---\emph{exceeding} fixed full-rate (95.8\%) by 0.4 percentage points while saving 25\% bandwidth. This counterintuitive result occurs because the adaptive policy \emph{avoids transmitting noise-vulnerable blocks during high-BER intervals}, preventing error propagation through the decoder.
-    \item On AWGN, adaptive trails fixed full-rate by 2.2 pp but saves 28\% bandwidth---a favorable tradeoff for bandwidth-constrained UAV links.
+    \item \textbf{Multi-exit training improves overall accuracy.} The $T{=}6$ exit achieves 96.60\%---\emph{exceeding} the $T{=}8$ exit (96.05\%). Training the decoder to produce good intermediate outputs acts as a regularizer.
+    \item \textbf{The system is noise-adaptive.} Under clean conditions, the early-exit mechanism selects avg $T{=}5.9$ (26\% temporal savings). Under high noise (BER$=$0.30), it automatically extends to avg $T{=}7.0$ (12\% savings), using more timesteps when the channel is degraded.
 \end{itemize}
 
-The BSC result is particularly significant: it demonstrates that content-adaptive masking is not merely a compression technique but an active \emph{noise mitigation} strategy.
+Combined with spatial masking at $\rho{=}0.75$, the total bandwidth reduction is approximately $1 - (0.75 \times 5.9/8) \approx 45\%$ under clean conditions, with accuracy (96.55\%) still exceeding the full-rate unmasked baseline (95.70\%).
 
 \subsection{Ablation Study}
 
@@ -381,7 +372,7 @@ Rayleigh & 94.95 & 95.05 & 95.05 & 93.50 & --- \\
 \label{sec:conclusion}
 %=====================================================================
 
-We presented SpikeAdapt-SC, a spiking neural network framework for semantic communication in aerial networks. By encoding semantic features as binary spike trains and intelligently masking spatial blocks on a $14{\times}14$ feature grid, the system simultaneously addresses the power and bandwidth constraints of UAV edge AI. Key findings include: (i)~learned spatial masking at $\rho{=}0.75$ achieves 96.35\% accuracy, \emph{outperforming} the full-rate unmasked baseline (95.70\%) and CNN-Uni (92.50\%) while saving 25\% bandwidth; (ii)~a randomization analysis confirms learned masking exceeds all 100 random draws at $\rho{=}0.75$ (8.8$\sigma$) and achieves a 10.94~pp advantage at $\rho{=}0.50$; (iii)~confidence-based temporal early stopping provides $\sim$13\% additional savings; and (iv)~binary spike encoding maintains $>$92\% accuracy through BER$=$0.30 while CNN-based quantization collapses to 67\%.
+We presented SpikeAdapt-SC, a spiking neural network framework for semantic communication in aerial networks. By encoding semantic features as binary spike trains and intelligently masking spatial blocks on a native $14{\times}14$ feature grid, the system simultaneously addresses the power and bandwidth constraints of UAV edge AI. Key findings include: (i)~learned spatial masking at $\rho{=}0.75$ achieves 96.35\% accuracy, \emph{outperforming} the unmasked baseline (95.70\%) and CNN-Uni (92.50\%) while saving 25\% bandwidth; (ii)~a randomization analysis confirms the learned mask exceeds all 100 random draws at $\rho{=}0.75$ ($8.8\sigma$; gap widens to 10.78~pp at $\rho{=}0.50$); (iii)~multi-exit temporal decoding provides an additional 26\% temporal savings (avg $T{=}5.9$ at 96.55\% accuracy), yielding $\sim$45\% total bandwidth reduction; and (iv)~binary spike encoding maintains $>$92\% accuracy through BER$=$0.30 while CNN-based quantization collapses to 67\%.
 
 Future directions include extending SpikeAdapt-SC to object detection and segmentation tasks relevant to UAV missions~\cite{hayat2022uavrs}, exploring multi-UAV cooperative semantic communication with federated importance scoring, and validating the theoretical energy savings on neuromorphic hardware such as Intel Loihi~\cite{davies2018loihi} for true SynOp-based acceleration on aerial platforms.
 

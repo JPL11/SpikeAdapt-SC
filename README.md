@@ -6,8 +6,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 
-> **SpikeAdapt-SC** is a spiking neural network (SNN) framework for content-adaptive semantic communication in UAV aerial networks. It encodes deep features as binary spike trains, learns per-image spatial masking on a **14×14 feature grid** (196 blocks), and achieves **96.35% accuracy on 30 aerial scene classes** while **outperforming the full-rate unmasked baseline by 0.65 pp** with **25% bandwidth savings** — robust down to BER=0.3 (92.90%).
-
+> **SpikeAdapt-SC** is a spiking neural network (SNN) framework for content-adaptive semantic communication in UAV aerial networks. It encodes deep features as binary spike trains on a **native 14×14 feature grid** (196 spatial blocks), learns per-image spatial masking, and achieves **96.35% top-1 accuracy on 30 aerial scene classes** (AID dataset) while **outperforming the full-rate unmasked baseline** (95.70%) with **25% spatial bandwidth savings**. A multi-exit temporal decoder adds **26% temporal savings** (avg T=5.9 at 96.55%), yielding **~45% total bandwidth reduction**. Robust down to BER=0.30 (92.90%) while CNN-Uni collapses to 67%.
 
 ---
 
@@ -19,15 +18,56 @@
 
 **Key idea:** Instead of transmitting all spatial feature blocks uniformly, SpikeAdapt-SC:
 
-1. **Encodes features as binary spikes** using integrate-and-fire neurons over T=8 timesteps
-2. **Scores each spatial block's importance** via a learned lightweight scorer network
-3. **Masks unimportant blocks** — content-adaptive, per-image decisions (no channel feedback required)
-4. **Transmits only selected blocks** over noisy channels (BSC, AWGN, Rayleigh)
-5. **Decodes** using a matched SNN decoder with learnable thresholds
+1. **Encodes features as binary spikes** using IF neurons over T=8 timesteps on the native 14×14 grid
+2. **Scores each spatial block's importance** via a learned channel-conditioned scorer (C₂=36)
+3. **Masks unimportant blocks** — content-adaptive, per-image (2,000/2,000 unique masks at ρ=0.75)
+4. **Transmits only selected blocks** over noisy channels (BSC)
+5. **Decodes** using a matched SNN decoder with multi-exit capability
 
 ---
 
 ## Results
+
+All results use **top-1 classification accuracy** on the **2,000-image AID test set** (80/20 split, seed=42).
+
+### Headline Results (BSC Channel)
+
+| Method | Clean | BER=0.15 | BER=0.30 | Rate |
+|--------|-------|----------|----------|------|
+| **SpikeAdapt-SC** (ρ=0.75) | **96.35%** | **95.85%** | **92.90%** | 75% |
+| SNN (no mask, ρ=1.0) | 95.70% | 95.35% | 92.20% | 100% |
+| CNN-Uni 8-bit | 92.50% | 92.40% | 67.25% | 100% |
+
+> SpikeAdapt-SC **beats the full-rate unmasked baseline at 75% bandwidth** (96.35% > 95.70%). CNN-Uni collapses at BER=0.30 (67.25%).
+
+### Multi-Exit Temporal Decoding
+
+| Exit T | Clean | BER=0.15 | BER=0.30 | Temporal Savings |
+|--------|-------|----------|----------|-----------------|
+| T=6 | **96.60%** | **96.15%** | 92.50% | 25% |
+| T=8 | 96.05% | 95.90% | **94.60%** | 0% |
+| Early exit (θ=0.95) | 96.55% | 96.15% | 94.25% | 12–26% |
+
+> T=6 **exceeds** T=8 accuracy (96.60% > 96.05%). Under noise, the system automatically uses more timesteps.
+
+### Ablation Study (Learned vs Random Masking)
+
+| Variant | Accuracy | BW Saved | Δ |
+|---------|----------|----------|---|
+| SpikeAdapt-SC (ρ=0.75) | **96.35%** | 25% | — |
+| SNN (no mask, ρ=1.0) | 95.70% | 0% | −0.65 |
+| Random mask (ρ=0.75, 100 draws) | 94.85 ± 0.17% | 25% | −1.50 |
+| SpikeAdapt-SC (ρ=0.50) | 95.35% | 50% | −1.00 |
+| Random mask (ρ=0.50, 100 draws) | 84.41 ± 0.45% | 50% | −11.94 |
+
+### Seed Variance (3 seeds)
+
+| Seed | Accuracy |
+|------|----------|
+| 42 | 96.35% |
+| 123 | 96.05% |
+| 456 | 95.90% |
+| **Mean ± std** | **96.10 ± 0.23%** |
 
 ### Content-Adaptive Masking
 
@@ -35,58 +75,11 @@
   <img src="paper/figures/fig2_mask_diversity.png" alt="Content-Adaptive Masks" width="100%">
 </p>
 
-The learned importance scorer generates **unique masks per image** — structured scenes (airports, harbors) retain distributed blocks for object detail, while uniform scenes (desert, farmland) are aggressively pruned. Across 2,000 test images, **2,000 unique masks** are generated at 75% transmission rate (100%).
-
-### Channel Robustness (AID, 30 Aerial Scene Classes)
-
-| Method | Clean | BER=0.15 | BER=0.30 | Rate |
-|--------|-------|----------|----------|------|
-| **SpikeAdapt-SC** (ρ=0.75) | **96.35%** | **95.85%** | **92.90%** | 75% |
-| SNN (no mask, ρ=1.0) | 95.70% | 95.35% | 92.20% | 100% |
-| CNN-Uni 8-bit | 92.50% | 92.40% | 67.25% | 100% |
-| JPEG + Channel Coding | 76.86% | 1.00% | 1.00% | — |
-
-> SpikeAdapt-SC **beats the full-rate unmasked baseline at 75% bandwidth** (96.35% > 95.70%). CNN-Uni collapses at BER=0.30 (67.25%).
-
 ### Semantic Feature Resilience
 
 <p align="center">
   <img src="paper/figures/fig3_feature_mse.png" alt="Feature MSE vs Confidence" width="100%">
 </p>
-
-Feature-level MSE increases with channel noise, but **classification confidence remains >90%** even at BER=0.35 — the hallmark of effective semantic communication.
-
-### Dynamic Rate Adaptation (Simulated UAV Flight)
-
-<p align="center">
-  <img src="paper/figures/fig4_rate_sweep.png" alt="Rate-Accuracy Tradeoff" width="100%">
-</p>
-
-| Strategy | BSC Accuracy | AWGN Accuracy | BW Saved |
-|----------|-------------|---------------|----------|
-| Fixed (ρ=1.0) | 95.8% | 96.0% | 0% |
-| Fixed (ρ=0.75) | 95.4% | 95.6% | 25% |
-| **Adaptive** | **96.2%** ✅ | 93.8% | **25–28%** |
-
-> **Adaptive masking beats fixed full-rate on BSC** (96.2% > 95.8%) while saving 25% bandwidth — the masking acts as a noise mitigation strategy.
-
-### Ablation Study
-
-| Variant | Accuracy | BW Saved | Δ |
-|---------|----------|----------|---|
-| SpikeAdapt-SC (ρ=0.75) | **96.35%** | 25% | — |
-| SNN (no mask, ρ=1.0) | 95.70% | 0% | −0.65 |
-| Random mask (ρ=0.75) | 94.85 ± 0.17% | 25% | −1.50 |
-| SpikeAdapt-SC (ρ=0.50) | 95.35% | 50% | −1.00 |
-| Random mask (ρ=0.50) | 84.41 ± 0.45% | 50% | −11.94 |
-
-### Cross-Channel Comparison
-
-| Channel | Clean | Mild | Moderate | Severe |
-|---------|-------|------|----------|--------|
-| BSC | 96.10% | 96.10% (0.05) | 95.95% (0.10) | 93.95% (0.35) |
-| AWGN | 96.10% | 96.15% (10dB) | 96.15% (5dB) | 95.55% (−2dB) |
-| Rayleigh | 94.95% | 95.05% (10dB) | 95.05% (5dB) | 93.50% (−2dB) |
 
 ### Energy Savings (Estimated)
 
@@ -104,35 +97,24 @@ Feature-level MSE increases with channel noise, but **classification confidence 
 
 ```
 SpikeAdapt-SC/
-├── models/                          # Core model components
-│   ├── snn_modules.py               #   Spike function, IF/IHF neurons, channels
-│   ├── spikeadapt_sc.py             #   Main SpikeAdapt-SC model
-│   ├── backbone.py                  #   ResNet50 front/back split
-│   └── energy.py                    #   SynOp energy counter
-│
 ├── train/                           # Training scripts
-│   ├── train_aid.py                 #   AID aerial dataset (v1, 8×8 grid)
-│   ├── train_aid_v2.py              #   AID v2 (14×14 grid, channel scorer, baselines)
-│   ├── train_L3_robust.py           #   BER-robust Layer3 on CIFAR-100
-│   ├── train_tinyimagenet.py        #   Tiny-ImageNet + AWGN/Rayleigh
-│   └── train_baselines.py           #   CNN-Uni, CNN-Bern, SNN-SC, JPEG
+│   ├── train_aid.py                 #   AID v1 (8×8 pool, C2=128)
+│   ├── train_aid_v2.py              #   AID v2 (14×14 native, C2=36) ← main
+│   └── train_temporal_v3.py         #   Multi-exit temporal training
 │
-├── eval/                            # Evaluation & ablation
-│   ├── eval_spikeadapt_sc.py        #   Comprehensive evaluation
-│   ├── ablation_aid.py              #   AID ablation sweep
-│   └── eval_jpeg_sweep.py           #   JPEG BER cliff effect
+├── eval/                            # Evaluation & analysis
+│   ├── sanity_check_full.py         #   Full-dataset score analysis (prof review)
+│   ├── analyze_v2.py                #   V2 randomization analysis
+│   └── multi_trace_eval.py          #   Multi-trajectory evaluation
 │
-├── paper/                           # Paper assets (figures only)
-│   ├── figures/                     #   Publication-quality figures
-│   ├── restyle_figs.py              #   Figure generation script
-│   └── generate_figures.py          #   Additional figure scripts
+├── paper/                           # Paper assets
+│   ├── main.tex                     #   Manuscript source
+│   ├── section_randomization_analysis.tex
+│   └── figures/                     #   Publication-quality figures
 │
-├── docs/                            # Documentation
-│   ├── data_analysis.md             #   Comprehensive results analysis
-│   └── architecture_diagrams.md     #   Architecture diagrams
-│
-├── figures/                         # Development figures
-│   └── architecture_block_diagram.png
+├── snapshots_aid/                   # V1 checkpoints
+├── snapshots_aid_v2_seed*/          # V2 checkpoints (per seed)
+├── snapshots_aid_v3_seed*/          # V3 multi-exit checkpoints
 │
 ├── README.md
 ├── requirements.txt
@@ -151,14 +133,14 @@ cd SpikeAdapt-SC
 # Install dependencies
 pip install -r requirements.txt
 
-# Train on AID aerial dataset (BSC channel)
-python train/train_aid.py
+# Train v2 on AID (14×14 grid, BSC channel)
+python train/train_aid_v2.py
 
-# Run ablation experiments
-python eval/ablation_aid.py
+# Multi-exit temporal training (v3)
+python train/train_temporal_v3.py
 
-# Evaluate with JPEG baseline
-python eval/eval_jpeg_sweep.py
+# Full-dataset sanity check (all 2000 images)
+python eval/sanity_check_full.py
 ```
 
 ---
@@ -167,13 +149,10 @@ python eval/eval_jpeg_sweep.py
 
 | Stage | Description | Epochs | LR |
 |-------|-------------|--------|------|
-| **S1** | ResNet50 backbone fine-tuning | 50 | 0.01 |
-| **S2** | SNN channel module (backbone frozen) | 60 | 1e-4 |
+| **S1** | ResNet50 backbone fine-tuning on AID | 50 | 0.01 |
+| **S2** | SNN encoder/decoder (backbone frozen) | 60 | 1e-4 |
 | **S3** | Joint fine-tuning (back + decoder) | 30 | 1e-5 |
-
-Each channel model (BSC, AWGN, Rayleigh) is trained independently with noise-weighted curriculum sampling.
-
-
+| **S4** | Multi-exit decoder fine-tuning (v3) | 30 | 5e-5 |
 
 ---
 

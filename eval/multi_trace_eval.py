@@ -65,18 +65,22 @@ def rate_policy(ber):
 
 
 def evaluate_trajectory(front, model, back, test_imgs, test_labels,
-                        trajectory, strategy='adaptive', fixed_rate=None):
-    """Evaluate a single trajectory with given strategy."""
+                        trajectory, step_indices,
+                        strategy='adaptive', fixed_rate=None):
+    """Evaluate a single trajectory with given strategy.
+
+    Args:
+        step_indices: list of arrays, precomputed image indices for each step.
+                      MUST be the same across strategies for fair comparison.
+    """
     n_steps = len(trajectory)
-    n_per_step = min(10, len(test_imgs))
     correct, total = 0, 0
     bw_used = []
 
     with torch.no_grad():
         for step in range(n_steps):
             ber = trajectory[step]
-            # Sample images for this step
-            idx = np.random.choice(len(test_imgs), n_per_step, replace=False)
+            idx = step_indices[step]
             imgs = test_imgs[idx].to(device)
             labels = test_labels[idx].to(device)
             feat = front(imgs)
@@ -145,18 +149,25 @@ if __name__ == "__main__":
         np.random.seed(42 + ti)
         traj = generate_trajectory(ttype, N_STEPS)
 
+        # Precompute deterministic image indices for each step
+        # (shared across ALL strategies for fair comparison)
+        rng = np.random.RandomState(42 + ti)
+        n_per_step = min(10, len(all_imgs))
+        step_indices = [rng.choice(len(all_imgs), n_per_step, replace=False)
+                        for _ in range(N_STEPS)]
+
         # Adaptive
         acc_ad, bw_ad = evaluate_trajectory(front, model, back, all_imgs, all_labels,
-                                             traj, 'adaptive')
+                                             traj, step_indices, 'adaptive')
         # Fixed ρ=1.0
         acc_f1, bw_f1 = evaluate_trajectory(front, model, back, all_imgs, all_labels,
-                                             traj, 'fixed', 1.0)
+                                             traj, step_indices, 'fixed', 1.0)
         # Fixed ρ=0.75
         acc_f75, bw_f75 = evaluate_trajectory(front, model, back, all_imgs, all_labels,
-                                               traj, 'fixed', 0.75)
+                                               traj, step_indices, 'fixed', 0.75)
         # Fixed ρ=0.50
         acc_f50, bw_f50 = evaluate_trajectory(front, model, back, all_imgs, all_labels,
-                                               traj, 'fixed', 0.50)
+                                               traj, step_indices, 'fixed', 0.50)
 
         bw_saved = (1 - bw_ad) * 100
         print(f"\n  {tname} (mean BER={traj.mean():.3f}):")

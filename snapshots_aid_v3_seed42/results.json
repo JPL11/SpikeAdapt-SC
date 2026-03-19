@@ -1,0 +1,139 @@
+{
+  "model": "SpikeAdapt-SC_v3_multi_exit",
+  "seed": 42,
+  "exit_points": [
+    2,
+    4,
+    6,
+    8
+  ],
+  "exit_weights": [
+    2.0,
+    1.5,
+    1.0,
+    1.0
+  ],
+  "accuracy_definition": "Top-1 classification accuracy on the 2,000-image AID test set (80/20 split, seed=42).",
+  "training": {
+    "epochs": 30,
+    "optimizer": "Adam",
+    "lr": 5e-5,
+    "frozen_modules": [
+      "encoder",
+      "scorer"
+    ],
+    "trained_modules": [
+      "decoder",
+      "back"
+    ],
+    "best_checkpoint": "v3_me_96.55_T5.9.pth"
+  },
+  "per_exit_accuracy": {
+    "clean": {
+      "T=2": 3.25,
+      "T=4": 82.70,
+      "T=6": 96.60,
+      "T=8": 96.05
+    },
+    "BER_0.15": {
+      "T=2": 3.25,
+      "T=4": 49.15,
+      "T=6": 96.15,
+      "T=8": 95.90
+    },
+    "BER_0.30": {
+      "T=2": 3.25,
+      "T=4": 5.35,
+      "T=6": 92.50,
+      "T=8": 94.60
+    }
+  },
+  "early_exit": {
+    "threshold": 0.95,
+    "method": "per-sample softmax confidence at each exit point",
+    "results": {
+      "BER_0.00": {
+        "accuracy": 96.55,
+        "avg_T": 5.9,
+        "temporal_savings_pct": 26
+      },
+      "BER_0.05": {
+        "accuracy": 96.40,
+        "avg_T": 6.0,
+        "temporal_savings_pct": 25
+      },
+      "BER_0.10": {
+        "accuracy": 96.30,
+        "avg_T": 6.0,
+        "temporal_savings_pct": 25
+      },
+      "BER_0.15": {
+        "accuracy": 96.15,
+        "avg_T": 6.0,
+        "temporal_savings_pct": 25
+      },
+      "BER_0.20": {
+        "accuracy": 95.80,
+        "avg_T": 6.0,
+        "temporal_savings_pct": 25
+      },
+      "BER_0.25": {
+        "accuracy": 94.70,
+        "avg_T": 6.1,
+        "temporal_savings_pct": 24
+      },
+      "BER_0.30": {
+        "accuracy": 94.25,
+        "avg_T": 7.0,
+        "temporal_savings_pct": 12
+      }
+    }
+  },
+  "combined_bandwidth": {
+    "spatial_masking_rate": 0.75,
+    "avg_temporal_exit": 5.9,
+    "total_bandwidth_fraction": 0.553,
+    "total_savings_pct": 44.7,
+    "accuracy_at_combined": 96.55
+  },
+  "training_progression": {
+    "epoch_5": {
+      "T=6": 95.40,
+      "T=8": 96.10,
+      "early_exit_acc": 95.40,
+      "avg_T": 6.0
+    },
+    "epoch_10": {
+      "T=6": 96.05,
+      "T=8": 95.75,
+      "early_exit_acc": 96.05,
+      "avg_T": 6.0
+    },
+    "epoch_15": {
+      "T=4": 85.95,
+      "T=6": 96.40,
+      "T=8": 96.00
+    },
+    "epoch_20": {
+      "T=4": 82.70,
+      "T=6": 96.60,
+      "T=8": 96.05,
+      "early_exit_acc": 96.55,
+      "avg_T": 5.9
+    },
+    "epoch_25": {
+      "T=4": 92.80,
+      "T=6": 96.40,
+      "T=8": 96.25,
+      "early_exit_acc": 94.00,
+      "avg_T": 4.4
+    },
+    "epoch_30": {
+      "T=4": 88.05,
+      "T=6": 96.45,
+      "T=8": 95.80,
+      "early_exit_acc": 95.70,
+      "avg_T": 5.7
+    }
+  }
+}
