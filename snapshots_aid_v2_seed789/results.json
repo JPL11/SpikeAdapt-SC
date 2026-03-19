@@ -1,0 +1,11 @@
+{
+  "model": "SpikeAdapt-SC_v2",
+  "seed": 789,
+  "grid": 14,
+  "C2": 36,
+  "T": 8,
+  "target_rate": 0.75,
+  "accuracy_clean": 96.35,
+  "best_s2": 96.15,
+  "best_s3": 96.35
+}

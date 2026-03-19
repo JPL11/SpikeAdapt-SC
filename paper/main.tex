@@ -221,6 +221,8 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}36$ chan
 
 \textbf{Training.} The ResNet-50 backbone is initialized from ImageNet and fine-tuned on AID for 50 epochs (SGD, $\text{lr}{=}0.01$). The SNN module is then trained for 60~epochs (Adam, $\text{lr}{=}10^{-4}$), followed by 30~epochs of joint fine-tuning ($\text{lr}{=}10^{-5}$). \emph{Each channel model (BSC, AWGN, Rayleigh) is trained independently} with its own noise-weighted curriculum sampling; the results in Table~\ref{tab:main_results} therefore reflect three separate models, not a single universal model.
 
+\textbf{Reproducibility.} We report results over 5 random seeds (42, 101, 123, 456, 789). Clean accuracy: 96.35, 96.55, 96.05, 95.90, 96.35\% (mean $96.24 \pm 0.25$\%). Table~\ref{tab:main_results} reports the seed-42 model; the tight variance ($\sigma {=} 0.25$~pp) confirms stability.
+
 \textbf{Baselines.} We compare against two baselines: (1)~\emph{SNN (no mask)}: our own SNN encoder/decoder architecture with masking disabled ($\rho{=}1.0$), i.e.\ all blocks transmitted at full rate. This is architecturally similar to SNN-SC~\cite{wang2024snnsc} but trained with our pipeline, so we label it distinctly.\footnote{We do not claim a faithful reproduction of the external SNN-SC system, which differs in architecture, training recipe, and dataset split.} (2)~\emph{CNN-Uni}: a conventional ANN encoder with 8-bit uniform quantization, matched bottleneck dimensions, and the same BSC channel---representing a strong digital baseline.
 
 \textbf{Matched payload.} To ensure a fair comparison between spatial resolutions, we match the transmitted payload per timestep. With an $8{\times}8$ grid and $C_2{=}128$ bottleneck channels, each timestep carries $64{\times}128 = 8{,}192$ binary values. With the $14{\times}14$ grid and $C_2{=}36$, each timestep carries $196{\times}36 = 7{,}056$ values ($-14\%$). Over $T{=}8$ timesteps, the full payloads are 65,536 vs.\ 56,448 bits. The finer grid thus offers a strictly lower transmission budget while providing 3$\times$ the spatial decision granularity for the importance scorer.
@@ -245,7 +247,7 @@ CNN-Uni 8-bit & 92.50 & 92.40 & 67.25 & 100\% \\
 
 Table~\ref{tab:main_results} presents the headline results on AID (30 aerial scene classes) under BSC channel. We compare SpikeAdapt-SC against two baselines: SNN (no mask)---our architecture with masking disabled ($\rho{=}1.0$, all 196 blocks transmitted), and CNN-Uni (ANN encoder with 8-bit uniform quantization).
 
-\textbf{SpikeAdapt-SC beats full-rate SNN at 75\% bandwidth.} Our masked system (96.35\%) outperforms the unmasked baseline (95.70\%) by 0.65~pp while transmitting 25\% fewer bits. Under noise, the advantage persists: +0.50~pp at BER$=$0.15, +0.70~pp at BER$=$0.30.
+\textbf{SpikeAdapt-SC beats full-rate SNN at 75\% bandwidth.} Our masked system (96.35\%; 5-seed mean $96.24 \pm 0.25$\%) outperforms the unmasked baseline (95.70\%) by 0.65~pp while transmitting 25\% fewer bits. Under noise, the advantage persists: +0.50~pp at BER$=$0.15, +0.70~pp at BER$=$0.30.
 
 \textbf{Binary encoding provides natural noise robustness.} SpikeAdapt-SC degrades only 3.45~pp from clean to BER$=$0.30. CNN-Uni collapses from 92.50\% to 67.25\% under the same conditions---a 25.25~pp drop. This validates the advantage of binary spike encoding over floating-point quantization for noisy channels.
 

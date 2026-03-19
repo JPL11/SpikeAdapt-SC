@@ -60,14 +60,16 @@ All results use **top-1 classification accuracy** on the **2,000-image AID test 
 | SpikeAdapt-SC (ρ=0.50) | 95.35% | 50% | −1.00 |
 | Random mask (ρ=0.50, 100 draws) | 84.41 ± 0.45% | 50% | −11.94 |
 
-### Seed Variance (3 seeds)
+### Seed Variance (5 seeds)
 
 | Seed | Accuracy |
 |------|----------|
 | 42 | 96.35% |
+| 101 | 96.55% |
 | 123 | 96.05% |
 | 456 | 95.90% |
-| **Mean ± std** | **96.10 ± 0.23%** |
+| 789 | 96.35% |
+| **Mean ± std** | **96.24 ± 0.25%** |
 
 ### Content-Adaptive Masking
 
