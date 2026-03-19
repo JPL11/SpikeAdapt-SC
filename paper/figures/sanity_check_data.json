@@ -1,0 +1,27 @@
+{
+  "v1_8x8": {
+    "n_images": 2000,
+    "n_blocks": 64,
+    "mean_var": 0.000988450483419001,
+    "std_var": 0.0005058510578237474,
+    "mean_cov": 0.034112293273210526,
+    "mean_gini": 0.01859915532915533,
+    "mean_entropy_ratio": 0.9998489064153514,
+    "mean_score_range": 0.13804952800273895,
+    "p90_var": 0.001632874016650021,
+    "p99_var": 0.0027048189658671618
+  },
+  "v2_14x14": {
+    "n_images": 2000,
+    "n_blocks": 196,
+    "mean_var": 0.000429904815973714,
+    "std_var": 0.0001520541263744235,
+    "mean_cov": 0.0226043201982975,
+    "mean_gini": 0.012676791450550291,
+    "mean_entropy_ratio": 0.9999495253505494,
+    "mean_score_range": 0.09748118370771408,
+    "p90_var": 0.0006379630067385733,
+    "p99_var": 0.0008356564212590456
+  },
+  "accuracy_definition": "Top-1 classification accuracy on the 2,000-image AID test set (80/20 split, seed=42)."
+}
