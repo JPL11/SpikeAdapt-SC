@@ -1,0 +1,73 @@
+{
+  "synops": {
+    "fr_l1": 0.2510192052125931,
+    "fr_l2": 0.278201322555542,
+    "macs_total": 53186560,
+    "synops_total": 116465.0253815918,
+    "energy_mac_pJ": 244658175.99999997,
+    "energy_syn_pJ": 104818.52284343261,
+    "savings_pct": 99.95715715511447
+  },
+  "quantization": {
+    "cnn_uni_mean_error": 0.0002492021380458027,
+    "snn_error": 0.0,
+    "description": "SNN spikes are natively binary \u2014 no quantization step needed"
+  },
+  "sparsity_under_noise": {
+    "BER_0.00": {
+      "mean_firing_rate": 0.278201322555542,
+      "sparsity_pct": 72.1798677444458
+    },
+    "BER_0.05": {
+      "mean_firing_rate": 0.30035056471824645,
+      "sparsity_pct": 69.96494352817535
+    },
+    "BER_0.10": {
+      "mean_firing_rate": 0.3225756754875183,
+      "sparsity_pct": 67.74243245124816
+    },
+    "BER_0.15": {
+      "mean_firing_rate": 0.34477578949928284,
+      "sparsity_pct": 65.52242105007171
+    },
+    "BER_0.20": {
+      "mean_firing_rate": 0.3669488162994385,
+      "sparsity_pct": 63.30511837005615
+    },
+    "BER_0.25": {
+      "mean_firing_rate": 0.3891523039340973,
+      "sparsity_pct": 61.08476960659027
+    },
+    "BER_0.30": {
+      "mean_firing_rate": 0.4113242690563202,
+      "sparsity_pct": 58.867573094367984
+    }
+  },
+  "bit_error_impact": {
+    "ber_levels": [
+      0.0,
+      0.05,
+      0.1,
+      0.15,
+      0.2,
+      0.3
+    ],
+    "snn_feature_mse": [
+      0.0,
+      2.000981092453003,
+      6.06363582611084,
+      12.521947860717773,
+      21.62244415283203,
+      50.64506912231445
+    ],
+    "cnn_feature_mse": [
+      0.0,
+      0.0010444263461977243,
+      0.0021386395674198866,
+      0.0030039073899388313,
+      0.003940714057534933,
+      0.005692164413630962
+    ],
+    "description": "Feature-level MSE caused by bit errors. SNN binary flips are bounded; CNN 8-bit flips are catastrophic."
+  }
+}
