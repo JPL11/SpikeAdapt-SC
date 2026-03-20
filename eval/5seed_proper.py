@@ -3,8 +3,8 @@
 For each seed:
   1. Load the best V5C-NA checkpoint (trained with seed=42)
   2. Re-initialize the scorer weights randomly with the new seed
-  3. Retrain S3 (scorer + joint fine-tune) for 20 epochs
-  4. Evaluate clean and BER=0.30
+  3. Retrain S3 (scorer + joint fine-tune) for 60 epochs (λ_div=0.10)
+  4. Evaluate at BER = {0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30}
 
 This gives TRUE model variance from scorer training randomness.
 Uses the SAME data split (seed=42) for all runs — only model randomness varies.
@@ -30,7 +30,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 T_STEPS = 8
 
 
-def train_s3_with_seed(model, back, front, train_loader, test_loader, seed, epochs=20):
+def train_s3_with_seed(model, back, front, train_loader, test_loader, seed, epochs=60):
     """Retrain S3 (scorer + joint fine-tune) with a specific random seed."""
     # Set seed for this run (affects data shuffling, noise sampling, dropout)
     torch.manual_seed(seed)
@@ -76,11 +76,11 @@ def train_s3_with_seed(model, back, front, train_loader, test_loader, seed, epoc
             diversity_loss = model.scorer.compute_diversity_loss(
                 stats['all_S2'], ber_low=0.0, ber_high=0.30
             )
-            loss = loss + 0.05 * diversity_loss
+            loss = loss + 0.10 * diversity_loss
             
             optimizer.zero_grad(); loss.backward(); optimizer.step()
         
-        if epoch % 5 == 0 or epoch == epochs:
+        if epoch % 10 == 0 or epoch == epochs:
             model.eval(); back.eval()
             correct, total = 0, 0
             with torch.no_grad():
@@ -103,7 +103,7 @@ def train_s3_with_seed(model, back, front, train_loader, test_loader, seed, epoc
     model.eval(); back.eval()
     
     results = {}
-    for ber in [0.0, 0.15, 0.30]:
+    for ber in [0.0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30]:
         correct, total = 0, 0
         with torch.no_grad():
             for imgs, labels in test_loader:
@@ -158,34 +158,33 @@ def run_5seed_proper(ds_name, DSClass, n_classes, ds_args, bb_dir, v5c_dir, seed
         back.load_state_dict(base_ck['back'])
         
         # Retrain S3 with new seed (re-initializes scorer)
-        results = train_s3_with_seed(model, back, front, train_loader, test_loader, seed, epochs=20)
+        results = train_s3_with_seed(model, back, front, train_loader, test_loader, seed, epochs=60)
         
         all_results.append(results)
         elapsed = time.time() - t0
-        print(f"  Seed {seed}: Clean={results['0.0']:.2f}%, "
-              f"BER=0.15={results['0.15']:.2f}%, BER=0.30={results['0.3']:.2f}% "
-              f"({elapsed:.0f}s)")
+        ber_strs = ', '.join([f'BER={k}={v:.2f}%' for k, v in results.items()])
+        print(f"  Seed {seed}: {ber_strs} ({elapsed:.0f}s)")
         
         del model, back
         torch.cuda.empty_cache()
     
-    # Compute statistics
-    clean_vals = [r['0.0'] for r in all_results]
-    ber15_vals = [r['0.15'] for r in all_results]
-    ber30_vals = [r['0.3'] for r in all_results]
+    ber_keys = ['0.0', '0.05', '0.1', '0.15', '0.2', '0.25', '0.3']
+    ber_stats = {}
+    for bk in ber_keys:
+        vals = [r[bk] for r in all_results]
+        ber_stats[f'ber_{bk}'] = {'mean': np.mean(vals), 'std': np.std(vals), 'values': vals}
     
     stats = {
         'seeds': seeds,
         'results': all_results,
-        'clean': {'mean': np.mean(clean_vals), 'std': np.std(clean_vals), 'values': clean_vals},
-        'ber_0.15': {'mean': np.mean(ber15_vals), 'std': np.std(ber15_vals), 'values': ber15_vals},
-        'ber_0.30': {'mean': np.mean(ber30_vals), 'std': np.std(ber30_vals), 'values': ber30_vals},
+        **ber_stats,
     }
     
     print(f"\n  {ds_name.upper()} 5-seed Summary:")
-    print(f"    Clean:    {stats['clean']['mean']:.2f} ± {stats['clean']['std']:.2f}%")
-    print(f"    BER=0.15: {stats['ber_0.15']['mean']:.2f} ± {stats['ber_0.15']['std']:.2f}%")
-    print(f"    BER=0.30: {stats['ber_0.30']['mean']:.2f} ± {stats['ber_0.30']['std']:.2f}%")
+    for bk in ber_keys:
+        s = ber_stats[f'ber_{bk}']
+        label = f'BER={bk}' if bk != '0.0' else 'Clean'
+        print(f"    {label:10s}: {s['mean']:.2f} ± {s['std']:.2f}%")
     
     return stats
 
@@ -234,8 +233,8 @@ if __name__ == "__main__":
     for ds in ['aid', 'resisc45']:
         s = all_stats[ds]
         print(f"\n  {ds.upper()}:")
-        print(f"    Clean:    {s['clean']['mean']:.2f} ± {s['clean']['std']:.2f}%  {s['clean']['values']}")
-        print(f"    BER=0.15: {s['ber_0.15']['mean']:.2f} ± {s['ber_0.15']['std']:.2f}%")
-        print(f"    BER=0.30: {s['ber_0.30']['mean']:.2f} ± {s['ber_0.30']['std']:.2f}%")
+        for key, val in s.items():
+            if key.startswith('ber_'):
+                print(f"    {key}: {val['mean']:.2f} ± {val['std']:.2f}%  {[f'{v:.1f}' for v in val['values']]}")
     
     print(f"\n✅ Proper 5-seed variance complete. Results: eval/5seed_proper_results.json")
