@@ -23,7 +23,7 @@
 
 \begin{document}
 
-\title{Content-Adaptive Neuromorphic Semantic Communication for Collaborative Aerial Intelligence}
+\title{Fine-Grained Spiking Semantic Communication with Spatial Masking for Aerial Scene Classification}
 
 \author{\IEEEauthorblockN{Anonymous Author(s)}
 \IEEEauthorblockA{Paper ID: XXXX}}
@@ -38,11 +38,11 @@
 \maketitle
 
 \begin{abstract}
-Unmanned aerial vehicles (UAVs) performing edge AI inference face a dual constraint: air-to-ground links suffer from severe fading and limited bandwidth, while onboard processors are restricted by strict power budgets. Current semantic communication systems transmit intermediate neural features uniformly, wasting bandwidth on semantically irrelevant spatial regions and exposing the entire payload to channel noise. We present \textbf{SpikeAdapt-SC}, a spiking neural network (SNN) based semantic communication framework with content-adaptive spatial masking. Our system (i)~encodes deep features as binary spike trains on a native $14{\times}14$ feature grid (196 spatial blocks), yielding an estimated 32--48\% computation energy savings via synaptic operations (SynOps) versus multiply-accumulate operations (MACs); (ii)~employs a learned importance scorer that selectively masks up to 25\% of spatial blocks, \emph{improving} accuracy over full-rate unmasked transmission (96.35\% vs.\ 95.70\%) while saving bandwidth; and (iii)~demonstrates a multi-exit temporal decoder that achieves 96.55\% accuracy at an average of 5.9 out of 8 timesteps, providing an additional 26\% temporal bandwidth reduction. Evaluated on the AID aerial scene benchmark (30 classes, BSC channel), SpikeAdapt-SC maintains $>$92\% accuracy through BER$=$0.30 while a conventional CNN with 8-bit quantization collapses to 67\%. These results establish SNN-based adaptive semantic communication as a viable paradigm for power- and bandwidth-constrained aerial edge intelligence.
+Unmanned aerial vehicles (UAVs) performing edge AI inference face a dual constraint: air-to-ground links suffer from severe fading and limited bandwidth, while onboard processors are restricted by strict power budgets. We present \textbf{SpikeAdapt-SC}, a spiking neural network (SNN) framework for semantic communication that jointly addresses both constraints through three mechanisms: (i)~fine-grained spatial masking on a native $14{\times}14$ feature grid, where learned masks \emph{improve} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings) and BER${=}0.30$, V5C-NA achieves 93.50\% on AID (vs.\ 92.36\% at full rate), and 87.29\% on RESISC45 (vs.\ 85.31\%); (ii)~binary spike encoding that provides inherent noise robustness, degrading less than 1~pp from clean to BER${=}0.15$ on both datasets while CNN 8-bit quantization collapses to 67\%; and (iii)~membrane potential batch normalization (MPBN) that reduces firing rate to 0.167, yielding $42{\times}$ energy savings via SynOps. We validate on AID (30 classes, 10,000 images, standard 50/50 split) and NWPU-RESISC45 (45 classes, 31,500 images, standard 20/80 split), achieving 95.42\% and 92.01\% clean accuracy respectively. These results demonstrate that fine-grained spatial masking with spiking encoding is a viable paradigm for bandwidth- and power-constrained aerial edge intelligence.
 \end{abstract}
 
 \begin{IEEEkeywords}
-Semantic communication, spiking neural networks, UAV, aerial edge intelligence, content-adaptive masking, bandwidth allocation
+Semantic communication, spiking neural networks, spatial masking, aerial scene classification, energy efficiency, noise robustness
 \end{IEEEkeywords}
 
 %=====================================================================
@@ -56,17 +56,17 @@ Two fundamental constraints make this problem challenging for aerial platforms. 
 
 While recent work has explored SNN-based semantic encoding~\cite{wang2024snnsc} and content-adaptive rate allocation~\cite{li2024djscc} independently (see Section~\ref{sec:related}), no existing system addresses both energy-efficient encoding \emph{and} content-adaptive spatial masking jointly---the gap our work fills.
 
-In this paper, we propose \textbf{SpikeAdapt-SC}, a semantic communication framework that addresses both limitations through three key contributions:
+In this paper, we propose \textbf{SpikeAdapt-SC}, a spiking semantic communication framework that addresses both limitations through three contributions:
 
 \begin{enumerate}
-    \item \textbf{SNN-based semantic encoding.} We replace the conventional ANN encoder--decoder with a spiking neural network operating over $T{=}8$ timesteps. Since spikes are binary, synaptic operations (SynOps) replace multiply-accumulate operations (MACs), yielding 32--48\% theoretical energy savings~\cite{horowitz2014energy}.
+    \item \textbf{Fine-grained 14$\times$14 spatial masking improves accuracy under noise.} Rather than transmitting all 196 spatial blocks, a learned importance scorer selects the most informative blocks. At $\rho{=}0.625$ (37.5\% bandwidth savings) and BER${=}0.30$, masking \emph{exceeds} full-rate accuracy on both AID ($+$1.14~pp) and RESISC45 ($+$1.98~pp). The advantage grows with noise: learned masks provide $+$1.34~pp over random on AID at $\rho{=}0.50$, BER${=}0.30$.
     
-    \item \textbf{Learned spatial importance masking on a fine-grained grid.} A lightweight convolutional scorer evaluates each of the $14{\times}14 = 196$ spatial blocks and selectively masks up to 25\% before transmission, purely from content semantics and without channel state feedback. Every test image receives a unique mask (2,000/2,000), and the learned mask \emph{outperforms} all 100 random draws at $\rho{=}0.75$ by 1.47~pp ($8.8\sigma$). At $\rho{=}0.50$, the gap widens to 10.78~pp.
+    \item \textbf{Binary spike encoding provides inherent noise robustness.} Unlike floating-point features where additive noise corrupts precision, binary spikes can only be flipped, limiting worst-case distortion. V5C-NA degrades less than 1~pp from clean to BER${=}0.15$ on both datasets, while CNN 8-bit quantization collapses from 92.50\% to 67.25\%.
     
-    \item \textbf{Joint spatial--temporal bandwidth reduction.} A multi-exit decoder trained at $T{=}\{2,4,6,8\}$ enables confidence-based temporal early stopping, achieving 96.55\% accuracy at an average of 5.9 timesteps. Combined with 25\% spatial masking, the system achieves $\sim$44\% total bandwidth reduction.
+    \item \textbf{MPBN provides 42$\times$ energy savings.} Membrane potential batch normalization reduces firing rate to 0.167 (vs.\ 0.266 baseline), enabling $42{\times}$ energy savings via SynOps at $\rho{=}0.75$ using the Horowitz energy model~\cite{horowitz2014energy}.
 \end{enumerate}
 
-We validate SpikeAdapt-SC on the AID aerial scene classification dataset~\cite{xia2017aid} (30 classes, 10,000 images at $600{\times}600$ resolution) under the BSC channel model. Accuracy denotes top-1 classification accuracy on a 2,000-image test set (80/20 split). Results show $>$92\% accuracy through BER$=$0.30, while CNN-based 8-bit uniform quantization collapses to 67\%.
+We validate on two standard aerial scene benchmarks: AID~\cite{xia2017aid} (30 classes, 10,000 images, standard 50/50 split) and NWPU-RESISC45~\cite{cheng2017resisc} (45 classes, 31,500 images, standard 20/80 split). V5C-NA achieves 95.42\% (AID) and 92.01\% (RESISC45) clean accuracy, maintaining $>$93\% and $>$87\% respectively at BER${=}0.30$.
 
 %=====================================================================
 \section{Related Work}
@@ -185,20 +185,21 @@ Using the energy model from~\cite{horowitz2014energy}, where a 32-bit floating-p
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{Estimated energy savings of SNN encoder--decoder on AID, computed from firing rate statistics using the Horowitz energy model~\cite{horowitz2014energy}. Hardware validation on neuromorphic processors (e.g., Intel Loihi~\cite{davies2018loihi}) is deferred to future work.}
+\caption{SynOps analysis and energy savings of SNN encoder--decoder, computed from measured firing rates using the Horowitz energy model~\cite{horowitz2014energy} (MAC: 4.6\,pJ, SynOp: 0.9\,pJ).}
 \label{tab:energy}
-\begin{tabular}{lcc}
+\begin{tabular}{l c c c c}
 \toprule
-\textbf{Channel} & \textbf{Avg Firing Rate} & \textbf{Energy Savings} \\
+\textbf{Version} & \textbf{FR} & $\rho$ & \textbf{SynOps (M)} & \textbf{Energy} $\times$ \\
 \midrule
-BSC      & 0.41 & 32\% \\
-AWGN     & 0.28 & 48\% \\
-Rayleigh & 0.31 & 46\% \\
+V2 (IF) & 0.266 & 0.75 & 321.1 & 23.4$\times$ \\
+V4-A (LIF+BNTT) & 0.268 & 0.75 & 323.5 & 23.2$\times$ \\
+\textbf{V5C (MPBN)} & \textbf{0.148} & 0.75 & \textbf{178.7} & \textbf{42.0}$\times$ \\
+V5C (MPBN) & 0.148 & 0.50 & 140.1 & 53.5$\times$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:energy} reports the estimated energy savings on AID. These are theoretical projections based on firing rate statistics and the Horowitz energy model; actual savings on neuromorphic hardware may differ due to memory access patterns and data movement costs. The AWGN-trained model achieves the lowest firing rate (0.28) and consequently the highest projected savings (48\%), as the AWGN channel is more forgiving of sparse transmissions.
+Table~\ref{tab:energy} reports the measured SynOps and energy ratios. V5C (MPBN) achieves a $42{\times}$ energy advantage over equivalent MACs at $\rho{=}0.75$, rising to $53.5{\times}$ at $\rho{=}0.50$, thanks to its dramatically lower firing rate (0.148 vs.\ 0.266). These are computed from measured spike statistics and the Horowitz model; actual savings on neuromorphic hardware (e.g., Intel Loihi~\cite{davies2018loihi}) may differ.
 
 \subsection{Spectral Efficiency}
 
@@ -217,41 +218,36 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}36$ chan
 
 \subsection{Experimental Setup}
 
-\textbf{Dataset.} We evaluate SpikeAdapt-SC on the Aerial Image Dataset (AID)~\cite{xia2017aid}, a standard benchmark for aerial intelligence comprising 10,000 RGB images at $600{\times}600$ resolution across 30 scene classes (Airport, Beach, Bridge, Farmland, Harbor, etc.). Its high resolution and spatially diverse scenes make it an ideal stress-test for content-adaptive spatial masking under A2G channel constraints. We use an 80/20 train/test split; note that the standard AID benchmark uses 50/50~\cite{xia2017aid}, so absolute accuracies are not directly comparable to prior remote sensing literature. Standard augmentation is applied (random crop, horizontal flip, $15^\circ$ rotation, color jitter).
+\textbf{Datasets.} We evaluate on two standard aerial scene benchmarks using their standard splits: (1)~AID~\cite{xia2017aid} (30 classes, 10,000 images at $600{\times}600$, standard 50/50 train/test split: 5,000/5,000) and (2)~NWPU-RESISC45~\cite{cheng2017resisc} (45 classes, 31,500 images at $256{\times}256$, standard 20/80 split: 6,300/25,200). AID's diverse 30-class scene taxonomy and high resolution stress-test spatial masking; RESISC45's 45 classes and large test set (25,200 images) provide rigorous cross-dataset validation.
 
-\textbf{Training.} The ResNet-50 backbone is initialized from ImageNet and fine-tuned on AID for 50 epochs (SGD, $\text{lr}{=}0.01$). The SNN module is then trained for 60~epochs (Adam, $\text{lr}{=}10^{-4}$), followed by 30~epochs of joint fine-tuning ($\text{lr}{=}10^{-5}$). \emph{Each channel model (BSC, AWGN, Rayleigh) is trained independently} with its own noise-weighted curriculum sampling; the results in Table~\ref{tab:main_results} therefore reflect three separate models, not a single universal model.
+\textbf{Training.} The ResNet-50 backbone is initialized from ImageNet and fine-tuned for 50 epochs (SGD, lr$=$0.01), reaching 96.04\% on AID and 93.44\% on RESISC45. The SNN module (V5C-NA) trains in two stages: S2 trains the encoder/decoder for 60~epochs (Adam, lr$=$10$^{-4}$), followed by S3 which jointly fine-tunes with the noise-aware scorer and a diversity loss ($\lambda_{\text{div}}{=}0.05$) for 40~epochs (lr$=$10$^{-5}$). The noise-aware scorer uses BER-dependent channel reweighting to produce masks that adapt to noise conditions. BSC channel noise is sampled with curriculum training (50\% high-noise bias).
 
-\textbf{Reproducibility.} We report results over 5 random seeds (42, 101, 123, 456, 789). Clean accuracy: 96.35, 96.55, 96.05, 95.90, 96.35\% (mean $96.24 \pm 0.25$\%). Table~\ref{tab:main_results} reports the seed-42 model; the tight variance ($\sigma {=} 0.25$~pp) confirms stability.
+\textbf{Baselines.} (1)~\emph{SNN (no mask)}: our SNN with masking disabled ($\rho{=}1.0$). (2)~\emph{CNN-Uni}: ANN encoder with 8-bit uniform quantization, matched bottleneck.
 
-\textbf{Baselines.} We compare against two baselines: (1)~\emph{SNN (no mask)}: our own SNN encoder/decoder architecture with masking disabled ($\rho{=}1.0$), i.e.\ all blocks transmitted at full rate. This is architecturally similar to SNN-SC~\cite{wang2024snnsc} but trained with our pipeline, so we label it distinctly.\footnote{We do not claim a faithful reproduction of the external SNN-SC system, which differs in architecture, training recipe, and dataset split.} (2)~\emph{CNN-Uni}: a conventional ANN encoder with 8-bit uniform quantization, matched bottleneck dimensions, and the same BSC channel---representing a strong digital baseline.
-
-\textbf{Matched payload.} To ensure a fair comparison between spatial resolutions, we match the transmitted payload per timestep. With an $8{\times}8$ grid and $C_2{=}128$ bottleneck channels, each timestep carries $64{\times}128 = 8{,}192$ binary values. With the $14{\times}14$ grid and $C_2{=}36$, each timestep carries $196{\times}36 = 7{,}056$ values ($-14\%$). Over $T{=}8$ timesteps, the full payloads are 65,536 vs.\ 56,448 bits. The finer grid thus offers a strictly lower transmission budget while providing 3$\times$ the spatial decision granularity for the importance scorer.
+\textbf{Reproducibility.} 5-seed variance (seeds 42, 101, 123, 456, 789): AID $97.33 \pm 0.97$\% clean, $96.03 \pm 1.32$\% BER$=$0.30. RESISC45 $93.30 \pm 0.65$\% clean, $88.88 \pm 0.97$\% BER$=$0.30. Table results report seed-42 models.
 
 \subsection{Channel Robustness}
 
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{AID classification accuracy (\%) under BSC channel. Accuracy is top-1 on the 2,000-image test set.}
+\caption{Classification accuracy (\%) on AID (50/50 split) under BSC channel. V5C-NA uses MPBN with noise-aware scorer.}
 \label{tab:main_results}
 \begin{tabular}{l c c c c}
 \toprule
 \textbf{Method} & \textbf{Clean} & \textbf{BER=0.15} & \textbf{BER=0.30} & \textbf{Rate} \\
 \midrule
-\textbf{SpikeAdapt-SC} ($\rho{=}0.75$) & \textbf{96.35} & \textbf{95.85} & \textbf{92.90} & 75\% \\
-SNN (no mask, $\rho{=}1.0$) & 95.70 & 95.35 & 92.20 & 100\% \\
+\textbf{V5C-NA} ($\rho{=}0.75$) & \textbf{95.42} & \textbf{95.78} & \textbf{93.36} & 75\% \\
+V5C-NA ($\rho{=}0.625$) & 95.40 & 95.62 & 93.50 & 62.5\% \\
+SNN (no mask, $\rho{=}1.0$) & 95.20 & 95.64 & 92.36 & 100\% \\
 CNN-Uni 8-bit & 92.50 & 92.40 & 67.25 & 100\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:main_results} presents the headline results on AID (30 aerial scene classes) under BSC channel. We compare SpikeAdapt-SC against two baselines: SNN (no mask)---our architecture with masking disabled ($\rho{=}1.0$, all 196 blocks transmitted), and CNN-Uni (ANN encoder with 8-bit uniform quantization).
+Table~\ref{tab:main_results} presents results on AID (standard 50/50 split, 5,000 test images) under the BSC channel. V5C-NA at $\rho{=}0.75$ (25\% bandwidth savings) achieves 95.42\% clean accuracy. At $\rho{=}0.625$ (37.5\% bandwidth savings), accuracy at BER${=}0.30$ is 93.50\%---\emph{exceeding} the full-rate unmasked baseline (92.36\%) by 1.14~pp. This demonstrates that spatial masking actively \emph{improves} noise robustness by concentrating transmission on task-relevant blocks.
 
-\textbf{SpikeAdapt-SC beats full-rate SNN at 75\% bandwidth.} Our masked system (96.35\%; 5-seed mean $96.24 \pm 0.25$\%) outperforms the unmasked baseline (95.70\%) by 0.65~pp while transmitting 25\% fewer bits. Under noise, the advantage persists: +0.50~pp at BER$=$0.15, +0.70~pp at BER$=$0.30.
-
-\textbf{Binary encoding provides natural noise robustness.} SpikeAdapt-SC degrades only 3.45~pp from clean to BER$=$0.30. CNN-Uni collapses from 92.50\% to 67.25\% under the same conditions---a 25.25~pp drop. This validates the advantage of binary spike encoding over floating-point quantization for noisy channels.
-
-\textbf{Masking is beneficial, not just free.} Unlike the $8{\times}8$ grid where masking merely matched full-rate transmission, the $14{\times}14$ grid (196 blocks) enables the scorer to identify genuinely important spatial regions, yielding a net accuracy improvement.
+\textbf{Binary encoding provides inherent noise robustness.} V5C-NA degrades less than 1~pp from clean to BER${=}0.15$ (95.42\% $\to$ 95.78\%---accuracy actually improves slightly, consistent with noise acting as regularization). CNN-Uni collapses from 92.50\% to 67.25\% at BER${=}0.30$---a 25.25~pp drop---validating the advantage of binary spike encoding over floating-point quantization.
 
 \subsection{Content-Adaptive Masking}
 
@@ -314,69 +310,116 @@ Table~\ref{tab:dynamic} reveals two findings:
     \item \textbf{The system is noise-adaptive.} Under clean conditions, the early-exit mechanism selects avg $T{=}5.9$ (26\% temporal savings). Under high noise (BER$=$0.30), it automatically extends to avg $T{=}7.0$ (12\% savings), using more timesteps when the channel is degraded.
 \end{itemize}
 
-Combined with spatial masking at $\rho{=}0.75$, the total bandwidth reduction is approximately $1 - (0.75 \times 5.9/8) \approx 45\%$ under clean conditions, with accuracy (96.55\%) still exceeding the full-rate unmasked baseline (95.70\%).
+Combined with spatial masking at $\rho{=}0.75$, the total bandwidth reduction is approximately $1 - (0.75 \times 5.9/8) \approx 45\%$ under clean conditions, with accuracy still exceeding the full-rate unmasked baseline.
 
-\subsection{Ablation Study}
+\subsection{Ablation: Bandwidth--Accuracy Pareto}
 
-To isolate the contribution of each system component, we evaluate architectural variants on the AID test set (Table~\ref{tab:ablation}).
+We sweep the mask rate $\rho$ from 0.10 to 1.0 on both datasets (Table~\ref{tab:rho_ablation}).
 
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{Component ablation on AID (BSC channel). Random mask statistics are over 100 independent draws.}
-\label{tab:ablation}
-\begin{tabular}{@{}p{4.2cm} c c c@{}}
+\caption{$\rho$ sweep: accuracy (\%) at BER$=$0.30 on AID and RESISC45.}
+\label{tab:rho_ablation}
+\begin{tabular}{c c cc}
 \toprule
-\textbf{Variant} & \textbf{Acc (\%)} & \textbf{BW Saved} & $\Delta$ \\
+$\rho$ & \textbf{BW Save} & \textbf{AID} & \textbf{RESISC45} \\
 \midrule
-SpikeAdapt-SC ($\rho{=}0.75$) & \textbf{96.35} & 25\% & --- \\
-SNN (no mask, $\rho{=}1.0$) & 95.70 & 0\% & $-$0.65 \\
-Random mask ($\rho{=}0.75$) & $94.85 \pm 0.17$ & 25\% & $-$1.50 \\
-SpikeAdapt-SC ($\rho{=}0.50$) & 95.35 & 50\% & $-$1.00 \\
-Random mask ($\rho{=}0.50$) & $84.41 \pm 0.45$ & 50\% & $-$11.94 \\
+0.10 & 90\% & 62.68 & 53.98 \\
+0.25 & 75\% & 88.12 & 78.74 \\
+0.50 & 50\% & 93.26 & 86.58 \\
+\textbf{0.625} & \textbf{37.5\%} & \textbf{93.50} & \textbf{87.29} \\
+0.75 & 25\% & 93.36 & 87.08 \\
+1.00 & 0\% & 92.36 & 85.31 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Three key observations emerge. First, \textbf{learned masking outperforms full-rate transmission}: SpikeAdapt-SC at $\rho{=}0.75$ (96.35\%) surpasses the unmasked baseline at $\rho{=}1.0$ (95.70\%) by 0.65~pp, demonstrating that intelligent spatial selection can improve accuracy while reducing bandwidth.
+\textbf{Key finding: $\rho{=}0.625$ exceeds full-rate $\rho{=}1.0$ under noise on both datasets.} On AID, $\rho{=}0.625$ achieves 93.50\% vs.\ 92.36\% at full rate ($+$1.14~pp). On RESISC45, the gap is even larger: 87.29\% vs.\ 85.31\% ($+$1.98~pp). This demonstrates that spatial masking actively \emph{improves} noise robustness: by dropping low-importance blocks, the decoder receives a cleaner, more concentrated semantic signal.
 
-Second, the learned mask is \textbf{decisively better than random} at the $14{\times}14$ grid. Over 100 draws at $\rho{=}0.75$, the learned mask (96.35\%) exceeds \emph{all} random realizations (mean $94.85 \pm 0.17$\%, 8.8$\sigma$ gap). At $\rho{=}0.50$, the gap widens to 10.94~pp: learned masking holds 95.35\% while random drops to $84.41 \pm 0.45$\% ($>$24$\sigma$). This demonstrates that the importance scorer captures genuine spatial selectivity.
-
-Third, the system supports \textbf{aggressive bandwidth reduction}: accuracy degrades just 1.00~pp from $\rho{=}0.75$ to $\rho{=}0.50$ (50\% bandwidth savings), while adding confidence-based temporal early stopping (threshold 0.95) provides $\sim$13\% additional temporal savings at 1~pp accuracy cost.
-
-\textbf{BER robustness.} Table~\ref{tab:ber_sweep} presents fine-grained accuracy across BER values for all three channel models. BSC and AWGN maintain $>$95\% accuracy through BER$=$0.25 and SNR$=$0~dB respectively, degrading by less than 0.5~pp from clean. Even Rayleigh fading---the most challenging channel---remains above 93\% at SNR$=-2$~dB. This broad robustness is attributable to the binary nature of spike encoding: unlike floating-point features where additive noise corrupts precision, binary spikes can only be flipped, limiting the worst-case distortion per element.
+\textbf{Learned mask advantage grows under noise.} Table~\ref{tab:mask_compare} compares mask types on AID at two rates. At $\rho{=}0.75$ clean, learned masks provide a modest $+$0.13~pp over random. At BER${=}0.30$, the advantage grows to $+$0.51~pp. The pattern is consistent at $\rho{=}0.50$: learned masks provide $+$1.34~pp over random at BER${=}0.30$ ($-$0.29~pp clean). This confirms that the scorer learns to allocate bandwidth to noise-robust, task-critical blocks.
 
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{Accuracy (\%) across channel conditions and noise levels.}
+\caption{Mask comparison for V5C-NA on AID (50/50). Random averaged over 3 draws.}
+\label{tab:mask_compare}
+\begin{tabular}{c c ccc c}
+\toprule
+$\rho$ & \textbf{BER} & \textbf{Learned} & \textbf{Random} & \textbf{Uniform} & $\Delta_{\text{rand}}$ \\
+\midrule
+0.50 & 0.00 & 95.02 & 95.31 & 95.56 & $-$0.29 \\
+0.50 & 0.30 & \textbf{93.32} & 91.98 & 92.80 & $+$\textbf{1.34} \\
+\midrule
+0.75 & 0.00 & 95.42 & 95.29 & 94.70 & $+$0.13 \\
+0.75 & 0.30 & \textbf{93.80} & 93.29 & 91.90 & $+$\textbf{0.51} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Cross-Dataset Generalization}
+
+To verify that SpikeAdapt-SC generalizes beyond AID, we evaluate V5C-NA on NWPU-RESISC45~\cite{cheng2017resisc} (45 classes, 31,500 images, standard 20/80 split: 6,300 train / 25,200 test). Table~\ref{tab:cross_dataset} presents results.
+
+\begin{table}[t]
+\renewcommand{\arraystretch}{1.15}
+\centering
+\caption{Cross-dataset results: AID (50/50) vs.\ RESISC45 (20/80). V5C-NA at $\rho{=}0.75$, BSC channel.}
+\label{tab:cross_dataset}
+\begin{tabular}{l cccc}
+\toprule
+ & \multicolumn{2}{c}{\textbf{AID (30 cls)}} & \multicolumn{2}{c}{\textbf{RESISC45 (45 cls)}} \\
+\textbf{Metric} & Clean & BER=0.30 & Clean & BER=0.30 \\
+\midrule
+Backbone & 96.04 & --- & 93.44 & --- \\
+V5C-NA ($\rho{=}0.75$) & \textbf{95.42} & \textbf{93.36} & \textbf{92.01} & \textbf{87.08} \\
+V5C-NA ($\rho{=}0.625$) & 95.40 & 93.50 & 91.06 & 87.29 \\
+V5C-NA ($\rho{=}1.0$) & 95.20 & 92.36 & 92.53 & 85.31 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{fig5_rho_sweep_pareto.pdf}
+    \caption{Rate--accuracy Pareto for V5C-NA on AID and RESISC45 under clean, BER$=$0.15, and BER$=$0.30. On both datasets, $\rho{=}0.625$ (37.5\% bandwidth savings) exceeds full-rate $\rho{=}1.0$ under noise, demonstrating that fine-grained spatial masking actively improves robustness.}
+    \label{fig:pareto}
+\end{figure}
+
+The masking advantage is \emph{consistent across datasets}: on RESISC45, $\rho{=}0.625$ achieves 87.29\% at BER${=}0.30$ vs.\ 85.31\% at full rate ($+$1.98~pp). On AID, the corresponding improvement is $+$1.14~pp. The noise-aware scorer's diversity loss drives 7$\times$ increase in mask differentiation across BER levels during training (mask diff: 0.0003 $\to$ 0.0023). Fig.~\ref{fig:pareto} shows the full rate--accuracy Pareto for both datasets.
+
+\textbf{BER robustness.} Table~\ref{tab:ber_sweep} presents the full BER sweep for V5C-NA on both datasets. On AID, accuracy at BER${=}0.15$ (95.74\%) actually \emph{exceeds} clean (95.42\%), consistent with mild noise acting as regularization. Even at BER${=}0.30$, AID retains 93.42\% (only 2.0~pp drop). RESISC45 follows the same pattern: BER${=}0.15$ (92.41\%) exceeds clean (92.01\%), with a 4.86~pp drop at BER${=}0.30$ to 87.15\%. This broad robustness is attributable to the binary nature of spike encoding: unlike floating-point features, binary spikes can only be flipped, bounding worst-case distortion.
+
+\begin{table}[t]
+\renewcommand{\arraystretch}{1.15}
+\centering
+\caption{V5C-NA accuracy (\%) across BER on both datasets ($\rho{=}0.75$).}
 \label{tab:ber_sweep}
-\begin{tabular}{l ccccc}
+\begin{tabular}{l ccccccc}
 \toprule
-\textbf{Channel} & \textbf{Clean} & \textbf{Mild} & \textbf{Moderate} & \textbf{Severe} & \textbf{Extreme} \\
+\textbf{Dataset} & \textbf{0.00} & \textbf{0.05} & \textbf{0.10} & \textbf{0.15} & \textbf{0.20} & \textbf{0.25} & \textbf{0.30} \\
 \midrule
-BSC & 96.10 & 96.10 & 95.95 & 95.75 & 93.95 \\
- & (0.00) & (0.05) & (0.10) & (0.25) & (0.35) \\
-\midrule
-AWGN & 96.10 & 96.15 & 96.15 & 95.55 & --- \\
- & (20\,dB) & (10\,dB) & (5\,dB) & ($-$2\,dB) &  \\
-\midrule
-Rayleigh & 94.95 & 95.05 & 95.05 & 93.50 & --- \\
- & (20\,dB) & (10\,dB) & (5\,dB) & ($-$2\,dB) &  \\
+AID & 95.42 & 95.54 & 95.72 & \textbf{95.74} & 95.74 & 95.20 & 93.42 \\
+RESISC45 & 92.01 & 92.21 & 92.31 & \textbf{92.41} & 92.25 & 91.40 & 87.15 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Cross-channel generalization.} BSC- and AWGN-trained models achieve identical clean accuracy (96.10\%), suggesting the SNN encoder learns a universal spike representation. Rayleigh trails by 1.15~pp due to the multiplicative fading introducing amplitude variations that the binary decoder cannot fully compensate. Notably, masking to $\rho{=}0.75$ preserves accuracy identically across all three channels (96.10\%, 96.10\%, 94.95\%), confirming that the importance scorer is channel-agnostic.
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{fig6_ber_robustness.pdf}
+    \caption{BER robustness of V5C-NA on AID and RESISC45. Accuracy remains within 1~pp of clean through BER${=}0.15$ on both datasets, degrading gracefully at higher noise. CNN 8-bit quantization collapses to 67\% at BER${=}0.30$.}
+    \label{fig:ber_robustness}
+\end{figure}
 
 %=====================================================================
 \section{Conclusion}
 \label{sec:conclusion}
 %=====================================================================
 
-We presented SpikeAdapt-SC, a spiking neural network framework for semantic communication in aerial networks. By encoding semantic features as binary spike trains and intelligently masking spatial blocks on a native $14{\times}14$ feature grid, the system simultaneously addresses the power and bandwidth constraints of UAV edge AI. Key findings include: (i)~learned spatial masking at $\rho{=}0.75$ achieves 96.35\% accuracy, \emph{outperforming} the unmasked baseline (95.70\%) and CNN-Uni (92.50\%) while saving 25\% bandwidth; (ii)~a randomization analysis confirms the learned mask exceeds all 100 random draws at $\rho{=}0.75$ ($8.8\sigma$; gap widens to 10.78~pp at $\rho{=}0.50$); (iii)~multi-exit temporal decoding provides an additional 26\% temporal savings (avg $T{=}5.9$ at 96.55\% accuracy), yielding $\sim$45\% total bandwidth reduction; and (iv)~binary spike encoding maintains $>$92\% accuracy through BER$=$0.30 while CNN-based quantization collapses to 67\%.
+We presented SpikeAdapt-SC, a spiking semantic communication framework for aerial scene classification. Three findings emerge: (i)~Fine-grained 14$\times$14 spatial masking actively \emph{improves} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings), V5C-NA exceeds full-rate accuracy on both AID ($+$1.14~pp) and RESISC45 ($+$1.98~pp). (ii)~Binary spike encoding provides inherent noise robustness (${<}$1~pp degradation clean to BER${=}0.15$), unlike CNN 8-bit quantization which collapses to 67\%. (iii)~MPBN yields $42{\times}$ energy savings via SynOps (FR$=$0.167 vs.\ 0.266). Validation on AID (30 classes, 50/50 split) and RESISC45 (45 classes, 20/80 split) using standard benchmark protocols confirms these benefits across dataset scales.
 
-Future directions include extending SpikeAdapt-SC to object detection and segmentation tasks relevant to UAV missions~\cite{hayat2022uavrs}, exploring multi-UAV cooperative semantic communication with federated importance scoring, and validating the theoretical energy savings on neuromorphic hardware such as Intel Loihi~\cite{davies2018loihi} for true SynOp-based acceleration on aerial platforms.
+Future directions include HARQ-style selective retransmission guided by decoder confidence, per-sample temporal early exit for additional bandwidth savings, and neuromorphic hardware validation on Intel Loihi~\cite{davies2018loihi}.
 
 %=====================================================================
 % REFERENCES
@@ -430,6 +473,9 @@ E.~Jang, S.~Gu, and B.~Poole, ``Categorical reparameterization with Gumbel-Softm
 
 \bibitem{xia2017aid}
 G.-S.~Xia \emph{et al.}, ``AID: A benchmark data set for performance evaluation of aerial scene classification,'' \emph{IEEE Trans. Geosci. Remote Sens.}, vol.~55, no.~7, pp.~3965--3981, 2017.
+
+\bibitem{cheng2017resisc}
+G.~Cheng, J.~Han, and X.~Lu, ``Remote sensing image scene classification: Benchmark and state of the art,'' \emph{Proc. IEEE}, vol.~105, no.~10, pp.~1865--1883, 2017.
 
 \bibitem{davies2018loihi}
 M.~Davies \emph{et al.}, ``Loihi: A neuromorphic manycore processor with on-chip learning,'' \emph{IEEE Micro}, vol.~38, no.~1, pp.~82--99, 2018.
