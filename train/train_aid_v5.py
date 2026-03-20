@@ -162,16 +162,15 @@ class ChannelGateV2(nn.Module):
 
 
 # ############################################################################
-# NEW: Spike-Driven Attention Scorer (replaces ChannelConditionedScorer)
+# NEW: Hybrid Attention Scorer (residual refinement on pretrained scorer)
 # ############################################################################
 
-class SpikeAttentionScorer(nn.Module):
-    """Spike-driven spatial-temporal attention for importance scoring.
+class AttentionRefinement(nn.Module):
+    """Spike-driven attention refinement module.
 
-    Instead of flat averaging over T timesteps, uses:
-    1. Temporal attention: learn which timesteps matter most
-    2. Spatial attention: cross-block dependencies via depthwise conv
-    3. Channel condition embedding (same as original)
+    Adds temporal attention + spatial context on TOP of the pretrained
+    ChannelConditionedScorer output. Uses residual connection with
+    learnable blend weight α (initialized to 0 → starts as pure pretrained).
 
     From: STAtten (CVPR 2024), adapted for spike features.
     """
@@ -179,38 +178,35 @@ class SpikeAttentionScorer(nn.Module):
         super().__init__()
         self.T = T
 
-        # Temporal attention: learn importance weight per timestep
+        # Blend weight: sigmoid(α_raw). α_raw=-5 → sigmoid≈0.007 → nearly zero
+        self.alpha_raw = nn.Parameter(torch.tensor(-5.0))
+
+        # Temporal attention: learn which timesteps matter most
         self.temporal_attn = nn.Parameter(torch.ones(T) / T)
 
-        # Channel embedding (same as original scorer)
-        self.ch_embed = nn.Sequential(nn.Linear(1, 16), nn.ReLU(True), nn.Linear(16, 16))
-
-        # Spatial attention: 3x3 depthwise conv to capture local dependencies
-        self.spatial_conv = nn.Sequential(
-            nn.Conv2d(C_spike + 16, hidden, 3, 1, 1, groups=1),
-            nn.ReLU(True),
-            nn.Conv2d(hidden, hidden, 3, 1, 1),
+        # Spatial refinement: 3×3 conv on spike features → score correction
+        self.spatial_refine = nn.Sequential(
+            nn.Conv2d(C_spike, hidden, 3, 1, 1),
             nn.ReLU(True),
             nn.Conv2d(hidden, 1, 1),
         )
+        # Initialize last conv to near-zero so refinement starts small
+        nn.init.zeros_(self.spatial_refine[-1].weight)
+        nn.init.zeros_(self.spatial_refine[-1].bias)
 
-    def forward(self, all_S2, channel_estimate):
-        # Temporal attention: weighted sum instead of flat mean
+    def forward(self, all_S2, base_score):
+        """Refine base_score from pretrained scorer with attention context."""
+        alpha = torch.sigmoid(self.alpha_raw)
+
+        # Temporal attention: weighted sum
         weights = F.softmax(self.temporal_attn[:len(all_S2)], dim=0)
-        spike_weighted = sum(w * s for w, s in zip(weights, all_S2))  # (B, C2, H, W)
+        spike_weighted = sum(w * s for w, s in zip(weights, all_S2))
 
-        # Channel embedding
-        B, C, H, W = spike_weighted.shape
-        if isinstance(channel_estimate, (int, float)):
-            ch_val = torch.full((B, 1), channel_estimate, device=spike_weighted.device)
-        else:
-            ch_val = channel_estimate.view(B, 1)
-        ch_feat = self.ch_embed(ch_val).unsqueeze(-1).unsqueeze(-1).expand(-1, -1, H, W)
+        # Spatial refinement
+        refinement = self.spatial_refine(spike_weighted).squeeze(1)  # (B, H, W)
 
-        # Spatial scoring with attention
-        combined = torch.cat([spike_weighted, ch_feat], dim=1)
-        score = self.spatial_conv(combined).squeeze(1)  # (B, H, W)
-        return score
+        # Residual blend: (1-α)*base + α*refinement
+        return (1 - alpha) * base_score + alpha * refinement
 
 
 # ############################################################################
@@ -333,15 +329,17 @@ class SpikeAdaptSC_v5(nn.Module):
                  use_spike_attn=False):
         super().__init__()
         self.T = T; self.C2 = C2; self.grid_size = grid_size
+        self.use_spike_attn = use_spike_attn
 
         self.encoder = EncoderV5(C_in, C1, C2, T, use_mpbn)
 
-        # Scorer: standard or spike-attention
+        # Always keep pretrained scorer (for weight transfer)
+        from train_aid_v2 import ChannelConditionedScorer
+        self.scorer = ChannelConditionedScorer(C_spike=C2, hidden=32)
+
+        # Attention refinement: residual on top of pretrained scorer
         if use_spike_attn:
-            self.scorer = SpikeAttentionScorer(C_spike=C2, T=T, hidden=32)
-        else:
-            from train_aid_v2 import ChannelConditionedScorer
-            self.scorer = ChannelConditionedScorer(C_spike=C2, hidden=32)
+            self.attn_refine = AttentionRefinement(C_spike=C2, T=T, hidden=32)
 
         self.block_mask = LearnedBlockMask(target_rate, 0.5)
         self.decoder = DecoderV5(C_in, C1, C2, T, use_mpbn)
@@ -358,6 +356,8 @@ class SpikeAdaptSC_v5(nn.Module):
             all_S2.append(s2)
 
         importance = self.scorer(all_S2, noise_param)
+        if self.use_spike_attn:
+            importance = self.attn_refine(all_S2, importance)
 
         if target_rate_override is not None:
             old = self.block_mask.target_rate
@@ -482,7 +482,7 @@ if __name__ == "__main__":
         'v5b': {'kd': False, 'cg': True,  'mpbn': False, 'attn': False, 'desc': 'V4-A + Fixed Channel Gate (open init+warmup)'},
         'v5c': {'kd': False, 'cg': False, 'mpbn': True,  'attn': False, 'desc': 'V4-A + MPBN (no KD)'},
         'v5d': {'kd': False, 'cg': False, 'mpbn': False, 'attn': True,  'desc': 'V4-A + Spike Attention Scorer'},
-        'v5e': {'kd': True,  'cg': True,  'mpbn': False, 'attn': True,  'desc': 'Best combo: KD + CG + Attn'},
+        'v5e': {'kd': False, 'cg': True,  'mpbn': False, 'attn': True,  'desc': 'Best combo: CG + Attn (no KD)'},
     }
 
     if exp not in EXP_CONFIG:
