@@ -252,33 +252,47 @@ Table~\ref{tab:main_results} presents results on AID (standard 50/50 split, 5,00
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{fig2_mask_diversity.png}
-    \caption{Content-adaptive masks for 8 AID scenes at $\rho{=}0.75$. \textbf{Top}: images with mask overlay (red = dropped). \textbf{Bottom}: $14{\times}14$ binary masks (green = transmitted). Across the 2,000-image test set, 2,000 unique masks are generated (100\%).}
+    \includegraphics[width=\columnwidth]{fig2_mask_diversity_aid.png}
+    \caption{Content-adaptive masks for 8 AID scenes at $\rho{=}0.75$. \textbf{Top}: images with mask overlay (red = dropped). \textbf{Bottom}: $14{\times}14$ binary masks (green = transmitted). Across the 5,000-image test set, 5,000 unique masks are generated (100\%).}
     \label{fig:mask_diversity}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{fig2_mask_diversity_resisc45.png}
+    \caption{Content-adaptive masks for 8 RESISC45 scenes at $\rho{=}0.75$. The same $14{\times}14$ masking architecture generalizes to the 45-class dataset, producing distinct per-image masks that adapt to scene content.}
+    \label{fig:mask_diversity_resisc}
 \end{figure}
 
 Content-adaptive masking is a central design feature of SpikeAdapt-SC. To maximize the effectiveness of spatial masking, we operate on the native $14{\times}14$ ($=196$ block) feature grid from ResNet50's layer3 output, rather than pooling to a coarser grid. This provides a 3$\times$ larger decision space for the importance scorer.
 
-The mask count statistics confirm quantitative diversity: every test image receives a unique mask (2,000/2,000 at $\rho{=}0.75$). A randomization analysis over 100 independent random mask draws (Table~\ref{tab:ablation}) shows the learned mask exceeds \emph{all} random draws (8.8$\sigma$ above the random mean). At the more aggressive $\rho{=}0.50$, the gap widens dramatically: learned masking achieves 95.35\% versus $84.41 \pm 0.45$\% for random (10.94~pp, $>$24$\sigma$). Per-block ablation confirms that the scores predict block importance (Spearman $\rho{=}0.148$, $p < 10^{-48}$).
+The mask count statistics confirm quantitative diversity: every test image receives a unique mask on both datasets (5,000/5,000 on AID, 25,200/25,200 on RESISC45 at $\rho{=}0.75$). On AID, the learned mask exceeds random by $+$1.34~pp at $\rho{=}0.50$/BER${=}0.30$, with the advantage growing under noise.
 
 \subsection{Semantic Feature Resilience}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{fig3_feature_mse.png}
-    \caption{Feature-space analysis under BSC noise. \textbf{Red}: feature MSE increases with BER, confirming channel corruption. \textbf{Green}: classification confidence remains $>$90\% despite feature degradation---the hallmark of effective semantic communication.}
+    \includegraphics[width=\columnwidth]{fig3_feature_mse_dual.png}
+    \caption{Feature-space analysis under BSC noise on AID and RESISC45. \textbf{Red}: feature MSE increases monotonically with BER, confirming channel corruption. \textbf{Green}: classification confidence remains $>$90\% on AID and $>$80\% on RESISC45 despite feature degradation---the hallmark of effective semantic communication.}
     \label{fig:feature_mse}
 \end{figure}
 
-To verify that the system genuinely communicates \emph{through} a noisy channel (rather than trivially memorizing), we analyze the feature-space impact of channel noise (Fig.~\ref{fig:feature_mse}). The MSE between clean and noisy reconstructed features monotonically increases with BER, confirming that the channel does corrupt the transmitted spike trains. However, classification confidence remains above 90\% even at BER~$= 0.35$. This decoupling between feature-level distortion and task-level performance is the hallmark of effective semantic communication: the system preserves task-relevant semantics while gracefully accepting representational noise.
+To verify that the system genuinely communicates \emph{through} a noisy channel (rather than trivially memorizing), we analyze the feature-space impact of channel noise (Fig.~\ref{fig:feature_mse}). The MSE between clean and noisy reconstructed features monotonically increases with BER on both AID and RESISC45, confirming that the channel does corrupt the transmitted spike trains. However, classification confidence remains above 90\% on AID and 80\% on RESISC45 even at BER~$= 0.30$. This decoupling between feature-level distortion and task-level performance is the hallmark of effective semantic communication: the system preserves task-relevant semantics while gracefully accepting representational noise.
 
 \subsection{Dynamic Rate Adaptation Under Time-Varying Channels}
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{fig4_rate_sweep.png}
-    \caption{Rate--accuracy tradeoff on a representative Airport scene. Red overlay indicates masked (untransmitted) spatial blocks. The system maintains correct classification with high confidence from $\rho{=}1.0$ (196/196 blocks, 100\%) down to $\rho{=}0.5$ (98/196 blocks, 50\% bandwidth). At $\rho{=}0.25$, only 49 blocks are transmitted and the prediction fails---establishing the practical lower bound for bandwidth reduction.}
+    \includegraphics[width=\columnwidth]{fig4_rate_sweep_aid.png}
+    \caption{Rate--accuracy tradeoff on a representative Airport scene (AID). Red overlay indicates masked (untransmitted) spatial blocks on the $14{\times}14$ grid. The system maintains correct classification with high confidence from $\rho{=}1.0$ (196/196 blocks) down to $\rho{=}0.50$ (98/196 blocks, 50\% bandwidth). At $\rho{=}0.25$, only 49 blocks are transmitted.}
     \label{fig:rate_sweep}
+\end{figure}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{fig4_rate_sweep_resisc45.png}
+    \caption{Rate--accuracy tradeoff on a representative airplane scene (RESISC45). The masking system generalizes to the 45-class dataset, maintaining correct classification with 100\% confidence from $\rho{=}1.0$ down to $\rho{=}0.25$.}
+    \label{fig:rate_sweep_resisc}
 \end{figure}
 
 \begin{table}[t]
