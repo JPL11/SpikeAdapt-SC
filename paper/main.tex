@@ -91,7 +91,7 @@ Fig.~\ref{fig:architecture} shows the end-to-end SpikeAdapt-SC pipeline deployed
 \begin{figure}[t]
     \centering
     \includegraphics[width=\columnwidth]{fig1_architecture.png}
-    \caption{SpikeAdapt-SC system architecture. The UAV extracts semantic features via ResNet-50 (L1--L3) and encodes them as spike trains using IF neurons over $T{=}8$ timesteps. A learned scorer masks low-importance blocks on the native $14{\times}14$ spatial grid before A2G transmission. The ground station decodes via a matched SNN decoder and classifies with ResNet-50 L4+FC.}
+    \caption{SpikeAdapt-SC system architecture. The UAV extracts semantic features via ResNet-50 (L1--L3) and encodes them as spike trains using IF neurons with MPBN over $T{=}8$ timesteps ($C_2{=}36$ channels). A noise-aware scorer masks low-importance blocks on the native $14{\times}14$ spatial grid (196 blocks) before A2G transmission. The ground station decodes via a matched SNN decoder and classifies with ResNet-50 L4+FC.}
     \label{fig:architecture}
 \end{figure}
 
@@ -99,7 +99,7 @@ Fig.~\ref{fig:architecture} shows the end-to-end SpikeAdapt-SC pipeline deployed
 
 We employ a ResNet-50 backbone~\cite{he2016deep} pretrained on ImageNet and fine-tuned on the aerial domain. The network is split at Layer~3, producing a 1024-channel feature map. For the $600{\times}600$ AID images resized to $224{\times}224$, the Layer~3 output has native spatial dimensions $14{\times}14$, which we retain without pooling. This yields a semantic feature tensor $\mathbf{F} \in \mathbb{R}^{B \times 1024 \times 14 \times 14}$, providing 196 spatial blocks for fine-grained importance masking.
 
-Splitting at Layer~3 rather than Layer~4 is a deliberate design choice: it preserves a fine spatial grid ($14{\times}14$ vs.\ $7{\times}7$), enabling granular content-adaptive masking. On the AID test set, every test image receives a unique mask (2,000 out of 2,000), confirming that spatial granularity is essential for per-image adaptation.
+Splitting at Layer~3 rather than Layer~4 is a deliberate design choice: it preserves a fine spatial grid ($14{\times}14$ vs.\ $7{\times}7$), enabling granular content-adaptive masking. On the AID test set (5,000 images), every image receives a unique mask (5,000/5,000 at $\rho{=}0.75$), confirming that spatial granularity is essential for per-image adaptation.
 
 \subsection{Spiking Semantic Encoder}
 
@@ -111,7 +111,7 @@ The encoder converts the continuous feature map $\mathbf{F}$ into binary spike t
 \end{align}
 where $\mathbf{m}_t^{(l)}$ is the membrane potential at layer $l$ and timestep $t$, $\Theta(\cdot)$ is the Heaviside step function, $v_{\text{th}} = 1.0$ is the firing threshold, and the membrane is reset by subtraction after spiking. Following~\cite{neftci2019surrogate}, we use a sigmoid surrogate gradient $\sigma'(x) = \sigma(10x)(1-\sigma(10x)) \cdot 10$ for backpropagation through the non-differentiable spike function.
 
-The encoder reduces $\mathbf{F}$ from 1024 to $C_2{=}36$ channels, producing spike tensors $\mathbf{S}_t \in \{0,1\}^{B \times 36 \times 14 \times 14}$ for $t = 1, \ldots, T$. Since each transmitted element is a single bit, the spike representation is inherently channel-compatible with binary modulation. We set $C_2{=}36$ to match the per-timestep payload of the 196-block grid ($196 \times 36 = 7{,}056$ values) to the reference 64-block grid with $C_2{=}128$ ($64 \times 128 = 8{,}192$ values), ensuring a fair comparison (see Section~\ref{sec:eval}).
+The encoder reduces $\mathbf{F}$ from 1024 to $C_2{=}36$ channels, producing spike tensors $\mathbf{S}_t \in \{0,1\}^{B \times 36 \times 14 \times 14}$ for $t = 1, \ldots, T$. Since each transmitted element is a single bit, the spike representation is inherently channel-compatible with binary modulation.
 
 \subsection{Learned Spatial Importance Masking}
 
@@ -191,15 +191,14 @@ Using the energy model from~\cite{horowitz2014energy}, where a 32-bit floating-p
 \toprule
 \textbf{Version} & \textbf{FR} & $\rho$ & \textbf{SynOps (M)} & \textbf{Energy} $\times$ \\
 \midrule
-V2 (IF) & 0.266 & 0.75 & 321.1 & 23.4$\times$ \\
-V4-A (LIF+BNTT) & 0.268 & 0.75 & 323.5 & 23.2$\times$ \\
-\textbf{V5C (MPBN)} & \textbf{0.148} & 0.75 & \textbf{178.7} & \textbf{42.0}$\times$ \\
-V5C (MPBN) & 0.148 & 0.50 & 140.1 & 53.5$\times$ \\
+V2 (IF baseline) & 0.266 & 0.75 & 321.1 & 23.4$\times$ \\
+\textbf{V5C-NA (MPBN)} & \textbf{0.167} & 0.75 & \textbf{201.5} & \textbf{37.3}$\times$ \\
+V5C-NA (MPBN) & 0.167 & 0.50 & 158.2 & 47.5$\times$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:energy} reports the measured SynOps and energy ratios. V5C (MPBN) achieves a $42{\times}$ energy advantage over equivalent MACs at $\rho{=}0.75$, rising to $53.5{\times}$ at $\rho{=}0.50$, thanks to its dramatically lower firing rate (0.148 vs.\ 0.266). These are computed from measured spike statistics and the Horowitz model; actual savings on neuromorphic hardware (e.g., Intel Loihi~\cite{davies2018loihi}) may differ.
+Table~\ref{tab:energy} reports the measured SynOps and energy ratios. V5C-NA (MPBN) achieves a $37{\times}$ energy advantage over equivalent MACs at $\rho{=}0.75$, rising to $47.5{\times}$ at $\rho{=}0.50$, thanks to its dramatically lower firing rate (0.167 vs.\ 0.266). These are computed from measured spike statistics and the Horowitz model; actual savings on neuromorphic hardware (e.g., Intel Loihi~\cite{davies2018loihi}) may differ.
 
 \subsection{Spectral Efficiency}
 
