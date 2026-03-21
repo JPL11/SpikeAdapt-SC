@@ -55,12 +55,12 @@ Unmanned aerial vehicles (UAVs) are increasingly deployed as mobile edge inferen
 
 Two fundamental constraints make this problem challenging for aerial platforms. First, the air-to-ground (A2G) wireless link is subject to severe and rapidly varying channel impairments---including Rayleigh fading, path loss, and Doppler shifts---that corrupt the transmitted semantic features~\cite{khuwaja2018survey}. Traditional approaches like hybrid automatic repeat request (HARQ) add unacceptable latency for real-time inference. Second, the onboard SWaP (Size, Weight, and Power) budget is stringent, particularly for small UAVs, demanding highly efficient neural computation~\cite{li2021survey}.
 
-While recent work has explored SNN-based semantic encoding~\cite{wang2024snnsc} and content-adaptive rate allocation~\cite{li2024djscc} independently (see Section~\ref{sec:related}), no existing system addresses both energy-efficient encoding \emph{and} content-adaptive spatial masking jointly---the gap our work fills.
+While recent work has explored SNN-based semantic encoding~\cite{wang2024snnsc} and content-adaptive rate allocation~\cite{li2024djscc} independently (see Section~\ref{sec:related}), no existing system combines fine-grained native-grid spatial masking with spiking split inference for aerial scene classification---the specific gap our work fills.
 
 In this paper, we propose \textbf{SpikeAdapt-SC}, a spiking semantic communication framework that addresses both limitations through three contributions:
 
 \begin{enumerate}
-    \item \textbf{Fine-grained 14$\times$14 spatial masking improves accuracy under noise.} Rather than transmitting all 196 spatial blocks, a learned importance scorer selects the most informative blocks. At $\rho{=}0.625$ (37.5\% bandwidth savings) and BER${=}0.30$, masking \emph{exceeds} full-rate accuracy on both AID ($+$1.14~pp) and RESISC45 ($+$1.98~pp). The advantage grows with noise: learned masks provide $+$1.34~pp over random on AID at $\rho{=}0.50$, BER${=}0.30$.
+    \item \textbf{Noise-aware spatial masking improves accuracy under noise.} Rather than transmitting all 196 spatial blocks, a BER-conditioned importance scorer selects the most informative blocks. A controlled ablation (Table~\ref{tab:na_ablation}) confirms that both the BER-conditioning branch and the diversity loss are essential: removing either drops BER${=}0.30$ accuracy by $\sim$20~pp. At $\rho{=}0.625$ (37.5\% bandwidth savings) and BER${=}0.30$, masking \emph{exceeds} full-rate accuracy on both AID ($+$1.14~pp) and RESISC45 ($+$1.98~pp).
     
     \item \textbf{Binary spike encoding provides channel-agnostic noise robustness.} Unlike floating-point features where additive noise corrupts precision, binary spikes can only be flipped, limiting worst-case distortion. At matched equivalent BER, BSC, AWGN, and Rayleigh channels produce accuracy within $\pm$1~pp---the system is inherently channel-agnostic without channel-specific training. SpikeAdapt-SC degrades only 2~pp at BER${=}0.30$, while CNN-Uni collapses by 39~pp (to 52.80\%), MLP-FC by 56~pp, and JPEG+Conv exhibits a cliff effect at BER${=}0.05$.
     
@@ -210,6 +210,8 @@ SpikeAdapt-SC &0.167& 0.50 & 158.2 & 47.5$\times$ \\
 \end{table}
 
 Table~\ref{tab:energy} reports the measured SynOps and energy ratios. SpikeAdapt-SC achieves a $37{\times}$ energy advantage over equivalent MACs at $\rho{=}0.75$, rising to $47.5{\times}$ at $\rho{=}0.50$, thanks to the lower firing rate enabled by MPBN (0.167 vs.\ 0.266). These numbers are computed from measured spike statistics on the AID test set using the Horowitz energy model; actual savings on neuromorphic hardware (e.g., Intel Loihi~\cite{davies2018loihi}) may differ.
+
+\textbf{Latency.} On a GPU (RTX 3090), the SNN encoder--decoder requires 4.1\,ms per image ($T{=}8$ sequential timesteps) vs.\ 0.2\,ms for the single-pass CNN encoder--decoder. However, the shared ResNet-50 backbone dominates at 1.2\,ms, making end-to-end latency 5.3\,ms (SNN) vs.\ 1.4\,ms (CNN). On neuromorphic hardware, all $T{=}8$ timesteps would execute in parallel, reducing the SNN encoder--decoder to a single clock cycle per layer.
 
 \subsection{Spectral Efficiency}
 
