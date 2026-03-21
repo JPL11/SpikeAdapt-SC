@@ -47,7 +47,7 @@ def evaluate(model, back, front, test_loader, ber=0.0, target_rate=None):
     return 100. * correct / total
 
 
-def evaluate_random_mask(model, back, front, test_loader, ber, rho, n_draws=3):
+def evaluate_random_mask(model, back, front, test_loader, ber, rho, n_draws=50):
     """Evaluate with random masks (average over draws)."""
     model.eval(); back.eval()
     accs = []
