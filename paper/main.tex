@@ -38,7 +38,7 @@
 \maketitle
 
 \begin{abstract}
-Unmanned aerial vehicles (UAVs) performing edge AI inference face a dual constraint: air-to-ground links suffer from severe fading and limited bandwidth, while onboard processors are restricted by strict power budgets. We present \textbf{SpikeAdapt-SC}, a spiking neural network (SNN) framework for semantic communication that jointly addresses both constraints through three mechanisms: (i)~fine-grained spatial masking on a native $14{\times}14$ feature grid, where a noise-aware importance scorer generates per-image masks that \emph{improve} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings) and BER${=}0.30$, our model V5C-NA (Version~5C, Noise-Aware) achieves 93.50\% on AID (vs.\ 92.36\% at full rate), and 87.29\% on RESISC45 (vs.\ 85.31\%); (ii)~binary spike encoding that provides channel-agnostic noise robustness---at matched equivalent BER, BSC, AWGN, and Rayleigh channels produce accuracy within $\pm$0.2~pp, while CNN 8-bit quantization collapses to 67\%; and (iii)~membrane potential batch normalization (MPBN)~\cite{guo2023mpbn} that reduces firing rate to 0.167, yielding $37{\times}$ energy savings via SynOps. We validate on AID (30 classes, 10,000 images, standard 50/50 split) and NWPU-RESISC45 (45 classes, 31,500 images, standard 20/80 split), achieving 95.42\% and 92.01\% clean accuracy respectively.
+Unmanned aerial vehicles (UAVs) performing edge AI inference face a dual constraint: air-to-ground links suffer from severe fading and limited bandwidth, while onboard processors are restricted by strict power budgets. We present \textbf{SpikeAdapt-SC}, a spiking neural network (SNN) framework for semantic communication that jointly addresses both constraints through three mechanisms: (i)~fine-grained spatial masking on a native $14{\times}14$ feature grid, where a noise-aware importance scorer generates per-image masks that \emph{improve} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings) and BER${=}0.30$, our model V5C-NA (Version~5C, Noise-Aware) achieves 93.50\% on AID (vs.\ 92.36\% at full rate), and 87.29\% on RESISC45 (vs.\ 85.31\%); (ii)~binary spike encoding that provides channel-agnostic noise robustness---at matched equivalent BER, BSC, AWGN, and Rayleigh channels produce accuracy within $\pm$0.2~pp, while CNN baselines with 8-bit quantization collapse (CNN-Uni: 52\%, CNN-NonUni: 62\%) at BER${=}0.30$; and (iii)~membrane potential batch normalization (MPBN)~\cite{guo2023mpbn} that reduces firing rate to 0.167, yielding $37{\times}$ energy savings via SynOps. We validate on AID (30 classes, 10,000 images, standard 50/50 split) and NWPU-RESISC45 (45 classes, 31,500 images, standard 20/80 split), achieving 95.42\% and 92.01\% clean accuracy respectively.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -231,7 +231,7 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}36$ chan
 
 \textbf{Training.} The ResNet-50 backbone is initialized from ImageNet and fine-tuned for 50 epochs (SGD, lr$=$0.01), reaching 96.04\% on AID and 93.44\% on RESISC45. The SNN module (V5C-NA) trains in two stages: S2 trains the encoder/decoder for 60~epochs (Adam, lr$=$10$^{-4}$), followed by S3 which jointly fine-tunes with the noise-aware scorer and a diversity loss ($\lambda_{\text{div}}{=}0.05$) for 40~epochs (lr$=$10$^{-5}$). BSC channel noise is sampled with curriculum training (50\% high-noise bias). All evaluations under BSC average over 3 independent noise draws to reduce stochastic variance.
 
-\textbf{Baselines.} (1)~\emph{SNN-SC~\cite{wang2024snnsc}}: our SNN with masking disabled ($\rho{=}1.0$), equivalent to the SNN-SC architecture without spatial masking. (2)~\emph{CNN-Uni}: ANN encoder with 8-bit uniform quantization, matched bottleneck. This reflects the fragility of fixed-precision continuous representations under bit errors; comparison against learned quantization (e.g., LSQ~\cite{esser2020lsq}) is left to future work.
+\textbf{Baselines.} Following SNN-SC~\cite{wang2024snnsc}, we compare against three baselines using the \emph{same trained backbone}: (1)~\emph{SNN-SC~\cite{wang2024snnsc}}: our SNN with masking disabled ($\rho{=}1.0$), equivalent to the SNN-SC architecture without spatial masking. (2)~\emph{CNN-Uni}: ANN encoder with 8-bit uniform quantization and matched bottleneck, transmitted via bit-plane BSC. (3)~\emph{CNN-NonUni}: same architecture with non-uniform (Lloyd-Max) quantization---k-means on feature activations finds 256~levels that minimize MSE for the actual distribution, then bit-plane BSC. All CNN baselines use the same backbone, encoder/decoder, and noise curriculum as V5C-NA for a fair comparison.
 
 \textbf{Reproducibility.} 5-seed variance (seeds 42, 101, 123, 456, 789) with S3 retraining ($\lambda_{\text{div}}{=}0.05$): AID $95.14 \pm 0.71$\% clean, $91.87 \pm 2.58$\% BER$=$0.30. RESISC45 $91.10 \pm 0.99$\% clean, $87.32 \pm 3.90$\% BER$=$0.30. The BER$=$0.30 variance is higher because noise amplifies scorer-dependent mask differences. Table results report seed-42 models with 5-seed standard deviations noted.
 
@@ -240,7 +240,7 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}36$ chan
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{Classification accuracy (\%) on AID (50/50 split) under BSC channel. V5C-NA uses MPBN with noise-aware scorer. $^\dagger$5-seed std in parentheses.}
+\caption{Classification accuracy (\%) on AID (50/50 split) under BSC channel. CNN baselines trained on the same backbone. $^\dagger$5-seed std in parentheses.}
 \label{tab:main_results}
 \begin{tabular}{l c c c c}
 \toprule
@@ -249,14 +249,23 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}36$ chan
 \textbf{V5C-NA} ($\rho{=}0.75$) & \textbf{95.42}{\scriptsize($\pm$0.71)} & \textbf{95.72}{\scriptsize($\pm$0.59)} & \textbf{93.34}{\scriptsize($\pm$2.58)} & 75\% \\
 V5C-NA ($\rho{=}0.625$) & 95.40 & 95.62 & 93.50 & 62.5\% \\
 SNN-SC~\cite{wang2024snnsc} ($\rho{=}1.0$) & 95.20 & 95.64 & 92.36 & 100\% \\
-CNN-Uni 8-bit & 92.50 & 92.40 & 67.25 & 100\% \\
+\midrule
+CNN-Uni (8-bit) & 91.78 & 88.58 & 52.60 & 100\% \\
+CNN-NonUni (8-bit) & 91.74 & 89.14 & 62.44 & 100\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:main_results} presents results on AID (standard 50/50 split, 5,000 test images) under the BSC channel, with 5-seed standard deviations from independent scorer retraining. V5C-NA at $\rho{=}0.75$ achieves 95.42$\pm$0.71\% clean accuracy. At $\rho{=}0.625$, accuracy at BER${=}0.30$ is 93.50\%---exceeding the unmasked SNN-SC baseline (92.36\%) by 1.14~pp. While this advantage is modest relative to the seed variance ($\sigma{=}2.58$ at BER$=$0.30), it is observed consistently: the masking advantage (masking $>$ full-rate at BER$=$0.30) holds in 4 of 5 seeds.
+Table~\ref{tab:main_results} presents results on AID (standard 50/50 split, 5,000 test images) under the BSC channel, with 5-seed standard deviations from independent scorer retraining. V5C-NA at $\rho{=}0.75$ achieves 95.42$\pm$0.71\% clean accuracy. At $\rho{=}0.625$, accuracy at BER${=}0.30$ is 93.50\%---exceeding the unmasked SNN-SC baseline (92.36\%) by 1.14~pp. While this advantage is modest relative to the seed variance ($\sigma{=}2.58$ at BER$=$0.30), it is observed consistently: the masking advantage holds in 4 of 5 seeds.
 
-\textbf{Binary encoding provides inherent noise robustness.} V5C-NA degrades less than 1~pp from clean to BER${=}0.15$ (95.42\% $\to$ 95.72\%---accuracy improves slightly, consistent with noise acting as regularization). CNN-Uni collapses from 92.50\% to 67.25\% at BER${=}0.30$---a 25.25~pp drop. This validates the fundamental advantage of binary encoding: each spike can only be flipped (bounded distortion), whereas 8-bit values suffer unbounded corruption.
+\textbf{Binary encoding provides inherent noise robustness.} V5C-NA degrades less than 2~pp from clean to BER${=}0.30$ (95.42\% $\to$ 93.34\%). In contrast, both CNN baselines \emph{collapse}: CNN-Uni drops 39~pp (91.78\% $\to$ 52.60\%), and CNN-NonUni drops 29~pp (91.74\% $\to$ 62.44\%). Even non-uniform quantization, which optimally adapts quantization levels to the feature distribution, cannot prevent catastrophic degradation because 8-bit representations suffer from MSB (most significant bit) corruption---a single bit flip can change a value by up to $\pm128$, whereas a spike can only flip between 0 and 1. Fig.~\ref{fig:ber_sweep_baselines} shows the full BER sweep for both datasets.
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{fig_ber_sweep_baselines.png}
+    \caption{BER sweep comparison on (a) AID and (b) RESISC45. Shaded region highlights the SNN noise robustness advantage. Binary spike encoding degrades $<$5~pp at BER${=}0.30$, while CNN 8-bit representations collapse by 29--39~pp.}
+    \label{fig:ber_sweep_baselines}
+\end{figure}
 
 \subsection{Content-Adaptive Masking}
 
