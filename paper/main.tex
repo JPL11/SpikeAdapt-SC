@@ -231,7 +231,7 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}36$ chan
 
 \textbf{Training.} The ResNet-50 backbone is initialized from ImageNet and fine-tuned for 50 epochs (SGD, lr$=$0.01), reaching 96.04\% on AID and 93.44\% on RESISC45. The SNN module (V5C-NA) trains in two stages: S2 trains the encoder/decoder for 60~epochs (Adam, lr$=$10$^{-4}$), followed by S3 which jointly fine-tunes with the noise-aware scorer and a diversity loss ($\lambda_{\text{div}}{=}0.05$) for 40~epochs (lr$=$10$^{-5}$). BSC channel noise is sampled with curriculum training (50\% high-noise bias). All evaluations under BSC average over 3 independent noise draws to reduce stochastic variance.
 
-\textbf{Baselines.} Following SNN-SC~\cite{wang2024snnsc}, we compare against three baselines using the \emph{same trained backbone}: (1)~\emph{SNN-SC~\cite{wang2024snnsc}}: our SNN with masking disabled ($\rho{=}1.0$), equivalent to the SNN-SC architecture without spatial masking. (2)~\emph{CNN-Uni}: ANN encoder with 8-bit uniform quantization and matched bottleneck, transmitted via bit-plane BSC. (3)~\emph{CNN-NonUni}: same architecture with non-uniform (Lloyd-Max) quantization---k-means on feature activations finds 256~levels that minimize MSE for the actual distribution, then bit-plane BSC. All CNN baselines use the same backbone, encoder/decoder, and noise curriculum as V5C-NA for a fair comparison.
+\textbf{Baselines.} We compare against five baselines using the \emph{same trained backbone}: (1)~\emph{SNN-SC~\cite{wang2024snnsc}}: our SNN with masking disabled ($\rho{=}1.0$). (2)~\emph{CNN-Uni}: ANN encoder with 8-bit uniform quantization and matched bottleneck, transmitted via bit-plane BSC. (3)~\emph{CNN-NonUni}: same architecture with non-uniform (Lloyd-Max) quantization---k-means on feature activations finds 256~levels that minimize MSE. (4)~\emph{MLP-FC}: fully-connected encoder/decoder replacing convolutions with FC layers and the same 8-bit uniform quantization, testing whether spatial structure matters for noise robustness. (5)~\emph{JPEG+Conv}: traditional separate source-channel coding---features are JPEG-compressed, protected by a rate-1/3 repetition code, and transmitted through the channel, representing the classical design paradigm. All baselines share the same backbone, data splits, and noise curriculum.
 
 \textbf{Reproducibility.} 5-seed variance (seeds 42, 101, 123, 456, 789) with S3 retraining ($\lambda_{\text{div}}{=}0.05$): AID $95.14 \pm 0.71$\% clean, $91.87 \pm 2.58$\% BER$=$0.30. RESISC45 $91.10 \pm 0.99$\% clean, $87.32 \pm 3.90$\% BER$=$0.30. The BER$=$0.30 variance is higher because noise amplifies scorer-dependent mask differences. Table results report seed-42 models with 5-seed standard deviations noted.
 
@@ -240,7 +240,7 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}36$ chan
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{Classification accuracy (\%) on AID (50/50 split) under BSC channel. CNN baselines trained on the same backbone. $^\dagger$5-seed std in parentheses.}
+\caption{Classification accuracy (\%) on AID (50/50 split) under BSC channel. All baselines share the same backbone. $^\dagger$5-seed std in parentheses.}
 \label{tab:main_results}
 \begin{tabular}{l c c c c}
 \toprule
@@ -250,20 +250,22 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}36$ chan
 V5C-NA ($\rho{=}0.625$) & 95.40 & 95.62 & 93.50 & 62.5\% \\
 SNN-SC~\cite{wang2024snnsc} ($\rho{=}1.0$) & 95.20 & 95.64 & 92.36 & 100\% \\
 \midrule
-CNN-Uni (8-bit) & 91.78 & 88.58 & 52.60 & 100\% \\
-CNN-NonUni (8-bit) & 91.74 & 89.14 & 62.44 & 100\% \\
+CNN-Uni (8-bit) & 91.78 & 88.46 & 52.80 & 100\% \\
+CNN-NonUni (8-bit) & 91.74 & 89.00 & 63.58 & 100\% \\
+MLP-FC (8-bit) & 91.98 & 76.84 & 36.12 & 100\% \\
+JPEG+Conv ($R{=}1/3$) & 95.16 & 2.68 & 2.68 & $\sim$300\% \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 Table~\ref{tab:main_results} presents results on AID (standard 50/50 split, 5,000 test images) under the BSC channel, with 5-seed standard deviations from independent scorer retraining. V5C-NA at $\rho{=}0.75$ achieves 95.42$\pm$0.71\% clean accuracy. At $\rho{=}0.625$, accuracy at BER${=}0.30$ is 93.50\%---exceeding the unmasked SNN-SC baseline (92.36\%) by 1.14~pp. While this advantage is modest relative to the seed variance ($\sigma{=}2.58$ at BER$=$0.30), it is observed consistently: the masking advantage holds in 4 of 5 seeds.
 
-\textbf{Binary encoding provides inherent noise robustness.} V5C-NA degrades less than 2~pp from clean to BER${=}0.30$ (95.42\% $\to$ 93.34\%). In contrast, both CNN baselines \emph{collapse}: CNN-Uni drops 39~pp (91.78\% $\to$ 52.60\%), and CNN-NonUni drops 29~pp (91.74\% $\to$ 62.44\%). Even non-uniform quantization, which optimally adapts quantization levels to the feature distribution, cannot prevent catastrophic degradation because 8-bit representations suffer from MSB (most significant bit) corruption---a single bit flip can change a value by up to $\pm128$, whereas a spike can only flip between 0 and 1. Fig.~\ref{fig:ber_sweep_baselines} shows the full BER sweep for both datasets.
+\textbf{Binary encoding provides inherent noise robustness.} V5C-NA degrades less than 2~pp from clean to BER${=}0.30$ (95.42\% $\to$ 93.34\%). In contrast, all continuous-valued baselines \emph{collapse}: CNN-Uni drops 39~pp, CNN-NonUni drops 28~pp, and MLP-FC drops 56~pp. MLP-FC degrades faster than CNN baselines because FC layers lack convolutional spatial structure, making them more sensitive to quantization noise. JPEG+Conv exhibits the worst behavior---a catastrophic \emph{cliff effect} at BER${=}0.05$, dropping from 95.16\% to 2.68\% (random chance), because even a few residual bit errors after the repetition code corrupt critical JPEG header bytes. This cliff effect is characteristic of separate source-channel coding and motivates joint source-channel approaches. Fig.~\ref{fig:ber_sweep_baselines} shows the full BER sweep for both datasets.
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\columnwidth]{fig_ber_sweep_baselines.png}
-    \caption{BER sweep comparison on (a) AID and (b) RESISC45. Shaded region highlights the SNN noise robustness advantage. Binary spike encoding degrades $<$5~pp at BER${=}0.30$, while CNN 8-bit representations collapse by 29--39~pp.}
+    \caption{BER sweep comparison on (a) AID and (b) RESISC45. Six baselines: V5C-NA ($\rho{=}0.75$), SNN-SC ($\rho{=}1.0$), CNN-Uni, CNN-NonUni, MLP-FC, and JPEG+Conv. SNN encoding degrades $\leq$5~pp at BER${=}0.30$; 8-bit CNN/MLP baselines collapse by 28--56~pp; JPEG+Conv exhibits a cliff effect at BER${=}0.05$.}
     \label{fig:ber_sweep_baselines}
 \end{figure}
 
@@ -371,24 +373,27 @@ SNN-SC~\cite{wang2024snnsc} ($\rho{=}1.0$) & 95.20 & 92.36 & 92.53 & 85.31 \\
 
 The masking advantage is \emph{consistent across datasets}: on RESISC45, $\rho{=}0.625$ achieves 87.29\% at BER${=}0.30$ vs.\ 85.31\% at full rate ($+$1.98~pp). On AID, the corresponding improvement is $+$1.14~pp. The noise-aware scorer's diversity loss drives 7$\times$ increase in mask differentiation across BER levels during training (mask diff: 0.0003 $\to$ 0.0023). Fig.~\ref{fig:pareto} shows the full rate--accuracy Pareto for both datasets.
 
-\textbf{BER robustness.} Table~\ref{tab:ber_sweep} presents the full BER sweep for all methods on both datasets. V5C-NA on AID retains 93.34\% at BER${=}0.30$ (only 2.1~pp drop from clean), and RESISC45 retains 86.98\% (5.0~pp drop). In stark contrast, CNN-Uni collapses from 91.78\% to 52.80\% on AID ($-$39~pp) and from 78.32\% to 49.32\% on RESISC45 ($-$29~pp). CNN-NonUni (Lloyd-Max) is more robust at moderate BER by adapting quantization levels to the feature distribution, but still collapses at BER${=}0.30$ (63.58\% on AID, 50.77\% on RESISC45). The degradation is fundamental: 8-bit representations suffer MSB corruption where a single bit flip changes a value by up to $\pm$128, while a spike can only flip between 0 and 1.
+\textbf{BER robustness.} Table~\ref{tab:ber_sweep} presents the full BER sweep for all methods on both datasets. V5C-NA on AID retains 93.34\% at BER${=}0.30$ (only 2.1~pp drop from clean), and RESISC45 retains 86.98\% (5.0~pp drop). In stark contrast, CNN-Uni collapses by 39~pp on AID and 29~pp on RESISC45, CNN-NonUni by 28~pp and 27~pp, and MLP-FC by 56~pp and 61~pp. JPEG+Conv suffers a cliff effect at BER${=}0.05$, dropping from 95.16\% to random chance (2.68\%) because even residual errors after repetition decoding corrupt JPEG headers. The degradation hierarchy---JPEG (cliff) $>$ MLP-FC $>$ CNN-Uni $>$ CNN-NonUni $\gg$ SNN---reflects increasing noise resilience from bit-level representations.
 
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{Full BER sweep accuracy (\%) on both datasets ($\rho{=}0.75$ for V5C-NA, BSC channel). CNN baselines use the same backbone and data splits.}
+\caption{Full BER sweep accuracy (\%) on both datasets (BSC channel). All baselines share the same backbone and data splits.}
 \label{tab:ber_sweep}
 \begin{tabular}{ll ccccccc}
 \toprule
 \textbf{Dataset} & \textbf{Method} & \textbf{0.00} & \textbf{0.05} & \textbf{0.10} & \textbf{0.15} & \textbf{0.20} & \textbf{0.25} & \textbf{0.30} \\
 \midrule
-\multirow{3}{*}{AID} & \textbf{V5C-NA} & \textbf{95.42} & \textbf{95.64} & \textbf{95.70} & \textbf{95.72} & \textbf{95.76} & \textbf{95.16} & \textbf{93.34} \\
+\multirow{5}{*}{AID} & \textbf{V5C-NA} & \textbf{95.42} & \textbf{95.64} & \textbf{95.70} & \textbf{95.72} & \textbf{95.76} & \textbf{95.16} & \textbf{93.34} \\
  & CNN-Uni & 91.78 & 91.90 & 90.82 & 88.46 & 83.40 & 72.96 & 52.80 \\
  & CNN-NonUni & 91.74 & 91.50 & 90.50 & 89.00 & 85.56 & 78.68 & 63.58 \\
+ & MLP-FC & 91.98 & 88.46 & 84.16 & 76.84 & 66.32 & 51.48 & 36.12 \\
+ & JPEG+Conv & 95.16 & 2.66 & 2.68 & 2.68 & 2.68 & 2.68 & 2.68 \\
 \midrule
-\multirow{3}{*}{RESISC45} & \textbf{V5C-NA} & \textbf{92.01} & \textbf{92.15} & \textbf{92.31} & \textbf{92.42} & \textbf{92.31} & \textbf{91.30} & \textbf{86.98} \\
+\multirow{4}{*}{RESISC45} & \textbf{V5C-NA} & \textbf{92.01} & \textbf{92.15} & \textbf{92.31} & \textbf{92.42} & \textbf{92.31} & \textbf{91.30} & \textbf{86.98} \\
  & CNN-Uni & 78.32 & 81.38 & 82.68 & 81.20 & 77.00 & 67.10 & 49.32 \\
  & CNN-NonUni & 78.32 & 78.63 & 77.96 & 76.42 & 72.21 & 64.45 & 50.77 \\
+ & MLP-FC & 82.23 & 74.73 & 65.58 & 54.77 & 43.11 & 31.27 & 20.89 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -436,14 +441,14 @@ Although V5C-NA is trained exclusively on the BSC channel, its binary spike enco
     \label{fig:multichannel}
 \end{figure}
 
-\textbf{Key finding: channel-agnostic robustness for both SNN and CNN.} Table~\ref{tab:multichannel} confirms that at matched equivalent BER, BSC, AWGN, and Rayleigh channels produce accuracy within $\pm$0.5~pp for \emph{all} methods---SNN and CNN alike. This is theoretically expected: because both systems transmit binary representations (spikes or bit planes), BPSK hard-decision demodulation converts any additive noise into effective bit flips, reducing all channels to BSC. The critical difference is not channel sensitivity but \emph{noise resilience}: V5C-NA retains 93.34--93.50\% at BER${=}0.30$ across all channels, while CNN-Uni collapses to 49--53\% and CNN-NonUni to 50--65\%. The practical significance is twofold: (i)~binary encoding makes the system inherently channel-agnostic, and (ii)~only SNN encoding provides the bounded-distortion property needed for robust operation at high noise.
+\textbf{Key finding: channel-agnostic robustness across all architectures.} Table~\ref{tab:multichannel} confirms that at matched equivalent BER, BSC, AWGN, and Rayleigh channels produce accuracy within $\pm$1~pp for \emph{all} methods---SNN, CNN, and MLP alike. This is theoretically expected: because all systems transmit binary representations (spikes or bit planes), BPSK hard-decision demodulation converts any additive noise into effective bit flips, reducing all channels to BSC. The critical difference is not channel sensitivity but \emph{noise resilience}: V5C-NA retains 93.34--93.50\% at BER${=}0.30$ across all channels, while CNN-Uni collapses to 49--53\%, CNN-NonUni to 50--65\%, and MLP-FC to 21--37\%. The practical significance is twofold: (i)~binary encoding makes any system inherently channel-agnostic, and (ii)~only SNN's 1-bit bounded-distortion encoding maintains robustness at high noise.
 
 %=====================================================================
 \section{Conclusion}
 \label{sec:conclusion}
 %=====================================================================
 
-We presented SpikeAdapt-SC, a spiking semantic communication framework for aerial scene classification. Three findings emerge: (i)~Fine-grained 14$\times$14 spatial masking actively \emph{improves} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings), V5C-NA exceeds full-rate accuracy on both AID ($+$1.14~pp) and RESISC45 ($+$1.98~pp). The improvement stems from decoder capacity concentration: masking eliminates noisy low-importance blocks that would otherwise dilute the discriminative signal. (ii)~Binary spike encoding provides inherent, channel-agnostic noise robustness: V5C-NA degrades only 2~pp (AID) and 5~pp (RESISC45) at BER${=}0.30$, while CNN baselines with 8-bit quantization collapse by 29--39~pp under identical conditions---even non-uniform (Lloyd-Max) quantization cannot prevent this catastrophic degradation. At matched equivalent BER, BSC/AWGN/Rayleigh channels produce accuracy within $\pm$0.5~pp for all methods. (iii)~MPBN~\cite{guo2023mpbn} yields $37{\times}$ energy savings via SynOps (FR$=$0.167 vs.\ 0.266). Validation on AID (30 classes, 50/50 split) and RESISC45 (45 classes, 20/80 split) using standard benchmark protocols confirms these benefits.
+We presented SpikeAdapt-SC, a spiking semantic communication framework for aerial scene classification. Three findings emerge: (i)~Fine-grained 14$\times$14 spatial masking actively \emph{improves} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings), V5C-NA exceeds full-rate accuracy on both AID ($+$1.14~pp) and RESISC45 ($+$1.98~pp). (ii)~Binary spike encoding provides inherent, channel-agnostic noise robustness: V5C-NA degrades only 2~pp (AID) and 5~pp (RESISC45) at BER${=}0.30$. Five baselines using the same backbone confirm the advantage: CNN-Uni collapses by 39~pp, CNN-NonUni by 28~pp, MLP-FC by 56~pp, and JPEG+Conv exhibits a cliff effect at BER${=}0.05$. At matched equivalent BER, BSC/AWGN/Rayleigh channels produce accuracy within $\pm$1~pp for all methods. (iii)~MPBN~\cite{guo2023mpbn} yields $37{\times}$ energy savings via SynOps (FR$=$0.167 vs.\ 0.266). Validation on AID (30 classes, 50/50 split) and RESISC45 (45 classes, 20/80 split) using standard benchmark protocols confirms these benefits.
 
 Future directions include HARQ-style selective retransmission guided by decoder confidence, per-sample temporal early exit, extension to multi-modal inputs (SAR, thermal), and neuromorphic hardware validation on Intel Loihi~\cite{davies2018loihi}.
 
