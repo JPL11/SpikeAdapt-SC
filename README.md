@@ -6,7 +6,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 
-> **SpikeAdapt-SC** encodes semantic features as binary spike trains on a **native 14×14 spatial grid** (196 blocks), applies **learned per-image spatial masking**, and achieves robust aerial scene classification under noisy air-to-ground channels. The final model **V5C-NA** uses Membrane Potential Batch Normalization (MPBN) and a noise-aware scorer to deliver **42× energy savings** via SynOps while maintaining **95.42% accuracy on AID** and **92.01% on RESISC45**. At BER=0.30, masking at ρ=0.625 (37.5% bandwidth savings) **exceeds full-rate accuracy** on both datasets.
+> **SpikeAdapt-SC** encodes semantic features as binary spike trains on a **native 14×14 spatial grid** (196 blocks), applies **learned per-image spatial masking**, and achieves robust aerial scene classification under noisy air-to-ground channels. The final model **SpikeAdapt-SC** uses Membrane Potential Batch Normalization (MPBN) and a noise-aware scorer to deliver **42× energy savings** via SynOps while maintaining **95.42% accuracy on AID** and **92.01% on RESISC45**. At BER=0.30, masking at ρ=0.625 (37.5% bandwidth savings) **exceeds full-rate accuracy** on both datasets.
 
 ---
 
@@ -16,16 +16,16 @@
 
 1. **Fine-grained 14×14 spatial masking improves accuracy under noise** — at ρ=0.625 and BER=0.30, masking exceeds full-rate accuracy on both AID (+1.14 pp) and RESISC45 (+1.98 pp). Learned masks beat random by +1.34 pp on AID at ρ=0.50/BER=0.30.
 
-2. **Binary spike encoding is channel-agnostic** — at matched equivalent BER, BSC/AWGN/Rayleigh channels produce accuracy within ±0.2 pp. V5C-NA degrades <1 pp from clean to BER=0.15 on both datasets, while CNN 8-bit quantization collapses from 92.5% to 67%.
+2. **Binary spike encoding is channel-agnostic** — at matched equivalent BER, BSC/AWGN/Rayleigh channels produce accuracy within ±0.2 pp. SpikeAdapt-SC degrades <1 pp from clean to BER=0.15 on both datasets, while CNN 8-bit quantization collapses from 92.5% to 67%.
 
-3. **MPBN provides 42× energy savings** — firing rate 0.167 (vs. 0.266 baseline) yields 42× fewer SynOps at ρ=0.75 using the Horowitz energy model.
+3. **MPBN provides 42× energy savings** — firing rate 0.148 (vs. 0.266 baseline) yields 42× fewer SynOps at ρ=0.75 using the Horowitz energy model.
 
 ### Main Results (BSC Channel, AID 50/50 Split)
 
 | Method | Clean | BER=0.15 | BER=0.30 | Rate |
 |--------|-------|----------|----------|------|
-| **V5C-NA** (ρ=0.75) | **95.42%** | **95.78%** | **93.36%** | 75% |
-| V5C-NA (ρ=0.625) | 95.40% | 95.62% | 93.50% | 62.5% |
+| **SpikeAdapt-SC** (ρ=0.75) | **95.42%** | **95.78%** | **93.36%** | 75% |
+| SpikeAdapt-SC (ρ=0.625) | 95.40% | 95.62% | 93.50% | 62.5% |
 | SNN (no mask, ρ=1.0) | 95.20% | 95.64% | 92.36% | 100% |
 | CNN-Uni 8-bit | 92.50% | 92.40% | 67.25% | 100% |
 
@@ -33,7 +33,7 @@
 
 ### Cross-Dataset Validation
 
-| Dataset | Split | Backbone | V5C-NA Clean | BER=0.30 |
+| Dataset | Split | Backbone | SpikeAdapt-SC Clean | BER=0.30 |
 |---------|-------|----------|-------------|----------|
 | **AID** | 50/50 (5K/5K) | 96.04% | **95.42%** | **93.34%** |
 | **RESISC45** | 20/80 (6.3K/25.2K) | 93.44% | **92.01%** | **86.98%** |
@@ -62,7 +62,7 @@
 
 > **ρ=0.625 beats ρ=1.0 on both datasets**: AID +1.14 pp, RESISC45 +1.98 pp.
 
-### Mask Comparison (V5C-NA, AID 50/50)
+### Mask Comparison (SpikeAdapt-SC, AID 50/50)
 
 | ρ | BER | Learned | Random (3-draw) | Uniform | Δ_rand |
 |---|-----|---------|-----------------|---------|--------|
@@ -78,8 +78,8 @@
 | Version | FR | ρ | SynOps (M) | Energy × |
 |---------|-----|---|------------|----------|
 | V2 (IF baseline) | 0.266 | 0.75 | 321.1 | 23.4× |
-| **V5C-NA (MPBN)** | **0.167** | 0.75 | **178.7** | **42.0×** |
-| V5C-NA (MPBN) | 0.167 | 0.50 | 140.1 | 53.5× |
+| **SpikeAdapt-SC** | **0.148** | 0.75 | **178.7** | **42.0×** |
+| SpikeAdapt-SC | 0.148 | 0.50 | 140.1 | 53.5× |
 
 *Computed from measured firing rates using the Horowitz energy model (MAC: 4.6 pJ, SynOp: 0.9 pJ).*
 
@@ -114,7 +114,7 @@ ResNet-50 Front (L1–L3, frozen) → Feature Map F ∈ ℝ^{1024×14×14}
 SNN Encoder (T=8)              Importance Scores I ∈ (0,1)^{14×14}
   Conv 1024→256, BN+IF                  │
   Conv 256→36, BN+IF                    ▼
-  MPBN (FR=0.167)              Learned Block Mask M ∈ {0,1}^{14×14}
+  MPBN (FR=0.148)              Learned Block Mask M ∈ {0,1}^{14×14}
     │                                    │
     ▼                                    │
 Spikes S₂ ∈ {0,1}^{36×14×14} ──⊙ M──▶ Masked Spikes
@@ -150,7 +150,7 @@ SpikeAdapt-SC/
 │   ├── train_aid_v2.py                  #   V2: 14×14 native grid, C2=36
 │   ├── train_aid_v4.py                  #   V4-A: LIF + BNTT + learnable slope
 │   ├── train_aid_v5.py                  #   V5C: + MPBN (final model base)
-│   └── run_final_pipeline.py            #   Master pipeline: V5C-NA on AID + RESISC45
+│   └── run_final_pipeline.py            #   Master pipeline: SpikeAdapt-SC on AID + RESISC45
 │
 ├── models/                              # Model components
 │   └── noise_aware_scorer.py            #   Noise-aware importance scorer
@@ -188,11 +188,11 @@ cd SpikeAdapt-SC
 # Install dependencies
 pip install -r requirements.txt
 
-# Train V5C-NA on AID (50/50 split)
+# Train SpikeAdapt-SC on AID (50/50 split)
 python train/run_final_pipeline.py --stage backbone_aid
 python train/run_final_pipeline.py --stage v5c_aid
 
-# Train V5C-NA on RESISC45 (20/80 split)
+# Train SpikeAdapt-SC on RESISC45 (20/80 split)
 python train/run_final_pipeline.py --stage backbone_resisc
 python train/run_final_pipeline.py --stage v5c_resisc
 
@@ -222,12 +222,12 @@ python eval/compute_synops.py
 
 ## Datasets
 
-| Dataset | Classes | Images | Resolution | Standard Split | Train | Test |
+| Dataset | Classes | Images | Resolution | Split | Train | Test |
 |---------|---------|--------|------------|----------------|-------|------|
 | **AID** [Xia et al. 2017] | 30 | 10,000 | 600×600 | 50/50 | 5,000 | 5,000 |
 | **RESISC45** [Cheng et al. 2017] | 45 | 31,500 | 256×256 | 20/80 | 6,300 | 25,200 |
 
-Both use their **standard benchmark splits** for comparability with prior work.
+Both use their **commonly used benchmark splits** for comparability with prior work.
 
 ---
 
@@ -249,7 +249,7 @@ Both use their **standard benchmark splits** for comparability with prior work.
 
 - **AID**: G.-S. Xia et al., "AID: A benchmark data set for performance evaluation of aerial scene classification," *IEEE TGRS*, 2017.
 - **RESISC45**: G. Cheng et al., "Remote sensing image scene classification: Benchmark and state of the art," *Proc. IEEE*, 2017.
-- **SNN-SC**: M. Wang et al., "SNN-SC: A spiking semantic communication framework," *IEEE TCCN*, 2024.
+- **SNN (no mask)**: M. Wang et al., "SNN (no mask): A spiking semantic communication framework," *IEEE TCCN*, 2024.
 - **Horowitz**: M. Horowitz, "Computing's energy problem," *IEEE ISSCC*, 2014.
 
 ---
