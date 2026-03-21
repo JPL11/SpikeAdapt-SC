@@ -2,6 +2,7 @@
 \documentclass[conference]{IEEEtran}
 
 \usepackage{amsmath,amssymb,amsfonts}
+\usepackage{pifont}
 \usepackage{algorithmic}
 \usepackage{graphicx}
 \graphicspath{{figures/}{./}}
@@ -38,7 +39,7 @@
 \maketitle
 
 \begin{abstract}
-Unmanned aerial vehicles (UAVs) performing edge AI inference face a dual constraint: air-to-ground links suffer from severe fading and limited bandwidth, while onboard processors are restricted by strict power budgets. We present \textbf{SpikeAdapt-SC}, a spiking neural network (SNN) framework for semantic communication that jointly addresses both constraints through three mechanisms: (i)~fine-grained spatial masking on a native $14{\times}14$ feature grid, where a noise-aware importance scorer generates per-image masks that \emph{improve} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings) and BER${=}0.30$, our model SpikeAdapt-SC achieves 93.50\% on AID (vs.\ 92.36\% at full rate), and 87.29\% on RESISC45 (vs.\ 85.31\%); (ii)~binary spike encoding that provides channel-agnostic noise robustness---at matched equivalent BER, BSC, AWGN, and Rayleigh channels produce accuracy within $\pm$1~pp, while CNN baselines with 8-bit quantization collapse (CNN-Uni: 52\%, CNN-NonUni: 62\%) at BER${=}0.30$; and (iii)~membrane potential batch normalization (MPBN)~\cite{guo2023mpbn} that reduces firing rate to 0.148, yielding $42{\times}$ energy savings via SynOps. We validate on AID (30 classes, 10,000 images, standard 50/50 split) and NWPU-RESISC45 (45 classes, 31,500 images, commonly used 20\% training split), achieving 95.42\% and 92.01\% clean accuracy respectively.
+Unmanned aerial vehicles (UAVs) performing edge AI inference face a dual constraint: air-to-ground links suffer from severe fading and limited bandwidth, while onboard processors are restricted by strict power budgets. We present \textbf{SpikeAdapt-SC}, a spiking neural network (SNN) framework for semantic communication that jointly addresses both constraints through three mechanisms: (i)~fine-grained spatial masking on a native $14{\times}14$ feature grid, where a noise-aware importance scorer generates per-image masks that \emph{improve} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings) and BER${=}0.30$, our model SpikeAdapt-SC achieves 93.50\% on AID (vs.\ 92.36\% at full rate), and 87.29\% on RESISC45 (vs.\ 85.31\%); (ii)~binary spike encoding that provides channel-agnostic noise robustness---at matched equivalent BER, BSC, AWGN, and Rayleigh channels produce accuracy within $\pm$1~pp, while CNN baselines with 8-bit quantization collapse (CNN-Uni: 52\%, CNN-NonUni: 62\%) at BER${=}0.30$; and (iii)~membrane potential batch normalization (MPBN)~\cite{guo2023mpbn} that reduces firing rate to 0.167, yielding $37{\times}$ energy savings via SynOps. We validate on AID (30 classes, 10,000 images, standard 50/50 split) and NWPU-RESISC45 (45 classes, 31,500 images, commonly used 20\% training split), achieving 95.42\% and 92.01\% clean accuracy respectively.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -63,7 +64,7 @@ In this paper, we propose \textbf{SpikeAdapt-SC}, a spiking semantic communicati
     
     \item \textbf{Binary spike encoding provides channel-agnostic noise robustness.} Unlike floating-point features where additive noise corrupts precision, binary spikes can only be flipped, limiting worst-case distortion. At matched equivalent BER, BSC, AWGN, and Rayleigh channels produce accuracy within $\pm$1~pp---the system is inherently channel-agnostic without channel-specific training. SpikeAdapt-SC degrades only 2~pp at BER${=}0.30$, while CNN-Uni collapses by 39~pp (to 52.80\%), MLP-FC by 56~pp, and JPEG+Conv exhibits a cliff effect at BER${=}0.05$.
     
-    \item \textbf{MPBN provides 42$\times$ energy savings.} Membrane potential batch normalization~\cite{guo2023mpbn} reduces firing rate to 0.148 (vs.\ 0.266 baseline), enabling $42{\times}$ energy savings via SynOps at $\rho{=}0.75$ using the Horowitz energy model~\cite{horowitz2014energy}.
+    \item \textbf{MPBN provides 37$\times$ energy savings.} Membrane potential batch normalization~\cite{guo2023mpbn} reduces firing rate to 0.167 (vs.\ 0.266 baseline), enabling $37{\times}$ energy savings via SynOps at $\rho{=}0.75$ using the Horowitz energy model~\cite{horowitz2014energy}.
 \end{enumerate}
 
 We validate on two standard aerial scene benchmarks: AID~\cite{xia2017aid} (30 classes, 10,000 images, standard 50/50 split) and NWPU-RESISC45~\cite{cheng2017resisc} (45 classes, 31,500 images, commonly used 20\% training split). SpikeAdapt-SC achieves 95.42\% (AID) and 92.01\% (RESISC45) clean accuracy, maintaining $>$93\% and $>$87\% respectively at BER${=}0.30$.
@@ -110,7 +111,7 @@ The encoder converts the continuous feature map $\mathbf{F}$ into binary spike t
     \mathbf{s}_t^{(l)} &= \Theta(\mathbf{m}_t^{(l)} - v_{\text{th}}) \label{eq:spike}\\
     \mathbf{m}_t^{(l)} &\leftarrow \mathbf{m}_t^{(l)} - \mathbf{s}_t^{(l)} \cdot v_{\text{th}} \label{eq:reset}
 \end{align}
-where $\mathbf{m}_t^{(l)}$ is the membrane potential at layer $l$ and timestep $t$, $\Theta(\cdot)$ is the Heaviside step function, and $v_{\text{th}} = 1.0$ is the firing threshold. Crucially, Eq.~\eqref{eq:mpbn} applies \emph{timestep-specific} batch normalization $\text{BN}_t^{(l)}$ to the \emph{accumulated membrane potential}, not to the convolutional output. Each timestep maintains independent affine parameters, enabling the network to learn timestep-adapted firing thresholds. This differs from standard pre-activation BN (which normalizes $\text{Conv}(\mathbf{s})$ before accumulation) and from BNTT~\cite{kim2022bntt} (which uses timestep-specific BN on the convolutional output). MPBN directly controls the membrane distribution, reducing firing rate from 0.266 to 0.148---a 44\% reduction that translates to proportional SynOps savings. Following~\cite{neftci2019surrogate}, we use $\sigma'(x) = \sigma(10x)(1-\sigma(10x)) \cdot 10$ as surrogate gradient for backpropagation.
+where $\mathbf{m}_t^{(l)}$ is the membrane potential at layer $l$ and timestep $t$, $\Theta(\cdot)$ is the Heaviside step function, and $v_{\text{th}} = 1.0$ is the firing threshold. Crucially, Eq.~\eqref{eq:mpbn} applies \emph{timestep-specific} batch normalization $\text{BN}_t^{(l)}$ to the \emph{accumulated membrane potential}, not to the convolutional output. Each timestep maintains independent affine parameters, enabling the network to learn timestep-adapted firing thresholds. This differs from standard pre-activation BN (which normalizes $\text{Conv}(\mathbf{s})$ before accumulation) and from BNTT~\cite{kim2022bntt} (which uses timestep-specific BN on the convolutional output). MPBN directly controls the membrane distribution, reducing firing rate from 0.266 to 0.167---a 37\% reduction that translates to proportional SynOps savings. Following~\cite{neftci2019surrogate}, we use $\sigma'(x) = \sigma(10x)(1-\sigma(10x)) \cdot 10$ as surrogate gradient for backpropagation.
 
 The encoder reduces $\mathbf{F}$ from 1024 to $C_2{=}36$ channels, producing spike tensors $\mathbf{S}_t \in \{0,1\}^{B \times 36 \times 14 \times 14}$ for $t = 1, \ldots, T$. Since each transmitted element is a single bit, the spike representation is inherently channel-compatible with binary modulation.
 
@@ -202,13 +203,13 @@ Using the energy model from~\cite{horowitz2014energy}, where a 32-bit floating-p
 \textbf{Version} & \textbf{FR} & $\rho$ & \textbf{SynOps (M)} & \textbf{Energy} $\times$ \\
 \midrule
 V2 (IF baseline) & 0.266 & 0.75 & 321.1 & 23.4$\times$ \\
-\textbf{SpikeAdapt-SC} & \textbf{0.148} & 0.75 & \textbf{178.7} & \textbf{42.0}$\times$ \\
-SpikeAdapt-SC & 0.148 & 0.50 & 140.1 & 53.5$\times$ \\
+\textbf{SpikeAdapt-SC} & \textbf{0.167} & 0.75 & \textbf{201.5} & \textbf{37.3}$\times$ \\
+SpikeAdapt-SC &0.167& 0.50 & 158.2 & 47.5$\times$ \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:energy} reports the measured SynOps and energy ratios. SpikeAdapt-SC achieves a $42{\times}$ energy advantage over equivalent MACs at $\rho{=}0.75$, rising to $53.5{\times}$ at $\rho{=}0.50$, thanks to the lower firing rate enabled by MPBN (0.148 vs.\ 0.266). These numbers are computed from measured spike statistics on the AID test set using the Horowitz energy model; actual savings on neuromorphic hardware (e.g., Intel Loihi~\cite{davies2018loihi}) may differ.
+Table~\ref{tab:energy} reports the measured SynOps and energy ratios. SpikeAdapt-SC achieves a $37{\times}$ energy advantage over equivalent MACs at $\rho{=}0.75$, rising to $47.5{\times}$ at $\rho{=}0.50$, thanks to the lower firing rate enabled by MPBN (0.167 vs.\ 0.266). These numbers are computed from measured spike statistics on the AID test set using the Horowitz energy model; actual savings on neuromorphic hardware (e.g., Intel Loihi~\cite{davies2018loihi}) may differ.
 
 \subsection{Spectral Efficiency}
 
@@ -343,6 +344,25 @@ $\rho$ & \textbf{BER} & \textbf{Learned} & \textbf{Random} & \textbf{Uniform} & 
 \end{tabular}
 \end{table}
 
+\textbf{Noise-aware ablation.} To isolate the contribution of each noise-aware component, we retrain S3 (40 epochs) from the same S2-pretrained encoder with four configurations (Table~\ref{tab:na_ablation}). Both the BER-conditioning branch (channel reweighting) and the diversity loss ($\lambda_{\text{div}}{=}0.05$) are essential: removing either drops BER${=}0.30$ accuracy by $\sim$20~pp (93.40\%$\to$72--73\%). Importantly, the ablated variants achieve comparable or slightly higher clean accuracy ($\sim$95.95\% vs.\ 95.42\%), indicating that the full model's diversity loss trades $\sim$0.5~pp of clean accuracy for 20~pp of noise robustness at BER${=}0.30$.
+
+\begin{table}[t]
+\renewcommand{\arraystretch}{1.15}
+\centering
+\caption{Noise-aware ablation on AID ($\rho{=}0.75$, seed-42). Both the BER-conditioning branch and diversity loss are essential for noise robustness.}
+\label{tab:na_ablation}
+\begin{tabular}{l cc ccc}
+\toprule
+\textbf{Variant} & \textbf{BER} & \textbf{Div.} & \textbf{Clean} & \textbf{BER=0.15} & \textbf{BER=0.30} \\
+\midrule
+\textbf{Full (SpikeAdapt-SC)} & \checkmark & \checkmark & 95.42 & \textbf{95.76} & \textbf{93.40} \\
+No BER branch & \ding{55} & \checkmark & \textbf{95.94} & 95.54 & 72.54 \\
+No diversity loss & \checkmark & \ding{55} & \textbf{95.94} & 95.50 & 72.88 \\
+No noise-aware & \ding{55} & \ding{55} & \textbf{95.96} & 95.52 & 72.48 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Cross-Dataset Generalization}
 
 To verify that SpikeAdapt-SC generalizes beyond AID, we evaluate SpikeAdapt-SC on NWPU-RESISC45~\cite{cheng2017resisc} (45 classes, 31,500 images, commonly used 20\% training split: 6,300 train / 25,200 test). Table~\ref{tab:cross_dataset} presents results.
@@ -454,7 +474,7 @@ Although SpikeAdapt-SC is trained exclusively on the BSC channel, its binary spi
 \label{sec:conclusion}
 %=====================================================================
 
-We presented SpikeAdapt-SC, a spiking semantic communication framework for aerial scene classification. Three findings emerge: (i)~Fine-grained 14$\times$14 spatial masking actively \emph{improves} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings), SpikeAdapt-SC exceeds full-rate accuracy on both AID ($+$1.14~pp) and RESISC45 ($+$1.98~pp). (ii)~Binary spike encoding provides inherent, channel-agnostic noise robustness: SpikeAdapt-SC degrades only 2~pp (AID) and 5~pp (RESISC45) at BER${=}0.30$. Five baselines using the same backbone confirm the advantage: CNN-Uni collapses by 39~pp, CNN-NonUni by 28~pp, MLP-FC by 56~pp, and JPEG+Conv exhibits a cliff effect at BER${=}0.05$. At matched equivalent BER, BSC/AWGN/Rayleigh channels produce accuracy within $\pm$1~pp for all methods. (iii)~MPBN~\cite{guo2023mpbn} yields $42{\times}$ energy savings via SynOps (FR$=$0.148 vs.\ 0.266). Validation on AID (30 classes, 50/50 split) and RESISC45 (45 classes, 20/80 split) using standard benchmark protocols confirms these benefits.
+We presented SpikeAdapt-SC, a spiking semantic communication framework for aerial scene classification. Three findings emerge: (i)~Fine-grained 14$\times$14 spatial masking actively \emph{improves} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings), SpikeAdapt-SC exceeds full-rate accuracy on both AID ($+$1.14~pp) and RESISC45 ($+$1.98~pp). (ii)~Binary spike encoding provides inherent, channel-agnostic noise robustness: SpikeAdapt-SC degrades only 2~pp (AID) and 5~pp (RESISC45) at BER${=}0.30$. Five baselines using the same backbone confirm the advantage: CNN-Uni collapses by 39~pp, CNN-NonUni by 28~pp, MLP-FC by 56~pp, and JPEG+Conv exhibits a cliff effect at BER${=}0.05$. At matched equivalent BER, BSC/AWGN/Rayleigh channels produce accuracy within $\pm$1~pp for all methods. (iii)~MPBN~\cite{guo2023mpbn} yields $37{\times}$ energy savings via SynOps (FR$=$0.167 vs.\ 0.266). Validation on AID (30 classes, 50/50 split) and RESISC45 (45 classes, 20/80 split) using standard benchmark protocols confirms these benefits.
 
 Future directions include HARQ-style selective retransmission guided by decoder confidence, per-sample temporal early exit, extension to multi-modal inputs (SAR, thermal), and neuromorphic hardware validation on Intel Loihi~\cite{davies2018loihi}.
 

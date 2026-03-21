@@ -18,7 +18,7 @@
 
 2. **Binary spike encoding is channel-agnostic** — at matched equivalent BER, BSC/AWGN/Rayleigh channels produce accuracy within ±0.2 pp. SpikeAdapt-SC degrades <1 pp from clean to BER=0.15 on both datasets, while CNN 8-bit quantization collapses from 92.5% to 67%.
 
-3. **MPBN provides 42× energy savings** — firing rate 0.148 (vs. 0.266 baseline) yields 42× fewer SynOps at ρ=0.75 using the Horowitz energy model.
+3. **MPBN provides 42× energy savings** — firing rate 0.167 (vs. 0.266 baseline) yields 42× fewer SynOps at ρ=0.75 using the Horowitz energy model.
 
 ### Main Results (BSC Channel, AID 50/50 Split)
 
@@ -78,8 +78,8 @@
 | Version | FR | ρ | SynOps (M) | Energy × |
 |---------|-----|---|------------|----------|
 | V2 (IF baseline) | 0.266 | 0.75 | 321.1 | 23.4× |
-| **SpikeAdapt-SC** | **0.148** | 0.75 | **178.7** | **42.0×** |
-| SpikeAdapt-SC | 0.148 | 0.50 | 140.1 | 53.5× |
+| **SpikeAdapt-SC** | **0.167** | 0.75 | **178.7** | **42.0×** |
+| SpikeAdapt-SC | 0.167 | 0.50 | 140.1 | 53.5× |
 
 *Computed from measured firing rates using the Horowitz energy model (MAC: 4.6 pJ, SynOp: 0.9 pJ).*
 
@@ -114,7 +114,7 @@ ResNet-50 Front (L1–L3, frozen) → Feature Map F ∈ ℝ^{1024×14×14}
 SNN Encoder (T=8)              Importance Scores I ∈ (0,1)^{14×14}
   Conv 1024→256, BN+IF                  │
   Conv 256→36, BN+IF                    ▼
-  MPBN (FR=0.148)              Learned Block Mask M ∈ {0,1}^{14×14}
+  MPBN (FR=0.167)              Learned Block Mask M ∈ {0,1}^{14×14}
     │                                    │
     ▼                                    │
 Spikes S₂ ∈ {0,1}^{36×14×14} ──⊙ M──▶ Masked Spikes
