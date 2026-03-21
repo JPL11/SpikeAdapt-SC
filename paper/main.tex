@@ -223,7 +223,7 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}36$ chan
 
 \textbf{Baselines.} (1)~\emph{SNN (no mask)}: our SNN with masking disabled ($\rho{=}1.0$). (2)~\emph{CNN-Uni}: ANN encoder with 8-bit uniform quantization, matched bottleneck.
 
-\textbf{Reproducibility.} 5-seed variance (seeds 42, 101, 123, 456, 789): AID $97.33 \pm 0.97$\% clean, $96.03 \pm 1.32$\% BER$=$0.30. RESISC45 $93.30 \pm 0.65$\% clean, $88.88 \pm 0.97$\% BER$=$0.30. Table results report seed-42 models.
+\textbf{Reproducibility.} 5-seed variance (seeds 42, 101, 123, 456, 789) with 60 epochs S3 retraining (\(\lambda_{\text{div}}{=}0.10\)): AID $95.14 \pm 0.71$\% clean, $91.87 \pm 2.58$\% BER$=$0.30. RESISC45 $91.10 \pm 0.99$\% clean, $87.32 \pm 3.90$\% BER$=$0.30. Table results report seed-42 models.
 
 \subsection{Channel Robustness}
 
@@ -406,14 +406,14 @@ The masking advantage is \emph{consistent across datasets}: on RESISC45, $\rho{=
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{V5C-NA accuracy (\%) across BER on both datasets ($\rho{=}0.75$).}
+\caption{V5C-NA accuracy (\%) across BER on both datasets ($\rho{=}0.75$, BSC channel).}
 \label{tab:ber_sweep}
 \begin{tabular}{l ccccccc}
 \toprule
 \textbf{Dataset} & \textbf{0.00} & \textbf{0.05} & \textbf{0.10} & \textbf{0.15} & \textbf{0.20} & \textbf{0.25} & \textbf{0.30} \\
 \midrule
-AID & 95.42 & 95.54 & 95.72 & \textbf{95.74} & 95.74 & 95.20 & 93.42 \\
-RESISC45 & 92.01 & 92.21 & 92.31 & \textbf{92.41} & 92.25 & 91.40 & 87.15 \\
+AID & 95.42 & 95.64 & 95.70 & \textbf{95.72} & 95.76 & 95.16 & 93.34 \\
+RESISC45 & 92.01 & 92.15 & 92.31 & \textbf{92.42} & 92.31 & 91.30 & 86.98 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -421,18 +421,52 @@ RESISC45 & 92.01 & 92.21 & 92.31 & \textbf{92.41} & 92.25 & 91.40 & 87.15 \\
 \begin{figure}[t]
     \centering
     \includegraphics[width=\columnwidth]{fig6_ber_robustness.pdf}
-    \caption{BER robustness of V5C-NA on AID and RESISC45. Accuracy remains within 1~pp of clean through BER${=}0.15$ on both datasets, degrading gracefully at higher noise. CNN 8-bit quantization collapses to 67\% at BER${=}0.30$.}
+    \caption{BER robustness of V5C-NA on AID and RESISC45 (BSC channel). Accuracy remains within 1~pp of clean through BER${=}0.15$ on both datasets, degrading gracefully at higher noise.}
     \label{fig:ber_robustness}
 \end{figure}
+
+\subsection{Cross-Channel Generalization}
+
+Although V5C-NA is trained exclusively on the BSC channel, its binary spike encoding enables \emph{channel-agnostic} robustness. Table~\ref{tab:multichannel} evaluates V5C-NA across BSC, AWGN, and Rayleigh channels at matched equivalent bit error rates. At each target BER, we compute the SNR that produces that error rate theoretically (BPSK: $\text{BER}_{\text{AWGN}} = Q(\sqrt{2\cdot\text{SNR}})$, $\text{BER}_{\text{Ray}} = \frac{1}{2}(1-\sqrt{\gamma/(1+\gamma)})$), then evaluate.
+
+\begin{table}[t]
+\renewcommand{\arraystretch}{1.15}
+\centering
+\caption{Matched-BER comparison: V5C-NA accuracy (\%) across BSC, AWGN, and Rayleigh channels at equivalent error rates. $\rho{=}0.75$.}
+\label{tab:multichannel}
+\begin{tabular}{c ccc ccc}
+\toprule
+ & \multicolumn{3}{c}{\textbf{AID}} & \multicolumn{3}{c}{\textbf{RESISC45}} \\
+\textbf{BER} & \textbf{BSC} & \textbf{AWGN} & \textbf{Ray.} & \textbf{BSC} & \textbf{AWGN} & \textbf{Ray.} \\
+\midrule
+0.01 & 95.46 & 95.52 & 95.44 & 92.05 & 92.03 & 92.02 \\
+0.05 & 95.64 & 95.56 & 95.66 & 92.15 & 92.17 & 92.17 \\
+0.10 & 95.70 & 95.66 & 95.70 & 92.31 & 92.27 & 92.34 \\
+0.15 & 95.72 & 95.72 & 95.90 & 92.42 & 92.39 & 92.40 \\
+0.20 & 95.76 & 95.62 & 95.70 & 92.31 & 92.29 & 92.31 \\
+0.25 & 95.16 & 95.20 & 95.28 & 91.30 & 91.29 & 91.35 \\
+0.30 & 93.34 & 93.46 & 93.50 & 86.98 & 86.94 & 86.94 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{fig7_unified_ber.pdf}
+    \caption{Accuracy vs.\ equivalent BER for all three channel models. BSC, AWGN, and Rayleigh curves overlap almost perfectly on both datasets, demonstrating that binary spike encoding provides channel-agnostic robustness. The system degrades gracefully: $<$1~pp drop through BER${=}0.20$ on both datasets.}
+    \label{fig:multichannel}
+\end{figure}
+
+\textbf{Key finding: channel-agnostic robustness.} At every matched BER from 0.01 to 0.30, the three channels produce accuracy within $\pm$0.2~pp of each other (Table~\ref{tab:multichannel}, Fig.~\ref{fig:multichannel}). This is because binary spikes admit only bit-flip errors regardless of the physical noise mechanism---after BPSK hard-decision demodulation, AWGN and Rayleigh noise reduce to effective bit flips, making the system inherently channel-agnostic without any channel-specific training.
 
 %=====================================================================
 \section{Conclusion}
 \label{sec:conclusion}
 %=====================================================================
 
-We presented SpikeAdapt-SC, a spiking semantic communication framework for aerial scene classification. Three findings emerge: (i)~Fine-grained 14$\times$14 spatial masking actively \emph{improves} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings), V5C-NA exceeds full-rate accuracy on both AID ($+$1.14~pp) and RESISC45 ($+$1.98~pp). (ii)~Binary spike encoding provides inherent noise robustness (${<}$1~pp degradation clean to BER${=}0.15$), unlike CNN 8-bit quantization which collapses to 67\%. (iii)~MPBN yields $42{\times}$ energy savings via SynOps (FR$=$0.167 vs.\ 0.266). Validation on AID (30 classes, 50/50 split) and RESISC45 (45 classes, 20/80 split) using standard benchmark protocols confirms these benefits across dataset scales.
+We presented SpikeAdapt-SC, a spiking semantic communication framework for aerial scene classification. Three findings emerge: (i)~Fine-grained 14$\times$14 spatial masking actively \emph{improves} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings), V5C-NA exceeds full-rate accuracy on both AID ($+$1.14~pp) and RESISC45 ($+$1.98~pp). (ii)~Binary spike encoding provides inherent, channel-agnostic noise robustness: at matched equivalent BER, BSC/AWGN/Rayleigh channels produce accuracy within $\pm$0.2~pp, and degradation remains $<$1~pp through BER${=}0.15$. (iii)~MPBN yields $42{\times}$ energy savings via SynOps (FR$=$0.167 vs.\ 0.266). Validation on AID (30 classes, 50/50 split) and RESISC45 (45 classes, 20/80 split) using standard benchmark protocols confirms these benefits.
 
-Future directions include HARQ-style selective retransmission guided by decoder confidence, per-sample temporal early exit for additional bandwidth savings, and neuromorphic hardware validation on Intel Loihi~\cite{davies2018loihi}.
+Future directions include HARQ-style selective retransmission guided by decoder confidence, per-sample temporal early exit, extension to multi-modal inputs (SAR, thermal), and neuromorphic hardware validation on Intel Loihi~\cite{davies2018loihi}.
 
 %=====================================================================
 % REFERENCES

@@ -16,7 +16,7 @@
 
 1. **Fine-grained 14×14 spatial masking improves accuracy under noise** — at ρ=0.625 and BER=0.30, masking exceeds full-rate accuracy on both AID (+1.14 pp) and RESISC45 (+1.98 pp). Learned masks beat random by +1.34 pp on AID at ρ=0.50/BER=0.30.
 
-2. **Binary spike encoding provides inherent noise robustness** — V5C-NA degrades <1 pp from clean to BER=0.15 on both datasets, while CNN 8-bit quantization collapses from 92.5% to 67%.
+2. **Binary spike encoding is channel-agnostic** — at matched equivalent BER, BSC/AWGN/Rayleigh channels produce accuracy within ±0.2 pp. V5C-NA degrades <1 pp from clean to BER=0.15 on both datasets, while CNN 8-bit quantization collapses from 92.5% to 67%.
 
 3. **MPBN provides 42× energy savings** — firing rate 0.167 (vs. 0.266 baseline) yields 42× fewer SynOps at ρ=0.75 using the Horowitz energy model.
 
@@ -35,8 +35,19 @@
 
 | Dataset | Split | Backbone | V5C-NA Clean | BER=0.30 |
 |---------|-------|----------|-------------|----------|
-| **AID** | 50/50 (5K/5K) | 96.04% | **95.42%** | **93.42%** |
-| **RESISC45** | 20/80 (6.3K/25.2K) | 93.44% | **92.01%** | **87.15%** |
+| **AID** | 50/50 (5K/5K) | 96.04% | **95.42%** | **93.34%** |
+| **RESISC45** | 20/80 (6.3K/25.2K) | 93.44% | **92.01%** | **86.98%** |
+
+### Multi-Channel Comparison (Matched Equivalent BER)
+
+| Equiv BER | BSC (AID) | AWGN (AID) | Ray. (AID) | BSC (RES) | AWGN (RES) | Ray. (RES) |
+|-----------|-----------|------------|------------|-----------|------------|------------|
+| 0.01 | 95.46% | 95.52% | 95.44% | 92.05% | 92.03% | 92.02% |
+| 0.10 | 95.70% | 95.66% | 95.70% | 92.31% | 92.27% | 92.34% |
+| 0.20 | 95.76% | 95.62% | 95.70% | 92.31% | 92.29% | 92.31% |
+| 0.30 | 93.34% | 93.46% | 93.50% | 86.98% | 86.94% | 86.94% |
+
+> **Channel-agnostic**: All 3 channels within **±0.2 pp** at every matched BER. Binary spikes admit only bit-flip errors regardless of physical noise mechanism.
 
 ### ρ Sweep: Bandwidth–Accuracy Pareto (BER=0.30)
 
@@ -72,9 +83,19 @@
 
 *Computed from measured firing rates using the Horowitz energy model (MAC: 4.6 pJ, SynOp: 0.9 pJ).*
 
-### 5-Seed Reproducibility (Proper S3 Retraining)
+### 5-Seed Reproducibility (60-epoch S3, λ_div=0.10)
 
-*Running — results will be updated when complete.*
+| BER | AID Mean ± Std | RESISC45 Mean ± Std |
+|-----|----------------|---------------------|
+| Clean | 95.14 ± 0.71% | 91.10 ± 0.99% |
+| 0.05 | 95.25 ± 0.60% | 91.38 ± 0.90% |
+| 0.10 | 95.26 ± 0.61% | 91.49 ± 0.96% |
+| 0.15 | 95.26 ± 0.59% | 91.47 ± 1.09% |
+| 0.20 | 95.15 ± 0.66% | 91.26 ± 1.38% |
+| 0.25 | 94.32 ± 0.96% | 90.47 ± 1.95% |
+| **0.30** | **91.87 ± 2.58%** | **87.32 ± 3.90%** |
+
+*Seeds: 42, 101, 123, 456, 789. Same data split (seed=42), different scorer initialization.*
 
 ---
 
@@ -193,7 +214,7 @@ python eval/compute_synops.py
 |-------|-------------|--------|------|
 | **S1** | ResNet-50 backbone fine-tuning (ImageNet → aerial domain) | 50 | 0.01 |
 | **S2** | SNN encoder/decoder with MPBN (backbone frozen) | 60 | 1e-4 |
-| **S3** | Joint fine-tuning with noise-aware scorer + diversity loss (λ_div=0.05) | 40 | 1e-5 |
+| **S3** | Joint fine-tuning with noise-aware scorer + diversity loss (λ_div=0.10) | 60 | 1e-5 |
 
 **Noise curriculum**: Each batch samples BER uniformly, with 50% probability biased to high-noise [0.15, 0.40].
 
