@@ -407,29 +407,32 @@ The masking advantage is \emph{consistent across datasets}: on RESISC45, $\rho{=
 
 \subsection{Cross-Channel Generalization}
 
-Although V5C-NA is trained exclusively on the BSC channel, its binary spike encoding enables \emph{channel-agnostic} robustness. Table~\ref{tab:multichannel} evaluates V5C-NA across BSC, AWGN, and Rayleigh channels at matched equivalent bit error rates. At each target BER, we compute the SNR that produces that error rate theoretically (BPSK: $\text{BER}_{\text{AWGN}} = Q(\sqrt{2\cdot\text{SNR}})$, $\text{BER}_{\text{Ray}} = \frac{1}{2}(1-\sqrt{\gamma/(1+\gamma)})$), then evaluate.
+Although V5C-NA is trained exclusively on the BSC channel, its binary spike encoding enables \emph{channel-agnostic} robustness. Table~\ref{tab:multichannel} evaluates all methods across BSC, AWGN, and Rayleigh channels at matched equivalent bit error rates. At each target BER, we compute the SNR that produces that error rate theoretically (BPSK: $\text{BER}_{\text{AWGN}} = Q(\sqrt{2\cdot\text{SNR}})$, $\text{BER}_{\text{Ray}} = \frac{1}{2}(1-\sqrt{\gamma/(1+\gamma)})$), then evaluate.
 
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{Matched-BER comparison across BSC, AWGN, and Rayleigh channels at equivalent error rates ($\rho{=}0.75$). Both SNN and CNN systems show channel convergence, but CNN accuracy is much lower at high BER.}
+\caption{Matched-BER comparison across BSC, AWGN, and Rayleigh channels at equivalent error rates. All methods show channel convergence ($\pm$1~pp), but accuracy levels differ dramatically.}
 \label{tab:multichannel}
 \begin{tabular}{cl ccc ccc}
 \toprule
  & & \multicolumn{3}{c}{\textbf{AID}} & \multicolumn{3}{c}{\textbf{RESISC45}} \\
 \textbf{BER} & \textbf{Method} & \textbf{BSC} & \textbf{AWGN} & \textbf{Ray.} & \textbf{BSC} & \textbf{AWGN} & \textbf{Ray.} \\
 \midrule
-\multirow{3}{*}{0.05} & V5C-NA & 95.64 & 95.56 & 95.66 & 92.15 & 92.17 & 92.17 \\
+\multirow{4}{*}{0.05} & V5C-NA & 95.64 & 95.56 & 95.66 & 92.15 & 92.17 & 92.17 \\
  & CNN-Uni & 91.90 & 91.66 & 91.60 & 81.38 & 81.44 & 81.23 \\
  & CNN-NonUni & 91.50 & 91.50 & 91.64 & 78.63 & 78.72 & 78.58 \\
+ & MLP-FC & 88.46 & 88.82 & 88.80 & 74.73 & 74.56 & 74.74 \\
 \midrule
-\multirow{3}{*}{0.15} & V5C-NA & 95.72 & 95.72 & 95.90 & 92.42 & 92.39 & 92.40 \\
+\multirow{4}{*}{0.15} & V5C-NA & 95.72 & 95.72 & 95.90 & 92.42 & 92.39 & 92.40 \\
  & CNN-Uni & 88.46 & 88.58 & 88.64 & 81.20 & 81.61 & 81.70 \\
  & CNN-NonUni & 89.00 & 89.08 & 89.06 & 76.42 & 76.12 & 76.27 \\
+ & MLP-FC & 76.84 & 76.62 & 77.18 & 54.77 & 54.67 & 54.38 \\
 \midrule
-\multirow{3}{*}{0.30} & \textbf{V5C-NA} & \textbf{93.34} & \textbf{93.46} & \textbf{93.50} & \textbf{86.98} & \textbf{86.94} & \textbf{86.94} \\
+\multirow{4}{*}{0.30} & \textbf{V5C-NA} & \textbf{93.34} & \textbf{93.46} & \textbf{93.50} & \textbf{86.98} & \textbf{86.94} & \textbf{86.94} \\
  & CNN-Uni & 52.80 & 53.22 & 53.00 & 49.32 & 49.04 & 48.96 \\
  & CNN-NonUni & 63.58 & 65.06 & 63.54 & 50.77 & 50.71 & 51.15 \\
+ & MLP-FC & 36.12 & 36.38 & 36.98 & 20.89 & 21.00 & 21.13 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -437,7 +440,7 @@ Although V5C-NA is trained exclusively on the BSC channel, its binary spike enco
 \begin{figure}[t]
     \centering
     \includegraphics[width=\columnwidth]{fig7_unified_ber.pdf}
-    \caption{Accuracy vs.\ equivalent BER for all three channel models. BSC, AWGN, and Rayleigh curves overlap almost perfectly on both datasets, demonstrating that binary spike encoding provides channel-agnostic robustness. The system degrades gracefully: $<$1~pp drop through BER${=}0.20$ on both datasets.}
+    \caption{Accuracy vs.\ equivalent BER under BSC (solid), AWGN (dashed), and Rayleigh (dash-dot) channels. All four methods (V5C-NA, CNN-Uni, CNN-NonUni, MLP-FC) show channel convergence within $\pm$1~pp, but only SNN encoding retains accuracy at high BER.}
     \label{fig:multichannel}
 \end{figure}
 
