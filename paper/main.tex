@@ -38,7 +38,7 @@
 \maketitle
 
 \begin{abstract}
-Unmanned aerial vehicles (UAVs) performing edge AI inference face a dual constraint: air-to-ground links suffer from severe fading and limited bandwidth, while onboard processors are restricted by strict power budgets. We present \textbf{SpikeAdapt-SC}, a spiking neural network (SNN) framework for semantic communication that jointly addresses both constraints through three mechanisms: (i)~fine-grained spatial masking on a native $14{\times}14$ feature grid, where a noise-aware importance scorer generates per-image masks that \emph{improve} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings) and BER${=}0.30$, our model V5C-NA (Version~5C, Noise-Aware) achieves 93.50\% on AID (vs.\ 92.36\% at full rate), and 87.29\% on RESISC45 (vs.\ 85.31\%); (ii)~binary spike encoding that provides channel-agnostic noise robustness---at matched equivalent BER, BSC, AWGN, and Rayleigh channels produce accuracy within $\pm$0.2~pp, while CNN baselines with 8-bit quantization collapse (CNN-Uni: 52\%, CNN-NonUni: 62\%) at BER${=}0.30$; and (iii)~membrane potential batch normalization (MPBN)~\cite{guo2023mpbn} that reduces firing rate to 0.167, yielding $37{\times}$ energy savings via SynOps. We validate on AID (30 classes, 10,000 images, standard 50/50 split) and NWPU-RESISC45 (45 classes, 31,500 images, standard 20/80 split), achieving 95.42\% and 92.01\% clean accuracy respectively.
+Unmanned aerial vehicles (UAVs) performing edge AI inference face a dual constraint: air-to-ground links suffer from severe fading and limited bandwidth, while onboard processors are restricted by strict power budgets. We present \textbf{SpikeAdapt-SC}, a spiking neural network (SNN) framework for semantic communication that jointly addresses both constraints through three mechanisms: (i)~fine-grained spatial masking on a native $14{\times}14$ feature grid, where a noise-aware importance scorer generates per-image masks that \emph{improve} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings) and BER${=}0.30$, our model V5C-NA (Version~5C, Noise-Aware) achieves 93.50\% on AID (vs.\ 92.36\% at full rate), and 87.29\% on RESISC45 (vs.\ 85.31\%); (ii)~binary spike encoding that provides channel-agnostic noise robustness---at matched equivalent BER, BSC, AWGN, and Rayleigh channels produce accuracy within $\pm$1~pp, while CNN baselines with 8-bit quantization collapse (CNN-Uni: 52\%, CNN-NonUni: 62\%) at BER${=}0.30$; and (iii)~membrane potential batch normalization (MPBN)~\cite{guo2023mpbn} that reduces firing rate to 0.167, yielding $37{\times}$ energy savings via SynOps. We validate on AID (30 classes, 10,000 images, standard 50/50 split) and NWPU-RESISC45 (45 classes, 31,500 images, standard 20/80 split), achieving 95.42\% and 92.01\% clean accuracy respectively.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -266,7 +266,7 @@ Table~\ref{tab:main_results} presents results on AID (standard 50/50 split, 5,00
 \begin{figure}[t]
     \centering
     \includegraphics[width=\columnwidth]{fig_ber_sweep_baselines.png}
-    \caption{BER sweep comparison on (a) AID and (b) RESISC45. V5C-NA ($\rho{=}0.75$), SNN-SC ($\rho{=}1.0$), CNN-Uni, CNN-NonUni, MLP-FC, and JPEG+Conv (AID only, shows cliff). SNN encoding degrades $\leq$5~pp at BER${=}0.30$; 8-bit CNN/MLP baselines collapse by 28--56~pp; JPEG+Conv exhibits a cliff effect at BER${=}0.05$.}
+    \caption{BER sweep comparison on (a) AID and (b) RESISC45. All six baselines shown on both datasets. SNN encoding (V5C-NA, SNN-SC) degrades $\leq$5~pp at BER${=}0.30$; 8-bit CNN/MLP baselines collapse by 28--56~pp; JPEG+Conv exhibits a cliff effect at BER${=}0.05$.}
     \label{fig:ber_sweep_baselines}
 \end{figure}
 
@@ -323,7 +323,7 @@ $\rho$ & \textbf{BW Save} & \textbf{AID} & \textbf{RESISC45} \\
 
 \textbf{Why does masking improve accuracy under noise?} The improvement stems from decoder capacity allocation: when all 196 blocks are transmitted under high noise, the decoder's Layer~4 (with fixed representational capacity) must process both high-quality task-relevant blocks and low-quality, noise-corrupted blocks that contribute little semantically but inject significant noise into the global average pooling. At $\rho{=}0.625$, the 122 retained blocks have higher average spike density and carry more redundant information, making them inherently more robust to bit flips. Removing the remaining 74 low-importance blocks eliminates a source of decoder confusion, effectively concentrating representational capacity on high-confidence semantic content. This is analogous to structured dropout~\cite{ghiasi2018dropblock}---masking acts as inference-time regularization that becomes more beneficial as channel noise increases.
 
-\textbf{Learned mask advantage grows under noise.} Table~\ref{tab:mask_compare} compares mask types on AID at two rates (random baseline averaged over 50 independent draws). At $\rho{=}0.75$ clean, learned masks provide a modest advantage over random. At BER${=}0.30$, the advantage grows substantially. The pattern is consistent at $\rho{=}0.50$. This confirms that the scorer learns to allocate bandwidth to noise-robust, task-critical blocks.
+\textbf{Learned mask advantage grows under noise.} Table~\ref{tab:mask_compare} compares mask types on AID at two rates (random baseline averaged over 50 independent draws). At $\rho{=}0.75$, the high retention rate (75\%) leaves little room for selection, so learned, random, and uniform masks perform similarly ($\Delta_{\text{rand}} = +0.13$~pp, within the random baseline's standard deviation). The masking advantage becomes significant at more aggressive rates: at $\rho{=}0.50$ and BER${=}0.30$, learned masks outperform random by $+$1.49~pp. This rate-dependent benefit confirms that the scorer's primary contribution is identifying which blocks to \emph{exclude}, which matters more as the exclusion fraction grows.
 
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
@@ -374,13 +374,15 @@ SNN-SC~\cite{wang2024snnsc} ($\rho{=}1.0$) & 95.20 & 92.36 & 92.53 & 85.31 \\
 
 The masking advantage is \emph{consistent across datasets}: on RESISC45, $\rho{=}0.625$ achieves 87.29\% at BER${=}0.30$ vs.\ 85.31\% at full rate ($+$1.98~pp). On AID, the corresponding improvement is $+$1.14~pp. The noise-aware scorer's diversity loss drives 7$\times$ increase in mask differentiation across BER levels during training (mask diff: 0.0003 $\to$ 0.0023). Fig.~\ref{fig:pareto} shows the full rate--accuracy Pareto for both datasets.
 
-\textbf{BER robustness.} Table~\ref{tab:ber_sweep} presents the full BER sweep for all methods on both datasets. V5C-NA on AID retains 93.34\% at BER${=}0.30$ (only 2.1~pp drop from clean), and RESISC45 retains 86.98\% (5.0~pp drop). In stark contrast, CNN-Uni collapses by 39~pp on AID and 29~pp on RESISC45, CNN-NonUni by 28~pp and 27~pp, and MLP-FC by 56~pp and 61~pp. JPEG+Conv suffers a cliff effect at BER${=}0.05$, dropping from 95.16\% to random chance (2.68\%) because even residual errors after repetition decoding corrupt JPEG headers. The degradation hierarchy---JPEG (cliff) $>$ MLP-FC $>$ CNN-Uni $>$ CNN-NonUni $\gg$ SNN---reflects increasing noise resilience from bit-level representations.
+\textbf{BER robustness.} Table~\ref{tab:ber_sweep} presents the full BER sweep for all methods on both datasets. V5C-NA on AID retains 93.34\% at BER${=}0.30$ (only 2.1~pp drop from clean), and RESISC45 retains 86.98\% (5.0~pp drop). In stark contrast, CNN-Uni collapses by 39~pp on AID and 29~pp on RESISC45, CNN-NonUni by 28~pp and 27~pp, and MLP-FC by 56~pp and 61~pp. JPEG+Conv suffers a cliff effect at BER${=}0.05$ on both datasets, because even residual bit errors after repetition decoding corrupt JPEG headers. The degradation hierarchy---JPEG (cliff) $>$ MLP-FC $>$ CNN-Uni $>$ CNN-NonUni $\gg$ SNN---reflects increasing noise resilience from bit-level representations.
+
+Note that the RESISC45 CNN baselines exhibit \emph{non-monotonic} behavior at low BER: CNN-Uni improves from 78.32\% (clean) to 82.68\% (BER${=}0.10$) before degrading. This occurs because the noise curriculum during training acts as a regularizer---at low BER, the injected noise has a beneficial dropout-like effect that exceeds the small information loss. The effect is stronger on RESISC45 (45 classes, 20\% training data) where the CNN encoder is more prone to overfitting. This regularization benefit diminishes at higher BER as information loss dominates.
 
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
 \small
-\caption{Full BER sweep accuracy (\%) on both datasets (BSC channel). All baselines share the same backbone and data splits.}
+\caption{Full BER sweep accuracy (\%) on both datasets (BSC channel, V5C-NA at $\rho{=}0.75$). The $\rho{=}0.625$ advantage over $\rho{=}1.0$ (Table~\ref{tab:cross_dataset}) persists across the BER range, not only at BER${=}0.30$.}
 \label{tab:ber_sweep}
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{ll ccccccc}
@@ -393,20 +395,16 @@ The masking advantage is \emph{consistent across datasets}: on RESISC45, $\rho{=
  & MLP-FC & 91.98 & 88.46 & 84.16 & 76.84 & 66.32 & 51.48 & 36.12 \\
  & JPEG+Conv & 95.16 & 2.66 & 2.68 & 2.68 & 2.68 & 2.68 & 2.68 \\
 \midrule
-\multirow{4}{*}{RESISC45} & \textbf{V5C-NA} & \textbf{92.01} & \textbf{92.15} & \textbf{92.31} & \textbf{92.42} & \textbf{92.31} & \textbf{91.30} & \textbf{86.98} \\
+\multirow{5}{*}{RESISC45} & \textbf{V5C-NA} & \textbf{92.01} & \textbf{92.15} & \textbf{92.31} & \textbf{92.42} & \textbf{92.31} & \textbf{91.30} & \textbf{86.98} \\
  & CNN-Uni & 78.32 & 81.38 & 82.68 & 81.20 & 77.00 & 67.10 & 49.32 \\
  & CNN-NonUni & 78.32 & 78.63 & 77.96 & 76.42 & 72.21 & 64.45 & 50.77 \\
  & MLP-FC & 82.23 & 74.73 & 65.58 & 54.77 & 43.11 & 31.27 & 20.89 \\
+ & JPEG+Conv & 93.55 & 1.80 & 1.80 & 1.80 & 1.80 & 1.80 & 1.80 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=\columnwidth]{fig6_ber_robustness.pdf}
-    \caption{BER robustness of V5C-NA on AID and RESISC45 (BSC channel). Accuracy remains within 1~pp of clean through BER${=}0.15$ on both datasets, degrading gracefully at higher noise.}
-    \label{fig:ber_robustness}
-\end{figure}
+
 
 \subsection{Cross-Channel Generalization}
 

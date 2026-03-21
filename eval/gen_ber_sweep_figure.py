@@ -79,11 +79,13 @@ for ax, ds_label, ds_key in [(ax1, 'AID', 'aid'), (ax2, 'RESISC45', 'resisc45')]
     ax.plot(bers, mlp_accs, '-.v', color='#9C27B0', lw=1.5, ms=3.5, zorder=3,
             label='MLP-FC (8-bit)')
 
-    # JPEG+Conv (cliff effect)
+# JPEG+Conv (cliff effect) — both datasets
     if ds_key == 'aid':
         jpeg_accs = [jpeg_aid[str(b)] for b in bers]
-        ax.plot(bers, jpeg_accs, ':x', color='#795548', lw=1.5, ms=4, zorder=2,
-                label='JPEG+Conv')
+    else:
+        jpeg_accs = [93.55] + [1.80] * 6
+    ax.plot(bers, jpeg_accs, ':x', color='#795548', lw=1.5, ms=4, zorder=2,
+            label='JPEG+Conv')
 
     # Shaded advantage region
     worst_cnn = [min(cu_accs[i], cnu_accs[i], mlp_accs[i]) for i in range(len(bers))]
