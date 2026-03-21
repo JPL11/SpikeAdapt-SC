@@ -214,7 +214,7 @@ python eval/compute_synops.py
 |-------|-------------|--------|------|
 | **S1** | ResNet-50 backbone fine-tuning (ImageNet → aerial domain) | 50 | 0.01 |
 | **S2** | SNN encoder/decoder with MPBN (backbone frozen) | 60 | 1e-4 |
-| **S3** | Joint fine-tuning with noise-aware scorer + diversity loss (λ_div=0.10) | 60 | 1e-5 |
+| **S3** | Joint fine-tuning with noise-aware scorer + diversity loss (λ_div=0.05) | 40 | 1e-5 |
 
 **Noise curriculum**: Each batch samples BER uniformly, with 50% probability biased to high-noise [0.15, 0.40].
 
