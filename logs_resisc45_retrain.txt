@@ -1,0 +1,37 @@
+  RESISC45 train: 6300 images, 45 classes
+  RESISC45 test: 25200 images, 45 classes
+Retraining RESISC45 S3 scorer
+  Starting from: ./snapshots_resisc45_v5cna_seed42/v5cna_best_92.01.pth
+  Scorer: fresh init, LR=1e-4
+  Block mask: fresh init, LR=1e-3
+  Encoder/decoder: LR=1e-5 (fine-tune)
+  Back: LR=1e-5 (fine-tune)
+  Epochs: 80, diversity λ=0.05
+  E05: clean=92.57% BER=0.15=92.61% BER=0.30=87.17%
+    → saved ./snapshots_resisc45_v5cna_seed42_retrained/v5cna_best_92.57.pth
+  E10: clean=92.14% BER=0.15=92.37% BER=0.30=90.23%
+  E15: clean=92.04% BER=0.15=92.51% BER=0.30=90.42%
+  E20: clean=92.13% BER=0.15=92.33% BER=0.30=82.67% | mask@0.75: L=82.57 R=84.94+-0.11 Δ=-2.37
+  E25: clean=92.09% BER=0.15=92.50% BER=0.30=92.12%
+  E30: clean=92.36% BER=0.15=92.92% BER=0.30=91.77%
+  E35: clean=92.40% BER=0.15=92.79% BER=0.30=91.34%
+  E40: clean=92.60% BER=0.15=92.77% BER=0.30=84.77% | mask@0.75: L=84.75 R=85.76+-0.10 Δ=-1.01
+    → saved ./snapshots_resisc45_v5cna_seed42_retrained/v5cna_best_92.60.pth
+  E45: clean=92.18% BER=0.15=92.46% BER=0.30=92.00%
+  E50: clean=91.98% BER=0.15=92.34% BER=0.30=92.13%
+  E55: clean=92.38% BER=0.15=92.64% BER=0.30=90.98%
+  E60: clean=92.34% BER=0.15=92.65% BER=0.30=92.37% | mask@0.75: L=92.25 R=91.96+-0.03 Δ=+0.29
+  E65: clean=92.61% BER=0.15=92.51% BER=0.30=84.95%
+    → saved ./snapshots_resisc45_v5cna_seed42_retrained/v5cna_best_92.61.pth
+  E70: clean=92.34% BER=0.15=92.66% BER=0.30=89.76%
+  E75: clean=92.53% BER=0.15=92.68% BER=0.30=85.34%
+  E80: clean=92.37% BER=0.15=92.56% BER=0.30=90.94% | mask@0.75: L=91.09 R=90.85+-0.05 Δ=+0.24
+
+=== FINAL 50-DRAW EVALUATION ===
+  rho=0.5 ber=0.0: L=92.41 R=91.95+-0.06 Δ=+0.46
+  rho=0.5 ber=0.3: L=87.35 R=82.11+-0.10 Δ=+5.23
+  rho=0.75 ber=0.0: L=92.61 R=92.41+-0.05 Δ=+0.20
+  rho=0.75 ber=0.3: L=85.06 R=85.38+-0.08 Δ=-0.32
+
+Best checkpoint: ./snapshots_resisc45_v5cna_seed42_retrained/v5cna_best_92.61.pth (92.61%)
+Done!
