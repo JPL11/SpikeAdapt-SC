@@ -39,7 +39,7 @@
 \maketitle
 
 \begin{abstract}
-Unmanned aerial vehicles (UAVs) performing edge AI inference face a dual constraint: air-to-ground links suffer from severe fading and limited bandwidth, while onboard processors are restricted by strict power budgets. We present \textbf{SpikeAdapt-SC}, a spiking neural network (SNN) framework for semantic communication that jointly addresses both constraints through three mechanisms: (i)~fine-grained spatial masking on a native $14{\times}14$ feature grid, where a noise-aware importance scorer generates per-image masks that \emph{improve} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings) and BER${=}0.30$, our model SpikeAdapt-SC achieves 93.50\% on AID (vs.\ 92.36\% at full rate), and 87.29\% on RESISC45 (vs.\ 85.31\%); (ii)~binary spike encoding that provides channel-agnostic noise robustness---at matched equivalent BER, BSC, AWGN, and Rayleigh channels produce accuracy within $\pm$1~pp, while CNN baselines with 8-bit quantization collapse (CNN-Uni: 52\%, CNN-NonUni: 62\%) at BER${=}0.30$; and (iii)~membrane potential batch normalization (MPBN)~\cite{guo2023mpbn} that reduces firing rate to 0.167, yielding $37{\times}$ energy savings via SynOps. We validate on AID (30 classes, 10,000 images, standard 50/50 split) and NWPU-RESISC45 (45 classes, 31,500 images, commonly used 20\% training split), achieving 95.42\% and 92.01\% clean accuracy respectively.
+Unmanned aerial vehicles (UAVs) performing edge AI inference face a dual constraint: air-to-ground links suffer from severe fading and limited bandwidth, while onboard processors are restricted by strict power budgets. We present \textbf{SpikeAdapt-SC}, a spiking neural network (SNN) framework for semantic communication that jointly addresses both constraints through three mechanisms: (i)~fine-grained spatial masking on a native $14{\times}14$ feature grid, where a noise-aware importance scorer generates per-image masks that \emph{improve} accuracy under noise---at $\rho{=}0.625$ (37.5\% bandwidth savings) and BER${=}0.30$, our model SpikeAdapt-SC achieves 93.50\% on AID (vs.\ 92.36\% at full rate), and 87.29\% on RESISC45 (vs.\ 85.31\%); (ii)~binary spike encoding that provides inherent noise robustness---SpikeAdapt-SC degrades only 2~pp at BER${=}0.30$, while CNN baselines with 8-bit quantization collapse (CNN-Uni: 52\%, CNN-NonUni: 62\%); and (iii)~membrane potential batch normalization (MPBN)~\cite{guo2023mpbn} that reduces firing rate to 0.167, yielding $37{\times}$ energy savings via SynOps. We validate on AID (30 classes, 10,000 images, standard 50/50 split) and NWPU-RESISC45 (45 classes, 31,500 images, commonly used 20\% training split), achieving 95.42\% and 92.01\% clean accuracy respectively.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -62,7 +62,7 @@ In this paper, we propose \textbf{SpikeAdapt-SC}, a spiking semantic communicati
 \begin{enumerate}
     \item \textbf{Noise-aware spatial masking improves accuracy under noise.} Rather than transmitting all 196 spatial blocks, a BER-conditioned importance scorer selects the most informative blocks. A controlled ablation (Table~\ref{tab:na_ablation}) confirms that both the BER-conditioning branch and the diversity loss are essential: removing either drops BER${=}0.30$ accuracy by $\sim$20~pp. At $\rho{=}0.625$ (37.5\% bandwidth savings) and BER${=}0.30$, masking \emph{exceeds} full-rate accuracy on both AID ($+$1.14~pp) and RESISC45 ($+$1.98~pp).
     
-    \item \textbf{Binary spike encoding provides channel-agnostic noise robustness.} Unlike floating-point features where additive noise corrupts precision, binary spikes can only be flipped, limiting worst-case distortion. At matched equivalent BER, BSC, AWGN, and Rayleigh channels produce accuracy within $\pm$1~pp---the system is inherently channel-agnostic without channel-specific training. SpikeAdapt-SC degrades only 2~pp at BER${=}0.30$, while CNN-Uni collapses by 39~pp (to 52.80\%), MLP-FC by 56~pp, and JPEG+Conv exhibits a cliff effect at BER${=}0.05$.
+    \item \textbf{Binary spike encoding provides inherent noise robustness.} Unlike floating-point features where additive noise corrupts precision, binary spikes can only be flipped, limiting worst-case distortion. SpikeAdapt-SC degrades only 2~pp at BER${=}0.30$, while CNN-Uni collapses by 39~pp (to 52.80\%), MLP-FC by 56~pp, and JPEG+Conv exhibits a cliff effect at BER${=}0.05$.
     
     \item \textbf{MPBN provides 37$\times$ energy savings.} Membrane potential batch normalization~\cite{guo2023mpbn} reduces firing rate to 0.167 (vs.\ 0.266 baseline), enabling $37{\times}$ energy savings via SynOps at $\rho{=}0.75$ using the Horowitz energy model~\cite{horowitz2014energy}.
 \end{enumerate}
@@ -428,46 +428,32 @@ Note that the RESISC45 CNN baselines exhibit \emph{non-monotonic} behavior at lo
 
 
 
-\subsection{Cross-Channel Generalization}
+% [Moved to supplementary] Cross-channel generalization section
+% BSC, AWGN, and Rayleigh produce accuracy within ±1pp for all methods.
+% See repo README for full cross-channel results.
 
-Although SpikeAdapt-SC is trained exclusively on the BSC channel, its binary spike encoding enables \emph{channel-agnostic} robustness. Table~\ref{tab:multichannel} evaluates all methods across BSC, AWGN, and Rayleigh channels at matched equivalent bit error rates. At each target BER, we compute the SNR that produces that error rate theoretically (BPSK: $\text{BER}_{\text{AWGN}} = Q(\sqrt{2\cdot\text{SNR}})$, $\text{BER}_{\text{Ray}} = \frac{1}{2}(1-\sqrt{\gamma/(1+\gamma)})$), then evaluate.
-
-\begin{table}[t]
-\renewcommand{\arraystretch}{1.15}
-\centering
-\caption{Matched-BER comparison across BSC, AWGN, and Rayleigh channels at equivalent error rates. All methods show channel convergence ($\pm$1~pp), but accuracy levels differ dramatically.}
-\label{tab:multichannel}
-\begin{tabular}{cl ccc ccc}
-\toprule
- & & \multicolumn{3}{c}{\textbf{AID}} & \multicolumn{3}{c}{\textbf{RESISC45}} \\
-\textbf{BER} & \textbf{Method} & \textbf{BSC} & \textbf{AWGN} & \textbf{Ray.} & \textbf{BSC} & \textbf{AWGN} & \textbf{Ray.} \\
-\midrule
-\multirow{4}{*}{0.05} & SpikeAdapt-SC & 95.64 & 95.56 & 95.66 & 92.15 & 92.17 & 92.17 \\
- & CNN-Uni & 91.90 & 91.66 & 91.60 & 81.38 & 81.44 & 81.23 \\
- & CNN-NonUni & 91.50 & 91.50 & 91.64 & 78.63 & 78.72 & 78.58 \\
- & MLP-FC & 88.46 & 88.82 & 88.80 & 74.73 & 74.56 & 74.74 \\
-\midrule
-\multirow{4}{*}{0.15} & SpikeAdapt-SC & 95.72 & 95.72 & 95.90 & 92.42 & 92.39 & 92.40 \\
- & CNN-Uni & 88.46 & 88.58 & 88.64 & 81.20 & 81.61 & 81.70 \\
- & CNN-NonUni & 89.00 & 89.08 & 89.06 & 76.42 & 76.12 & 76.27 \\
- & MLP-FC & 76.84 & 76.62 & 77.18 & 54.77 & 54.67 & 54.38 \\
-\midrule
-\multirow{4}{*}{0.30} & \textbf{SpikeAdapt-SC} & \textbf{93.34} & \textbf{93.46} & \textbf{93.50} & \textbf{86.98} & \textbf{86.94} & \textbf{86.94} \\
- & CNN-Uni & 52.80 & 53.22 & 53.00 & 49.32 & 49.04 & 48.96 \\
- & CNN-NonUni & 63.58 & 65.06 & 63.54 & 50.77 & 50.71 & 51.15 \\
- & MLP-FC & 36.12 & 36.38 & 36.98 & 20.89 & 21.00 & 21.13 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=\columnwidth]{fig7_unified_ber.pdf}
-    \caption{Accuracy vs.\ equivalent BER under BSC (solid), AWGN (dashed), and Rayleigh (dash-dot) channels. All four methods (SpikeAdapt-SC, CNN-Uni, CNN-NonUni, MLP-FC) show channel convergence within $\pm$1~pp, but only SNN encoding retains accuracy at high BER.}
-    \label{fig:multichannel}
-\end{figure}
-
-\textbf{Key finding: channel-agnostic robustness across all architectures.} Table~\ref{tab:multichannel} confirms that at matched equivalent BER, BSC, AWGN, and Rayleigh channels produce accuracy within $\pm$1~pp for \emph{all} methods---SNN, CNN, and MLP alike. This is theoretically expected: because all systems transmit binary representations (spikes or bit planes), BPSK hard-decision demodulation converts any additive noise into effective bit flips, reducing all channels to BSC. The critical difference is not channel sensitivity but \emph{noise resilience}: SpikeAdapt-SC retains 93.34--93.50\% at BER${=}0.30$ across all channels, while CNN-Uni collapses to 49--53\%, CNN-NonUni to 50--65\%, and MLP-FC to 21--37\%. The practical significance is twofold: (i)~binary encoding makes any system inherently channel-agnostic, and (ii)~only SNN's 1-bit bounded-distortion encoding maintains robustness at high noise.
+%\subsection{Cross-Channel Generalization}
+%
+%Although SpikeAdapt-SC is trained exclusively on the BSC channel, its binary spike encoding enables \emph{channel-agnostic} robustness. Table~\ref{tab:multichannel} evaluates all methods across BSC, AWGN, and Rayleigh channels at matched equivalent bit error rates. At each target BER, we compute the SNR that produces that error rate theoretically (BPSK: $\text{BER}_{\text{AWGN}} = Q(\sqrt{2\cdot\text{SNR}})$, $\text{BER}_{\text{Ray}} = \frac{1}{2}(1-\sqrt{\gamma/(1+\gamma)})$), then evaluate.
+%
+%\begin{table}[t]
+%\renewcommand{\arraystretch}{1.15}
+%\centering
+%\caption{Matched-BER comparison across BSC, AWGN, and Rayleigh channels at equivalent error rates. All methods show channel convergence ($\pm$1~pp), but accuracy levels differ dramatically.}
+%\label{tab:multichannel}
+%\begin{tabular}{cl ccc ccc}
+%... (table contents preserved in source)
+%\end{tabular}
+%\end{table}
+%
+%\begin{figure}[t]
+%    \centering
+%    \includegraphics[width=\columnwidth]{fig7_unified_ber.pdf}
+%    \caption{Accuracy vs.\ equivalent BER under BSC (solid), AWGN (dashed), and Rayleigh (dash-dot) channels.}
+%    \label{fig:multichannel}
+%\end{figure}
+%
+%\textbf{Key finding: channel-agnostic robustness across all architectures.} (moved to supplementary)
 
 \textbf{Latency.} On a single GPU (NVIDIA RTX 3090), the SNN encoder with $T{=}8$ timesteps adds 0.73~ms per image compared to the single-pass CNN encoder (SNN enc+dec: 0.79~ms vs.\ CNN enc+dec: 0.06~ms). However, the ResNet-50 backbone dominates end-to-end latency, so the full SNN pipeline (1.30~ms/image) is only 2.3$\times$ slower than the CNN pipeline (0.57~ms/image). On neuromorphic hardware (e.g., Intel Loihi~\cite{davies2018loihi}), the $T{=}8$ timesteps would execute with sub-microsecond latency via massively parallel event-driven computation, effectively eliminating the SNN overhead.
 

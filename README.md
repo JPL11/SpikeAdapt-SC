@@ -6,7 +6,7 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 
-> **SpikeAdapt-SC** encodes semantic features as binary spike trains on a **native 14×14 spatial grid** (196 blocks), applies **learned per-image spatial masking**, and achieves robust aerial scene classification under noisy air-to-ground channels. The final model **SpikeAdapt-SC** uses Membrane Potential Batch Normalization (MPBN) and a noise-aware scorer to deliver **42× energy savings** via SynOps while maintaining **95.42% accuracy on AID** and **92.01% on RESISC45**. At BER=0.30, masking at ρ=0.625 (37.5% bandwidth savings) **exceeds full-rate accuracy** on both datasets.
+> **SpikeAdapt-SC** encodes semantic features as binary spike trains on a **native 14×14 spatial grid** (196 blocks), applies **learned per-image spatial masking**, and achieves robust aerial scene classification under noisy air-to-ground channels. The final model **SpikeAdapt-SC** uses Membrane Potential Batch Normalization (MPBN) and a noise-aware scorer to deliver **37× energy savings** via SynOps while maintaining **95.42% accuracy on AID** and **92.01% on RESISC45**. At BER=0.30, masking at ρ=0.625 (37.5% bandwidth savings) **exceeds full-rate accuracy** on both datasets.
 
 ---
 
@@ -18,7 +18,7 @@
 
 2. **Binary spike encoding is channel-agnostic** — at matched equivalent BER, BSC/AWGN/Rayleigh channels produce accuracy within ±0.2 pp. SpikeAdapt-SC degrades <1 pp from clean to BER=0.15 on both datasets, while CNN 8-bit quantization collapses from 92.5% to 67%.
 
-3. **MPBN provides 42× energy savings** — firing rate 0.167 (vs. 0.266 baseline) yields 42× fewer SynOps at ρ=0.75 using the Horowitz energy model.
+3. **MPBN provides 37× energy savings** — firing rate 0.167 (vs. 0.266 baseline) yields 37× fewer SynOps at ρ=0.75 using the Horowitz energy model.
 
 ### Main Results (BSC Channel, AID 50/50 Split)
 
