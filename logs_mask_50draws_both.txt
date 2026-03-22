@@ -1,0 +1,65 @@
+=== AID ===
+  AID-50/50 test: 5000 images, 30 classes
+  [AID] rho=0.5 ber=0.0: 10/50 draws (mean=95.24+-0.14)
+  [AID] rho=0.5 ber=0.0: 20/50 draws (mean=95.27+-0.13)
+  [AID] rho=0.5 ber=0.0: 30/50 draws (mean=95.27+-0.14)
+  [AID] rho=0.5 ber=0.0: 40/50 draws (mean=95.27+-0.12)
+  [AID] rho=0.5 ber=0.0: 50/50 draws (mean=95.28+-0.12)
+[AID] rho=0.5 ber=0.0: L=95.02 R=95.28+-0.12 U=90.58 D=-0.26
+  [AID] rho=0.5 ber=0.3: 10/50 draws (mean=91.93+-0.12)
+  [AID] rho=0.5 ber=0.3: 20/50 draws (mean=91.94+-0.13)
+  [AID] rho=0.5 ber=0.3: 30/50 draws (mean=91.95+-0.12)
+  [AID] rho=0.5 ber=0.3: 40/50 draws (mean=91.95+-0.12)
+  [AID] rho=0.5 ber=0.3: 50/50 draws (mean=91.95+-0.15)
+[AID] rho=0.5 ber=0.3: L=93.44 R=91.95+-0.15 U=85.54 D=+1.49
+  [AID] rho=0.75 ber=0.0: 10/50 draws (mean=95.29+-0.10)
+  [AID] rho=0.75 ber=0.0: 20/50 draws (mean=95.32+-0.10)
+  [AID] rho=0.75 ber=0.0: 30/50 draws (mean=95.33+-0.10)
+  [AID] rho=0.75 ber=0.0: 40/50 draws (mean=95.34+-0.10)
+  [AID] rho=0.75 ber=0.0: 50/50 draws (mean=95.35+-0.10)
+[AID] rho=0.75 ber=0.0: L=95.42 R=95.35+-0.1 U=94.7 D=+0.07
+  [AID] rho=0.75 ber=0.3: 10/50 draws (mean=93.28+-0.13)
+  [AID] rho=0.75 ber=0.3: 20/50 draws (mean=93.26+-0.12)
+  [AID] rho=0.75 ber=0.3: 30/50 draws (mean=93.25+-0.13)
+  [AID] rho=0.75 ber=0.3: 40/50 draws (mean=93.24+-0.13)
+  [AID] rho=0.75 ber=0.3: 50/50 draws (mean=93.25+-0.13)
+[AID] rho=0.75 ber=0.3: L=93.26 R=93.25+-0.13 U=91.78 D=+0.01
+=== RESISC45 ===
+  RESISC45 test: 25200 images, 45 classes
+  [RESISC45] rho=0.5 ber=0.0: 10/50 draws (mean=92.45+-0.07)
+  [RESISC45] rho=0.5 ber=0.0: 20/50 draws (mean=92.45+-0.06)
+  [RESISC45] rho=0.5 ber=0.0: 30/50 draws (mean=92.46+-0.06)
+  [RESISC45] rho=0.5 ber=0.0: 40/50 draws (mean=92.46+-0.05)
+  [RESISC45] rho=0.5 ber=0.0: 50/50 draws (mean=92.45+-0.06)
+[RESISC45] rho=0.5 ber=0.0: L=89.84 R=92.45+-0.06 U=85.11 D=-2.61
+  [RESISC45] rho=0.5 ber=0.3: 10/50 draws (mean=89.25+-0.06)
+  [RESISC45] rho=0.5 ber=0.3: 20/50 draws (mean=89.21+-0.08)
+  [RESISC45] rho=0.5 ber=0.3: 30/50 draws (mean=89.20+-0.08)
+  [RESISC45] rho=0.5 ber=0.3: 40/50 draws (mean=89.19+-0.08)
+  [RESISC45] rho=0.5 ber=0.3: 50/50 draws (mean=89.20+-0.08)
+[RESISC45] rho=0.5 ber=0.3: L=86.81 R=89.2+-0.08 U=71.27 D=-2.39
+  [RESISC45] rho=0.75 ber=0.0: 10/50 draws (mean=92.52+-0.03)
+  [RESISC45] rho=0.75 ber=0.0: 20/50 draws (mean=92.53+-0.05)
+  [RESISC45] rho=0.75 ber=0.0: 30/50 draws (mean=92.53+-0.04)
+  [RESISC45] rho=0.75 ber=0.0: 40/50 draws (mean=92.53+-0.05)
+  [RESISC45] rho=0.75 ber=0.0: 50/50 draws (mean=92.53+-0.05)
+[RESISC45] rho=0.75 ber=0.0: L=92.01 R=92.53+-0.05 U=91.48 D=-0.52
+  [RESISC45] rho=0.75 ber=0.3: 10/50 draws (mean=88.93+-0.08)
+  [RESISC45] rho=0.75 ber=0.3: 20/50 draws (mean=88.92+-0.08)
+  [RESISC45] rho=0.75 ber=0.3: 30/50 draws (mean=88.91+-0.07)
+  [RESISC45] rho=0.75 ber=0.3: 40/50 draws (mean=88.92+-0.07)
+  [RESISC45] rho=0.75 ber=0.3: 50/50 draws (mean=88.92+-0.07)
+[RESISC45] rho=0.75 ber=0.3: L=87.02 R=88.92+-0.07 U=84.47 D=-1.90
+
+=== SUMMARY ===
+AID:
+  rho=0.5 ber=0.0: L=95.02 R=95.28+-0.12 U=90.58 D=-0.26
+  rho=0.5 ber=0.3: L=93.44 R=91.95+-0.15 U=85.54 D=+1.49
+  rho=0.75 ber=0.0: L=95.42 R=95.35+-0.1 U=94.7 D=+0.07
+  rho=0.75 ber=0.3: L=93.26 R=93.25+-0.13 U=91.78 D=+0.01
+RESISC45:
+  rho=0.5 ber=0.0: L=89.84 R=92.45+-0.06 U=85.11 D=-2.61
+  rho=0.5 ber=0.3: L=86.81 R=89.2+-0.08 U=71.27 D=-2.39
+  rho=0.75 ber=0.0: L=92.01 R=92.53+-0.05 U=91.48 D=-0.52
+  rho=0.75 ber=0.3: L=87.02 R=88.92+-0.07 U=84.47 D=-1.90
+Done!

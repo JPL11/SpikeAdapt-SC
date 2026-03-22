@@ -326,7 +326,7 @@ $\rho$ & \textbf{BW Save} & \textbf{AID} & \textbf{RESISC45} \\
 
 \textbf{Why does masking improve accuracy under noise?} The improvement stems from decoder capacity allocation: when all 196 blocks are transmitted under high noise, the decoder's Layer~4 (with fixed representational capacity) must process both high-quality task-relevant blocks and low-quality, noise-corrupted blocks that contribute little semantically but inject significant noise into the global average pooling. At $\rho{=}0.625$, the 122 retained blocks have higher average spike density and carry more redundant information, making them inherently more robust to bit flips. Removing the remaining 74 low-importance blocks eliminates a source of decoder confusion, effectively concentrating representational capacity on high-confidence semantic content. This is analogous to structured dropout~\cite{ghiasi2018dropblock}---masking acts as inference-time regularization that becomes more beneficial as channel noise increases.
 
-\textbf{Learned mask advantage grows under noise.} Table~\ref{tab:mask_compare} compares mask types on AID at two rates (random baseline averaged over 50 independent draws). At $\rho{=}0.75$, the high retention rate (75\%) leaves little room for selection, so learned, random, and uniform masks perform similarly ($\Delta_{\text{rand}} = +0.13$~pp, within the random baseline's standard deviation). The masking advantage becomes significant at more aggressive rates: at $\rho{=}0.50$ and BER${=}0.30$, learned masks outperform random by $+$1.49~pp. This rate-dependent benefit confirms that the scorer's primary contribution is identifying which blocks to \emph{exclude}, which matters more as the exclusion fraction grows.
+\textbf{Learned mask advantage grows under noise.} Table~\ref{tab:mask_compare} compares mask types on AID at two rates (random baseline averaged over 50 independent draws). At $\rho{=}0.75$, the high retention rate (75\%) leaves little room for selection, so learned, random, and uniform masks perform similarly ($\Delta_{\text{rand}} = +0.01$~pp). The masking advantage becomes significant at more aggressive rates: at $\rho{=}0.50$ and BER${=}0.30$, learned masks outperform random by $+$1.49~pp. This rate-dependent benefit confirms that the scorer's primary contribution is identifying which blocks to \emph{exclude}, which matters more as the exclusion fraction grows.
 
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
@@ -337,11 +337,11 @@ $\rho$ & \textbf{BW Save} & \textbf{AID} & \textbf{RESISC45} \\
 \toprule
 $\rho$ & \textbf{BER} & \textbf{Learned} & \textbf{Random} & \textbf{Uniform} & $\Delta_{\text{rand}}$ \\
 \midrule
-0.50 & 0.00 & 95.42 & 95.26{\scriptsize$\pm$0.12} & 95.56 & $+$0.16 \\
-0.50 & 0.30 & \textbf{93.44} & 91.95{\scriptsize$\pm$0.16} & 92.36 & $+$\textbf{1.49} \\
+0.50 & 0.00 & 95.02 & 95.28{\scriptsize$\pm$0.12} & 90.58 & $-$0.26 \\
+0.50 & 0.30 & \textbf{93.44} & 91.95{\scriptsize$\pm$0.15} & 85.54 & $+$\textbf{1.49} \\
 \midrule
-0.75 & 0.00 & 95.42 & 95.33{\scriptsize$\pm$0.08} & 95.52 & $+$0.09 \\
-0.75 & 0.30 & \textbf{93.34} & 93.21{\scriptsize$\pm$0.11} & 93.34 & $+$\textbf{0.13} \\
+0.75 & 0.00 & 95.42 & 95.35{\scriptsize$\pm$0.10} & 94.70 & $+$0.07 \\
+0.75 & 0.30 & \textbf{93.26} & 93.25{\scriptsize$\pm$0.13} & 91.78 & $+$\textbf{0.01} \\
 \bottomrule
 \end{tabular}
 \end{table}

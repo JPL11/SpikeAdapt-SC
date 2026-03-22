@@ -1,0 +1,70 @@
+{
+  "aid": {
+    "0.5": {
+      "0.0": {
+        "learned": 95.02,
+        "random_mean": 95.28,
+        "random_std": 0.12,
+        "uniform": 90.58,
+        "delta_random": -0.26
+      },
+      "0.3": {
+        "learned": 93.44,
+        "random_mean": 91.95,
+        "random_std": 0.15,
+        "uniform": 85.54,
+        "delta_random": 1.49
+      }
+    },
+    "0.75": {
+      "0.0": {
+        "learned": 95.42,
+        "random_mean": 95.35,
+        "random_std": 0.1,
+        "uniform": 94.7,
+        "delta_random": 0.07
+      },
+      "0.3": {
+        "learned": 93.26,
+        "random_mean": 93.25,
+        "random_std": 0.13,
+        "uniform": 91.78,
+        "delta_random": 0.01
+      }
+    }
+  },
+  "resisc45": {
+    "0.5": {
+      "0.0": {
+        "learned": 89.84,
+        "random_mean": 92.45,
+        "random_std": 0.06,
+        "uniform": 85.11,
+        "delta_random": -2.61
+      },
+      "0.3": {
+        "learned": 86.81,
+        "random_mean": 89.2,
+        "random_std": 0.08,
+        "uniform": 71.27,
+        "delta_random": -2.39
+      }
+    },
+    "0.75": {
+      "0.0": {
+        "learned": 92.01,
+        "random_mean": 92.53,
+        "random_std": 0.05,
+        "uniform": 91.48,
+        "delta_random": -0.52
+      },
+      "0.3": {
+        "learned": 87.02,
+        "random_mean": 88.92,
+        "random_std": 0.07,
+        "uniform": 84.47,
+        "delta_random": -1.9
+      }
+    }
+  }
+}
