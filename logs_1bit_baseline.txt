@@ -1,0 +1,39 @@
+  AID-50/50 train: 5000 images, 30 classes
+  AID-50/50 test: 5000 images, 30 classes
+
+--- Training 1-bit CNN baseline (aid, seed=42, 60 epochs) ---
+  E10: 94.20%
+  E20: 93.56%
+  E30: 94.34%
+  E40: 95.06%
+  E50: 94.92%
+  E60: 95.32%
+  BER=0.0: 95.32%
+  BER=0.05: 95.14%
+  BER=0.1: 95.08%
+  BER=0.15: 94.94%
+  BER=0.2: 94.2%
+  BER=0.25: 93.0%
+  BER=0.3: 87.56%
+  RESISC45 train: 6300 images, 45 classes
+  RESISC45 test: 25200 images, 45 classes
+
+--- Training 1-bit CNN baseline (resisc45, seed=42, 60 epochs) ---
+  E10: 89.52%
+  E20: 89.51%
+  E30: 90.50%
+  E40: 90.22%
+  E50: 91.48%
+  E60: 89.39%
+  BER=0.0: 91.48%
+  BER=0.05: 91.54%
+  BER=0.1: 91.51%
+  BER=0.15: 91.34%
+  BER=0.2: 90.91%
+  BER=0.25: 89.51%
+  BER=0.3: 85.19%
+
+=== 1-BIT BASELINE COMPLETE ===
+aid: clean=95.32% BER=0.30=87.56%
+resisc45: clean=91.48% BER=0.30=85.19%
+Done!
