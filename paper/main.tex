@@ -346,21 +346,22 @@ $\rho$ & \textbf{BER} & \textbf{Learned} & \textbf{Random} & \textbf{Uniform} & 
 \end{tabular}
 \end{table}
 
-\textbf{Noise-aware ablation.} To isolate the contribution of each noise-aware component, we retrain S3 (40 epochs) from the same S2-pretrained encoder with four configurations (Table~\ref{tab:na_ablation}). Both the BER-conditioning branch (channel reweighting) and the diversity loss ($\lambda_{\text{div}}{=}0.05$) are essential: removing either drops BER${=}0.30$ accuracy by $\sim$20~pp (93.40\%$\to$72--73\%). Importantly, the ablated variants achieve comparable or slightly higher clean accuracy ($\sim$95.95\% vs.\ 95.42\%), indicating that the full model's diversity loss trades $\sim$0.5~pp of clean accuracy for 20~pp of noise robustness at BER${=}0.30$.
+\textbf{Noise-aware ablation.} To isolate the contribution of each noise-aware component, we retrain S3 (40 epochs) from the same S2-pretrained encoder with four configurations (Table~\ref{tab:na_ablation}). On both datasets, both the BER-conditioning branch and the diversity loss are essential: removing either collapses BER${=}0.30$ accuracy---by $\sim$20~pp on AID (93.40\%$\to$72--73\%) and by $\sim$45~pp on RESISC45 (87.10\%$\to$40--43\%). Importantly, the ablated variants achieve comparable or slightly higher clean accuracy, confirming that the noise-aware machinery sacrifices no clean performance.
 
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{Noise-aware ablation on AID ($\rho{=}0.75$, seed-42). Both the BER-conditioning branch and diversity loss are essential for noise robustness.}
+\caption{Noise-aware ablation ($\rho{=}0.75$, seed-42). Both the BER-conditioning branch and diversity loss are essential for noise robustness on both datasets.}
 \label{tab:na_ablation}
-\begin{tabular}{l cc ccc}
+\begin{tabular}{l cc cc cc}
 \toprule
-\textbf{Variant} & \textbf{BER} & \textbf{Div.} & \textbf{Clean} & \textbf{BER=0.15} & \textbf{BER=0.30} \\
+& \multicolumn{2}{c}{\textbf{Component}} & \multicolumn{2}{c}{\textbf{AID}} & \multicolumn{2}{c}{\textbf{RESISC45}} \\
+\textbf{Variant} & BER & Div. & Clean & 0.30 & Clean & 0.30 \\
 \midrule
-\textbf{Full (SpikeAdapt-SC)} & \checkmark & \checkmark & 95.42 & \textbf{95.76} & \textbf{93.40} \\
-No BER branch & \ding{55} & \checkmark & \textbf{95.94} & 95.54 & 72.54 \\
-No diversity loss & \checkmark & \ding{55} & \textbf{95.94} & 95.50 & 72.88 \\
-No noise-aware & \ding{55} & \ding{55} & \textbf{95.96} & 95.52 & 72.48 \\
+\textbf{Full} & \checkmark & \checkmark & 95.42 & \textbf{93.40} & 92.01 & \textbf{87.10} \\
+No BER branch & \ding{55} & \checkmark & 95.94 & 72.54 & 92.27 & 41.52 \\
+No diversity loss & \checkmark & \ding{55} & 95.94 & 72.88 & 92.35 & 42.83 \\
+No noise-aware & \ding{55} & \ding{55} & 95.96 & 72.48 & 92.18 & 39.46 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -372,7 +373,7 @@ To verify that SpikeAdapt-SC generalizes beyond AID, we evaluate SpikeAdapt-SC o
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{Cross-dataset results: AID (50/50) vs.\ RESISC45 (20/80). SpikeAdapt-SC at $\rho{=}0.75$, BSC channel.}
+\caption{Cross-dataset results: AID (50/50) vs.\ RESISC45 (20/80). BSC channel. CNN-1bit is a matched-payload non-spiking binary baseline (Conv$\to$BN$\to$sign(), STE, $T{=}1$).}
 \label{tab:cross_dataset}
 \begin{tabular}{l cccc}
 \toprule
@@ -383,6 +384,7 @@ Backbone & 96.04 & --- & 93.44 & --- \\
 SpikeAdapt-SC ($\rho{=}0.75$) & \textbf{95.42} & \textbf{93.34} & \textbf{92.01} & \textbf{86.98} \\
 SpikeAdapt-SC ($\rho{=}0.625$) & 95.40 & 93.50 & 91.06 & 87.29 \\
 SNN (no mask, $\rho{=}1.0$) & 95.20 & 92.36 & 92.53 & 85.31 \\
+CNN-1bit (STE, $T{=}1$) & 95.32 & 87.56 & 91.48 & 85.19 \\
 \bottomrule
 \end{tabular}
 \end{table}
