@@ -99,7 +99,7 @@ Full pipeline retraining (backbone + S2 + S3) per seed.
 ---
 
 ## Architecture
-[(https://github.com/JPL11/SpikeAdapt-SC/blob/main/paper/figures/fig1_architecture.png?raw=true)]
+![Architecture](https://github.com/JPL11/SpikeAdapt-SC/blob/main/paper/figures/fig1_architecture.png?raw=true)
 ```
 Input Image (3×224×224)
     │
