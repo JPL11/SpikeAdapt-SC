@@ -125,7 +125,7 @@ We compare against a no-mask SNN baseline with the same backbone and bottleneck,
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.12}
 \centering
-\caption{Main BSC results on AID and RESISC45. AID values for $\rho{=}0.75$ include 5-seed standard deviation.}
+\caption{Main BSC results. Rows with $\pm$ report 5-seed mean$\pm$std (seeds 42, 123, 456, 789, 1024). Remaining rows are seed-42.}
 \label{tab:main_results}
 \setlength{\tabcolsep}{4pt}
 \begin{tabular}{l cc cc c}
@@ -133,12 +133,13 @@ We compare against a no-mask SNN baseline with the same backbone and bottleneck,
 \multirow{2}{*}{\textbf{Method}} & \multicolumn{2}{c}{\textbf{AID}} & \multicolumn{2}{c}{\textbf{RESISC45}} & \multirow{2}{*}{\textbf{Rate}} \\
 & Clean & BER=0.30 & Clean & BER=0.30 & \\
 \midrule
-\textbf{SpikeAdapt-SC} ($\rho{=}0.75$) & \textbf{95.42}{\scriptsize($\pm$0.71)} & \textbf{93.34}{\scriptsize($\pm$2.58)} & \textbf{92.01} & \textbf{86.98} & 75\% \\
-SpikeAdapt-SC ($\rho{=}0.625$) & 95.40 & 93.50 & 91.06 & 87.29 & 62.5\% \\
-SNN (no mask, $\rho{=}1.0$) & 95.20 & 92.36 & 92.53 & 85.31 & 100\% \\
-CNN-1bit (STE, $T{=}1$) & 95.32 & 87.56 & 91.48 & 85.19 & 100\% \\
-CNN-Uni (8-bit) & 91.78 & 52.80 & 78.32 & 49.32 & 100\% \\
+\textbf{SpikeAdapt-SC} ($\rho{=}0.75$) & \textbf{94.86}{\scriptsize$\pm$0.63} & \textbf{92.80}{\scriptsize$\pm$0.90} & \textbf{92.52}{\scriptsize$\pm$0.17} & \textbf{85.53}{\scriptsize$\pm$5.48} & 75\% \\
+SpikeAdapt-SC ($\rho{=}0.625$)$^\dagger$ & 95.40 & 93.50 & 91.06 & 87.29 & 62.5\% \\
+SNN (no mask, $\rho{=}1.0$) & 94.86{\scriptsize$\pm$0.63} & 92.68{\scriptsize$\pm$1.04} & 92.52{\scriptsize$\pm$0.17} & 85.50{\scriptsize$\pm$5.58} & 100\% \\
+CNN-1bit (STE, $T{=}1$)$^\dagger$ & 95.32 & 87.56 & 91.48 & 85.19 & 100\% \\
+CNN-Uni (8-bit)$^\dagger$ & 91.78 & 52.80 & 78.32 & 49.32 & 100\% \\
 \bottomrule
+\multicolumn{6}{l}{\scriptsize $^\dagger$Seed-42 only.}
 \end{tabular}
 \end{table}
 

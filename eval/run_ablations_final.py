@@ -174,7 +174,7 @@ def run_ablations(dataset_name, n_classes, model, back, front, test_loader):
         mask_results[str(rho)] = {}
         for ber in ber_values:
             learned = evaluate(model, back, front, test_loader, ber=ber, target_rate=rho)
-            rand_mean, rand_std = evaluate_random_mask(model, back, front, test_loader, ber, rho, n_draws=3)
+            rand_mean, rand_std = evaluate_random_mask(model, back, front, test_loader, ber, rho, n_draws=50)
             uniform = evaluate_uniform_mask(model, back, front, test_loader, ber, rho)
             
             mask_results[str(rho)][str(ber)] = {

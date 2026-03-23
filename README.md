@@ -6,50 +6,76 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 
-> **SpikeAdapt-SC** encodes semantic features as binary spike trains on a **native 14×14 spatial grid** (196 blocks), applies **learned per-image spatial masking**, and achieves robust aerial scene classification under noisy air-to-ground channels. The final model **SpikeAdapt-SC** uses Membrane Potential Batch Normalization (MPBN) and a noise-aware scorer to deliver **37× energy savings** via SynOps while maintaining **95.42% accuracy on AID** and **92.01% on RESISC45**. At BER=0.30, masking at ρ=0.625 (37.5% bandwidth savings) **exceeds full-rate accuracy** on both datasets.
+> **SpikeAdapt-SC** encodes semantic features as binary spike trains on a **native 14×14 spatial grid** (196 blocks), applies **learned per-image spatial masking**, and achieves robust aerial scene classification under noisy air-to-ground channels. The encoder uses Membrane Potential Batch Normalization (MPBN) and a noise-aware scorer to deliver **37× energy savings** via SynOps while maintaining **95.42% accuracy on AID** and **92.01% on RESISC45** (seed-42). At BER=0.30, masking at ρ=0.625 matches or exceeds full-rate accuracy on RESISC45 while remaining competitive on AID.
 
 ---
 
 ## Key Results
 
-### Three Core Claims
+### Main Results (BSC Channel, Seed-42)
 
-1. **Fine-grained 14×14 spatial masking improves accuracy under noise** — at ρ=0.625 and BER=0.30, masking exceeds full-rate accuracy on both AID (+1.14 pp) and RESISC45 (+1.98 pp). Learned masks beat random by +1.34 pp on AID at ρ=0.50/BER=0.30.
+| Method | AID Clean | AID BER=0.30 | RESISC45 Clean | RESISC45 BER=0.30 | Rate |
+|--------|-----------|-------------|----------------|-------------------|------|
+| **SpikeAdapt-SC** (ρ=0.75) | **95.42%** | **93.34%** | **92.01%** | **86.98%** | 75% |
+| SpikeAdapt-SC (ρ=0.625) | 95.40% | 93.50% | 91.06% | 87.29% | 62.5% |
+| SNN (no mask, ρ=1.0) | 95.20% | 92.36% | 92.53% | 85.31% | 100% |
+| CNN-1bit (STE, T=1) | 95.32% | 87.56% | 91.48% | 85.19% | 100% |
+| CNN-Uni (8-bit) | 91.78% | 52.80% | 78.32% | 49.32% | 100% |
 
-2. **Binary spike encoding is channel-agnostic** — at matched equivalent BER, BSC/AWGN/Rayleigh channels produce accuracy within ±0.2 pp. SpikeAdapt-SC degrades <1 pp from clean to BER=0.15 on both datasets, while CNN 8-bit quantization collapses from 92.5% to 67%.
+> **Key**: At BER=0.30, SpikeAdapt-SC degrades only 2 pp (AID) and 5 pp (RESISC45), while CNN-Uni collapses by 39 pp. The 1-bit CNN baseline (CNN-1bit) matches clean accuracy but drops to 87.56% at BER=0.30, confirming spiking dynamics (T=8 temporal coding) provide robustness beyond binary transmission alone.
 
-3. **MPBN provides 37× energy savings** — firing rate 0.167 (vs. 0.266 baseline) yields 37× fewer SynOps at ρ=0.75 using the Horowitz energy model.
+### 5-Seed Reproducibility (Seeds: 42, 123, 456, 789, 1024)
 
-### Main Results (BSC Channel, AID 50/50 Split)
+Full pipeline retraining (backbone + S2 + S3) per seed.
 
-| Method | Clean | BER=0.15 | BER=0.30 | Rate |
-|--------|-------|----------|----------|------|
-| **SpikeAdapt-SC** (ρ=0.75) | **95.42%** | **95.78%** | **93.36%** | 75% |
-| SpikeAdapt-SC (ρ=0.625) | 95.40% | 95.62% | 93.50% | 62.5% |
-| SNN (no mask, ρ=1.0) | 95.20% | 95.64% | 92.36% | 100% |
-| CNN-Uni 8-bit | 92.50% | 92.40% | 67.25% | 100% |
+| Condition | AID Mean ± Std | RESISC45 Mean ± Std |
+|-----------|----------------|---------------------|
+| ρ=0.75, Clean | 94.86 ± 0.63% | 92.52 ± 0.17% |
+| ρ=0.75, BER=0.30 | 92.80 ± 0.90% | 85.53 ± 5.48% |
+| ρ=1.0, Clean | 94.86 ± 0.63% | 92.52 ± 0.17% |
+| ρ=1.0, BER=0.30 | 92.68 ± 1.04% | 85.50 ± 5.58% |
+| ρ=0.625, Clean | 93.79 ± 1.24% | 92.35 ± 0.21% |
+| ρ=0.625, BER=0.30 | 90.92 ± 1.91% | 86.19 ± 4.79% |
 
-> **Key**: ρ=0.625 at BER=0.30 (93.50%) *exceeds* ρ=1.0 (92.36%) — masking actively improves noise robustness.
+**Paired t-test (ρ=0.625 vs ρ=1.0 at BER=0.30):**
+- RESISC45: Δ = +0.69 pp, p = 0.19 (consistent direction, not significant at α=0.05)
+- AID: Δ = −1.76 pp, p = 0.03 (seed-dependent)
 
-### Cross-Dataset Validation
+> The masking benefit is most reliable on RESISC45 (45 classes, harder task). On AID, the seed-42 advantage (+1.14 pp) does not generalize across seeds.
 
-| Dataset | Split | Backbone | SpikeAdapt-SC Clean | BER=0.30 |
-|---------|-------|----------|-------------|----------|
-| **AID** | 50/50 (5K/5K) | 96.04% | **95.42%** | **93.34%** |
-| **RESISC45** | 20/80 (6.3K/25.2K) | 93.44% | **92.01%** | **86.98%** |
+### Noise-Aware Ablation (Seed-42, ρ=0.75)
 
-### Multi-Channel Comparison (Matched Equivalent BER)
+| Variant | BER | Div | AID Clean | AID BER=0.30 | R45 Clean | R45 BER=0.30 |
+|---------|-----|-----|-----------|-------------|-----------|-------------|
+| **Full** | ✓ | ✓ | 95.42 | **93.40** | 92.01 | **87.10** |
+| No BER branch | ✗ | ✓ | 95.94 | 72.54 | 92.27 | 41.52 |
+| No diversity loss | ✓ | ✗ | 95.94 | 72.88 | 92.35 | 42.83 |
+| Neither | ✗ | ✗ | 95.96 | 72.48 | 92.18 | 39.46 |
 
-| Equiv BER | BSC (AID) | AWGN (AID) | Ray. (AID) | BSC (RES) | AWGN (RES) | Ray. (RES) |
+> Both components are essential. Removing either collapses BER=0.30 accuracy by ~20 pp on AID and ~45 pp on RESISC45, while clean accuracy is unaffected.
+
+### Mask Comparison (AID, 50 Independent Random Draws)
+
+| ρ | BER | Learned | Random (50-draw) | Uniform | Δ_rand |
+|---|-----|---------|------------------|---------|--------|
+| 0.50 | 0.00 | 95.02% | 95.28 ± 0.12% | 90.58% | −0.26 |
+| 0.50 | 0.30 | **93.44%** | 91.95 ± 0.15% | 85.54% | **+1.49** |
+| 0.75 | 0.00 | 95.42% | 95.35 ± 0.10% | 94.70% | +0.07 |
+| 0.75 | 0.30 | **93.26%** | 93.25 ± 0.13% | 91.78% | **+0.01** |
+
+> Learned mask advantage grows under noise and at lower rates. At ρ=0.50/BER=0.30, learned masks outperform random by +1.49 pp.
+
+### Cross-Channel Comparison (Matched Equivalent BER)
+
+| Equiv BER | BSC (AID) | AWGN (AID) | Ray. (AID) | BSC (R45) | AWGN (R45) | Ray. (R45) |
 |-----------|-----------|------------|------------|-----------|------------|------------|
-| 0.01 | 95.46% | 95.52% | 95.44% | 92.05% | 92.03% | 92.02% |
-| 0.10 | 95.70% | 95.66% | 95.70% | 92.31% | 92.27% | 92.34% |
-| 0.20 | 95.76% | 95.62% | 95.70% | 92.31% | 92.29% | 92.31% |
+| 0.05 | 95.64% | 95.56% | 95.66% | 92.15% | 92.17% | 92.17% |
+| 0.15 | 95.72% | 95.72% | 95.90% | 92.42% | 92.39% | 92.40% |
 | 0.30 | 93.34% | 93.46% | 93.50% | 86.98% | 86.94% | 86.94% |
 
-> **Channel-agnostic**: All 3 channels within **±0.2 pp** at every matched BER. Binary spikes admit only bit-flip errors regardless of physical noise mechanism.
+> **Channel-agnostic**: BSC, AWGN, and Rayleigh within **±0.2 pp** at every matched BER. Binary spikes admit only bit-flip errors regardless of physical noise mechanism.
 
-### ρ Sweep: Bandwidth–Accuracy Pareto (BER=0.30)
+### ρ Sweep: Bandwidth–Accuracy Pareto (BER=0.30, Seed-42)
 
 | ρ | BW Save | AID | RESISC45 |
 |---|---------|-----|----------|
@@ -60,42 +86,15 @@
 | 0.75 | 25% | 93.36% | 87.08% |
 | 1.00 | 0% | 92.36% | 85.31% |
 
-> **ρ=0.625 beats ρ=1.0 on both datasets**: AID +1.14 pp, RESISC45 +1.98 pp.
-
-### Mask Comparison (SpikeAdapt-SC, AID 50/50)
-
-| ρ | BER | Learned | Random (3-draw) | Uniform | Δ_rand |
-|---|-----|---------|-----------------|---------|--------|
-| 0.50 | 0.00 | 95.02% | 95.31±0.04% | 95.56% | −0.29 |
-| 0.50 | 0.30 | **93.32%** | 91.98±0.07% | 92.80% | **+1.34** |
-| 0.75 | 0.00 | 95.42% | 95.29±0.02% | 94.70% | +0.13 |
-| 0.75 | 0.30 | **93.80%** | 93.29±0.05% | 91.90% | **+0.51** |
-
-> Learned mask advantage **grows under noise**: modest at clean, significant at BER=0.30.
-
 ### SynOps / Energy Analysis
 
-| Version | FR | ρ | SynOps (M) | Energy × |
-|---------|-----|---|------------|----------|
+| Version | FR | ρ | SynOps (M) | Energy Ratio |
+|---------|-----|---|------------|--------------|
 | V2 (IF baseline) | 0.266 | 0.75 | 321.1 | 23.4× |
-| **SpikeAdapt-SC** | **0.167** | 0.75 | **178.7** | **42.0×** |
+| **SpikeAdapt-SC** | **0.167** | **0.75** | **201.5** | **37.3×** |
 | SpikeAdapt-SC | 0.167 | 0.50 | 140.1 | 53.5× |
 
-*Computed from measured firing rates using the Horowitz energy model (MAC: 4.6 pJ, SynOp: 0.9 pJ).*
-
-### 5-Seed Reproducibility (60-epoch S3, λ_div=0.10)
-
-| BER | AID Mean ± Std | RESISC45 Mean ± Std |
-|-----|----------------|---------------------|
-| Clean | 95.14 ± 0.71% | 91.10 ± 0.99% |
-| 0.05 | 95.25 ± 0.60% | 91.38 ± 0.90% |
-| 0.10 | 95.26 ± 0.61% | 91.49 ± 0.96% |
-| 0.15 | 95.26 ± 0.59% | 91.47 ± 1.09% |
-| 0.20 | 95.15 ± 0.66% | 91.26 ± 1.38% |
-| 0.25 | 94.32 ± 0.96% | 90.47 ± 1.95% |
-| **0.30** | **91.87 ± 2.58%** | **87.32 ± 3.90%** |
-
-*Seeds: 42, 101, 123, 456, 789. Same data split (seed=42), different scorer initialization.*
+*Computed from measured firing rates using the Horowitz energy model (MAC: 4.6 pJ, SynOp: 0.9 pJ). These are estimated compute savings, not hardware measurements.*
 
 ---
 
@@ -125,7 +124,7 @@ Spikes S₂ ∈ {0,1}^{36×14×14} ──⊙ M──▶ Masked Spikes
                                          ▼
                                   SNN Decoder (T=8)
                                   Conv 36→256, BN+IF
-                                  Conv 256→1024, BN+IHF
+                                  Conv 256→1024, BN+IF
                                          │
                                          ▼
                               Spike-to-Feature Converter
@@ -147,24 +146,32 @@ Spikes S₂ ∈ {0,1}^{36×14×14} ──⊙ M──▶ Masked Spikes
 ```
 SpikeAdapt-SC/
 ├── train/                               # Training scripts
-│   ├── train_aid_v2.py                  #   V2: 14×14 native grid, C2=36
-│   ├── train_aid_v4.py                  #   V4-A: LIF + BNTT + learnable slope
-│   ├── train_aid_v5.py                  #   V5C: + MPBN (final model base)
-│   └── run_final_pipeline.py            #   Master pipeline: SpikeAdapt-SC on AID + RESISC45
+│   ├── run_final_pipeline.py            #   Master pipeline: SpikeAdapt-SC on AID + RESISC45
+│   ├── multi_seed_pipeline.py           #   5-seed training + evaluation
+│   ├── train_noise_aware_ablation.py    #   Noise-aware ablation (BER/diversity)
+│   ├── train_1bit_baseline.py           #   Non-spiking 1-bit CNN baseline
+│   └── train_aid_v*.py                  #   Incremental model versions
 │
 ├── models/                              # Model components
 │   └── noise_aware_scorer.py            #   Noise-aware importance scorer
 │
 ├── eval/                                # Evaluation & analysis
-│   ├── run_ablations_final.py           #   ρ sweep + mask comparison (both datasets)
-│   ├── gen_paper_figures.py             #   IEEE conference-grade figure generation
-│   ├── 5seed_proper.py                  #   Proper 5-seed S3 retraining
-│   ├── pareto_and_seeds.py              #   Pareto figure generation
-│   └── compute_synops.py               #   SynOps/energy analysis
+│   ├── run_ablations_final.py           #   ρ sweep + mask comparison (50 draws)
+│   ├── seed_results/                    #   5-seed JSON results (per-seed + summary)
+│   ├── noise_aware_ablation_aid.json    #   Ablation results (AID)
+│   ├── noise_aware_ablation_resisc45.json #   Ablation results (RESISC45)
+│   ├── 1bit_baseline_results.json       #   1-bit baseline BER sweep
+│   ├── compute_synops.py                #   SynOps/energy analysis
+│   └── gen_paper_figures.py             #   IEEE conference-grade figure generation
+│
+├── baselines/                           # External baseline replications
+│   ├── SNN_SC_replication_Class.ipynb   #   Wang et al. SNN-SC classification
+│   └── SNN_SC_replication_Seg.ipynb     #   Wang et al. SNN-SC segmentation
 │
 ├── paper/                               # Paper assets
-│   ├── main.tex                         #   Manuscript source
-│   └── figures/                         #   Publication-quality figures (PDF+PNG)
+│   ├── main.tex                         #   Full manuscript
+│   ├── main_6page_revised.tex           #   6-page conference version
+│   └── figures/                         #   Publication-quality figures
 │
 ├── data/
 │   ├── AID/                             #   AID dataset (30 classes, 10K images)
@@ -196,11 +203,15 @@ python train/run_final_pipeline.py --stage v5c_aid
 python train/run_final_pipeline.py --stage backbone_resisc
 python train/run_final_pipeline.py --stage v5c_resisc
 
-# Run ablations (ρ sweep + mask comparison on both datasets)
+# Run ablations (ρ sweep + mask comparison, 50 random draws)
 python eval/run_ablations_final.py
 
-# Generate IEEE conference-grade figures
-python eval/gen_paper_figures.py
+# 5-seed reproducibility
+python train/multi_seed_pipeline.py
+
+# Noise-aware ablation
+python train/train_noise_aware_ablation.py --dataset aid
+python train/train_noise_aware_ablation.py --dataset resisc45
 
 # SynOps analysis
 python eval/compute_synops.py
@@ -223,7 +234,7 @@ python eval/compute_synops.py
 ## Datasets
 
 | Dataset | Classes | Images | Resolution | Split | Train | Test |
-|---------|---------|--------|------------|----------------|-------|------|
+|---------|---------|--------|------------|-------|-------|------|
 | **AID** [Xia et al. 2017] | 30 | 10,000 | 600×600 | 50/50 | 5,000 | 5,000 |
 | **RESISC45** [Cheng et al. 2017] | 45 | 31,500 | 256×256 | 20/80 | 6,300 | 25,200 |
 
@@ -249,7 +260,7 @@ Both use their **commonly used benchmark splits** for comparability with prior w
 
 - **AID**: G.-S. Xia et al., "AID: A benchmark data set for performance evaluation of aerial scene classification," *IEEE TGRS*, 2017.
 - **RESISC45**: G. Cheng et al., "Remote sensing image scene classification: Benchmark and state of the art," *Proc. IEEE*, 2017.
-- **SNN (no mask)**: M. Wang et al., "SNN (no mask): A spiking semantic communication framework," *IEEE TCCN*, 2024.
+- **SNN-SC**: M. Wang et al., "SNN-SC: A spiking semantic communication framework for collaborative intelligence," *IEEE TCCN*, 2024.
 - **Horowitz**: M. Horowitz, "Computing's energy problem," *IEEE ISSCC*, 2014.
 
 ---
