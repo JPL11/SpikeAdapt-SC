@@ -146,7 +146,8 @@ SpikeAdapt-SC/
 │   ├── multi_seed_pipeline.py           #   5-seed reproducibility pipeline
 │   ├── train_noise_aware_ablation.py    #   Noise-aware ablation training
 │   ├── train_1bit_baseline.py           #   CNN-1bit baseline
-│   └── train_aid_v2.py                  #   Core model classes (ResNet50Front/Back, BSC_Channel)
+│   ├── train_aid_v2.py                  #   Core classes (ResNet50Front/Back, BSC_Channel)
+│   └── train_aid_v5.py                  #   SNN building blocks (EncoderV5, DecoderV5, MPBN)
 │
 ├── models/                              # Model components
 │   ├── spikeadapt_sc.py                 #   SpikeAdapt-SC v5c-NA model
