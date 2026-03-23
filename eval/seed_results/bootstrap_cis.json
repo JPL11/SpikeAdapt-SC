@@ -1,0 +1,54 @@
+{
+  "aid": {
+    "masking_075_vs_10": {
+      "observed": -0.11,
+      "bca_ci_95": [
+        -1.15,
+        0.64
+      ],
+      "excludes_zero": false
+    },
+    "masking_0625_vs_10": {
+      "observed": -1.96,
+      "bca_ci_95": [
+        -3.86,
+        -0.18
+      ],
+      "excludes_zero": true
+    },
+    "snn_vs_cnn1bit": {
+      "observed": 1.39,
+      "bca_ci_95": [
+        -0.3,
+        4.84
+      ],
+      "excludes_zero": false
+    }
+  },
+  "resisc45": {
+    "masking_075_vs_10": {
+      "observed": 1.67,
+      "bca_ci_95": [
+        0.89,
+        2.89
+      ],
+      "excludes_zero": true
+    },
+    "masking_0625_vs_10": {
+      "observed": 2.09,
+      "bca_ci_95": [
+        0.91,
+        4.06
+      ],
+      "excludes_zero": true
+    },
+    "snn_vs_cnn1bit": {
+      "observed": 0.41,
+      "bca_ci_95": [
+        -2.98,
+        3.79
+      ],
+      "excludes_zero": false
+    }
+  }
+}
