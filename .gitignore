@@ -14,8 +14,11 @@ snapshots_*/
 
 # Logs
 *.log
-*.txt
 nohup.out
+
+# Text files (except manifests)
+*.txt
+!**/selected_checkpoint.txt
 
 # Python bytecode
 __pycache__/
@@ -54,8 +57,7 @@ results/
 # Jupyter notebooks (use archive/ for old ones)
 *.ipynb
 
-# LaTeX source and build artifacts
-*.tex
+# LaTeX build artifacts (but keep .tex source)
 paper/*.aux
 paper/*.bbl
 paper/*.blg

@@ -85,17 +85,27 @@ def train_and_eval_seed(dataset_name, n_classes, seed):
     
     # Train V5C-NA if not exists
     v5cna_dir = f'./snapshots_{dataset_name}_v5cna_seed{seed}/'
-    existing = [f for f in os.listdir(v5cna_dir) if f.startswith('v5cna_best_')] if os.path.exists(v5cna_dir) else []
+    manifest = os.path.join(v5cna_dir, 'selected_checkpoint.txt')
+    existing = [f for f in os.listdir(v5cna_dir) if f.startswith('v5cna_best_') and f.endswith('.pth')] if os.path.exists(v5cna_dir) else []
     
     if not existing:
         train_v5c_na(dataset_name, n_classes, train_loader, test_loader, seed, bb_path,
                      epochs_s2=60, epochs_s3=40)
-        existing = [f for f in os.listdir(v5cna_dir) if f.startswith('v5cna_best_')]
+        existing = [f for f in os.listdir(v5cna_dir) if f.startswith('v5cna_best_') and f.endswith('.pth')]
     
-    # Find best checkpoint
-    best_ck = sorted(existing, key=lambda x: float(x.split('_')[-1].replace('.pth','')))[-1]
+    # Checkpoint selection: use manifest if it exists, otherwise pick best and write manifest
+    if os.path.exists(manifest):
+        best_ck = open(manifest).read().strip()
+        if not os.path.exists(os.path.join(v5cna_dir, best_ck)):
+            print(f"  WARNING: manifest points to {best_ck} but file missing, re-selecting")
+            best_ck = sorted(existing, key=lambda x: float(x.split('_')[-1].replace('.pth','')))[-1]
+            with open(manifest, 'w') as f: f.write(best_ck)
+    else:
+        best_ck = sorted(existing, key=lambda x: float(x.split('_')[-1].replace('.pth','')))[-1]
+        with open(manifest, 'w') as f: f.write(best_ck)
+        print(f"  Wrote manifest: {manifest} -> {best_ck}", flush=True)
     ck_path = os.path.join(v5cna_dir, best_ck)
-    print(f"  Using checkpoint: {ck_path}", flush=True)
+    print(f"  Using checkpoint: {ck_path} (pinned via manifest)", flush=True)
     
     # Load model
     front = ResNet50Front(grid_size=14).to(device)
