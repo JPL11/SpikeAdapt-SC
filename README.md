@@ -171,9 +171,7 @@ SpikeAdapt-SC/
 │   ├── block_importance_analysis.py     #   Block score analysis
 │   └── seed_results/                    #   5-seed JSON outputs (per-seed + summary)
 │
-├── paper/                               # Paper source
-│   ├── main.tex                         #   Full manuscript
-│   ├── main_6page_revised.tex           #   6-page GlobeCom version
+├── paper/                               # Paper assets
 │   └── figures/                         #   Only figures referenced in paper (6 files)
 │
 ├── archive/                             # Development history (old scripts, figures, docs)

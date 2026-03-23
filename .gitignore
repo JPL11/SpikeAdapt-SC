@@ -54,7 +54,8 @@ results/
 # Jupyter notebooks (use archive/ for old ones)
 *.ipynb
 
-# LaTeX build artifacts
+# LaTeX source and build artifacts
+*.tex
 paper/*.aux
 paper/*.bbl
 paper/*.blg
