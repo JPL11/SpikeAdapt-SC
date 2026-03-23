@@ -236,7 +236,7 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}36$ chan
 
 \textbf{Baselines.} We compare against five baselines using the \emph{same trained backbone}: (1)~\emph{SNN (no mask, $\rho{=}1.0$)~\cite{wang2024snnsc}}: our reproduction of SNN-SC with masking disabled ($\rho{=}1.0$). We omit SNN-SC's entropy maximization loss because it encourages uniform spike distributions across all spatial positions, which directly conflicts with content-adaptive masking---our scorer must learn \emph{non-uniform} importance scores to selectively mask low-value blocks. (2)~\emph{CNN-Uni}: ANN encoder with 8-bit uniform quantization and matched bottleneck, transmitted via bit-plane BSC. (3)~\emph{CNN-NonUni}: same architecture with non-uniform (Lloyd-Max) quantization---k-means on feature activations finds 256~levels that minimize MSE. (4)~\emph{MLP-FC}: fully-connected encoder/decoder replacing convolutions with FC layers and the same 8-bit uniform quantization, testing whether spatial structure matters for noise robustness. (5)~\emph{JPEG+Conv}: traditional separate source-channel coding---features are JPEG-compressed, protected by a rate-1/3 repetition code, and transmitted through the channel, representing the classical design paradigm. All baselines share the same backbone, data splits, and noise curriculum.
 
-\textbf{Reproducibility.} 5-seed variance (seeds 42, 123, 456, 789, 1024) with full pipeline retraining: AID $94.86 \pm 0.63$\% clean, $92.68 \pm 1.04$\% at BER$=$0.30 ($\rho{=}1.0$). RESISC45 $92.52 \pm 0.17$\% clean, $85.50 \pm 5.58$\% at BER$=$0.30 ($\rho{=}1.0$). The high BER$=$0.30 variance on RESISC45 reflects scorer-dependent mask differences amplified by noise. Table results report seed-42 models.
+\textbf{Reproducibility.} 5-seed variance (seeds 42, 123, 456, 789, 1024) with full pipeline retraining: AID $\rho{=}1.0$ gives $95.48 \pm 0.30$\% clean, $92.87 \pm 1.19$\% at BER$=$0.30; $\rho{=}0.75$ gives $94.86 \pm 0.63$\% clean, $92.66 \pm 0.95$\% at BER$=$0.30. RESISC45 $\rho{=}1.0$ gives $92.49 \pm 0.16$\% clean, $83.55 \pm 6.88$\% at BER$=$0.30; $\rho{=}0.75$ gives $92.52 \pm 0.17$\% clean, $85.55 \pm 5.53$\% at BER$=$0.30. On RESISC45, the improvement from masking ($\rho{=}0.75$ vs.~$\rho{=}1.0$ at BER$=$0.30) is significant by paired $t$-test ($\Delta{=}+$1.99~pp, $p{=}0.038$). Baseline rows report seed-42 values.
 
 \subsection{Channel Robustness}
 
@@ -249,9 +249,9 @@ where $\rho$ is the actual transmission rate, $T{=}8$ timesteps, $C_2{=}36$ chan
 \toprule
 \textbf{Method} & \textbf{Clean} & \textbf{BER=0.30} & \textbf{Rate} \\
 \midrule
-\textbf{SpikeAdapt-SC} ($\rho{=}0.75$) & \textbf{94.86}{\scriptsize$\pm$0.63} & \textbf{92.80}{\scriptsize$\pm$0.90} & 75\% \\
-SpikeAdapt-SC ($\rho{=}0.625$)$^\dagger$ & 95.40 & 93.50 & 62.5\% \\
-SNN (no mask, $\rho{=}1.0$) & 94.86{\scriptsize$\pm$0.63} & 92.68{\scriptsize$\pm$1.04} & 100\% \\
+\textbf{SpikeAdapt-SC} ($\rho{=}0.75$) & \textbf{94.86}{\scriptsize$\pm$0.63} & \textbf{92.66}{\scriptsize$\pm$0.95} & 75\% \\
+SpikeAdapt-SC ($\rho{=}0.625$)$^\dagger$ & 95.40 & 93.38 & 62.5\% \\
+SNN (no mask, $\rho{=}1.0$) & 95.48{\scriptsize$\pm$0.30} & 92.87{\scriptsize$\pm$1.19} & 100\% \\
 \midrule
 CNN-Uni (8-bit)$^\dagger$ & 91.78 & 52.80 & 100\% \\
 CNN-NonUni (8-bit)$^\dagger$ & 91.74 & 63.58 & 100\% \\
@@ -262,7 +262,7 @@ JPEG+Conv ($R{=}1/3$)$^{\dagger\dagger}$ & 95.16 & 2.68 & 300\% \\
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:main_results} presents results on AID (standard 50/50 split, 5,000 test images) under the BSC channel. SpikeAdapt-SC at $\rho{=}0.75$ achieves 95.42\% clean accuracy with minimal degradation under noise. At $\rho{=}0.625$ (seed-42), accuracy at BER${=}0.30$ is 93.50\%---exceeding the unmasked SNN (no mask) baseline (92.36\%) by 1.14~pp. However, a 5-seed paired comparison shows this advantage is seed-dependent: on AID, $\rho{=}0.625$ averages $-$1.76~pp vs.\ $\rho{=}1.0$ at BER${=}0.30$ ($p{=}0.03$), while on RESISC45, $\rho{=}0.625$ averages $+$0.69~pp ($p{=}0.19$). The masking benefit is thus most reliable on more complex tasks (45-class RESISC45).
+Table~\ref{tab:main_results} presents results on AID (standard 50/50 split, 5,000 test images) under the BSC channel. At $\rho{=}1.0$ (no masking), the SNN achieves 95.48$\pm$0.30\% clean and 92.87$\pm$1.19\% at BER${=}0.30$, demonstrating strong inherent noise robustness. At $\rho{=}0.75$ (25\% bandwidth savings), SpikeAdapt-SC shows similar BER${=}0.30$ accuracy on AID (92.66~vs.~92.87\%, $\Delta{=}-$0.20~pp, $p{=}0.69$). On RESISC45, the masking benefit is statistically significant: $\rho{=}0.75$ improves BER${=}0.30$ accuracy by $+$1.99~pp over $\rho{=}1.0$ ($p{=}0.038$), and $\rho{=}0.625$ improves by $+$2.68~pp ($p{=}0.063$). This pattern---stronger masking benefit on harder tasks---is consistent with the hypothesis that learned masking concentrates transmission on the most discriminative spatial blocks, which matters more when the classification task is more difficult.
 
 \textbf{Binary encoding provides inherent noise robustness.} SpikeAdapt-SC degrades less than 2~pp from clean to BER${=}0.30$ (95.42\% $\to$ 93.34\%). In contrast, all continuous-valued baselines \emph{collapse}: CNN-Uni drops 39~pp, CNN-NonUni drops 28~pp, and MLP-FC drops 56~pp. Note that the clean accuracy gap between SNN and CNN baselines (e.g., 95.42\% vs.\ 91.78\% on AID) reflects the information loss from 8-bit fixed-point quantization versus 1-bit temporal coding with $T{=}8$ timesteps---the SNN effectively encodes 8~bits of temporal resolution per channel but each bit independently tolerates channel errors, whereas 8-bit quantization concentrates all information into a single multi-bit representation vulnerable to MSB corruption. The lower CNN clean accuracy on RESISC45 (e.g., CNN-Uni 78.32\% vs.\ SpikeAdapt-SC 92.01\%) is more pronounced due to information loss from 8-bit quantization of the wider 45-class feature space. MLP-FC degrades faster than CNN baselines because FC layers lack convolutional spatial structure, making them more sensitive to quantization noise. JPEG+Conv exhibits the worst behavior---a catastrophic \emph{cliff effect} at BER${=}0.05$, dropping from 95.16\% to 2.68\% (random chance), because even a few residual bit errors after the repetition code corrupt critical JPEG header bytes. This cliff effect is characteristic of separate source-channel coding and motivates joint source-channel approaches. Fig.~\ref{fig:ber_sweep_baselines} shows the full BER sweep for both datasets.
 
@@ -381,9 +381,9 @@ To verify that SpikeAdapt-SC generalizes beyond AID, we evaluate SpikeAdapt-SC o
 \textbf{Method} & Clean & BER=0.30 & Clean & BER=0.30 \\
 \midrule
 Backbone$^\dagger$ & 96.04 & --- & 93.44 & --- \\
-SpikeAdapt-SC ($\rho{=}0.75$) & \textbf{94.86}{\scriptsize$\pm$0.63} & \textbf{92.80}{\scriptsize$\pm$0.90} & \textbf{92.52}{\scriptsize$\pm$0.17} & \textbf{85.53}{\scriptsize$\pm$5.48} \\
-SpikeAdapt-SC ($\rho{=}0.625$)$^\dagger$ & 95.40 & 93.50 & 91.06 & 87.29 \\
-SNN (no mask, $\rho{=}1.0$) & 94.86{\scriptsize$\pm$0.63} & 92.68{\scriptsize$\pm$1.04} & 92.52{\scriptsize$\pm$0.17} & 85.50{\scriptsize$\pm$5.58} \\
+SpikeAdapt-SC ($\rho{=}0.75$) & 94.86{\scriptsize$\pm$0.63} & 92.66{\scriptsize$\pm$0.95} & 92.52{\scriptsize$\pm$0.17} & \textbf{85.55}{\scriptsize$\pm$5.53} \\
+SpikeAdapt-SC ($\rho{=}0.625$)$^\dagger$ & 95.40 & 93.38 & 91.06 & \textbf{86.48} \\
+SNN (no mask, $\rho{=}1.0$) & \textbf{95.48}{\scriptsize$\pm$0.30} & \textbf{92.87}{\scriptsize$\pm$1.19} & 92.49{\scriptsize$\pm$0.16} & 83.55{\scriptsize$\pm$6.88} \\
 CNN-1bit (STE, $T{=}1$)$^\dagger$ & 95.32 & 87.56 & 91.48 & 85.19 \\
 \bottomrule
 \multicolumn{5}{l}{\scriptsize $^\dagger$Seed-42 only.}

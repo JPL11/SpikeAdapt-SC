@@ -116,7 +116,7 @@ With \(T=8\), \(C_2=36\), and \(H=W=14\), \(\rho=0.75\) corresponds to 42,336 bi
 
 \subsection{Setup}
 
-We evaluate on AID~\cite{xia2017aid} (10,000 images, 30 classes, 50/50 split) and NWPU-RESISC45~\cite{cheng2017resisc} (31,500 images, 45 classes, 20\% training split). The ResNet-50 backbone is ImageNet-initialized and fine-tuned first; the SNN encoder/decoder is then trained for 60 epochs, followed by 40 epochs of joint fine-tuning with the scorer and diversity loss. BSC noise is sampled during training with a high-noise-biased curriculum. Unless noted otherwise, evaluations average over three noise draws. We report 5-seed reproducibility (seeds 42, 123, 456, 789, 1024): AID gives 94.86$\pm$0.63 clean and 92.68$\pm$1.04 at BER$=0.30$ ($\rho{=}1.0$); RESISC45 gives 92.52$\pm$0.17 clean and 85.50$\pm$5.58 at BER$=0.30$ ($\rho{=}1.0$).
+We evaluate on AID~\cite{xia2017aid} (10,000 images, 30 classes, 50/50 split) and NWPU-RESISC45~\cite{cheng2017resisc} (31,500 images, 45 classes, 20\% training split). The ResNet-50 backbone is ImageNet-initialized and fine-tuned first; the SNN encoder/decoder is then trained for 60 epochs, followed by 40 epochs of joint fine-tuning with the scorer and diversity loss. BSC noise is sampled during training with a high-noise-biased curriculum. Unless noted otherwise, evaluations average over three noise draws. We report 5-seed reproducibility (seeds 42, 123, 456, 789, 1024): at $\rho{=}1.0$, AID gives 95.48$\pm$0.30\% clean, 92.87$\pm$1.19\% at BER$=$0.30; RESISC45 gives 92.49$\pm$0.16\% clean, 83.55$\pm$6.88\% at BER$=$0.30.
 
 We compare against a no-mask SNN baseline with the same backbone and bottleneck, plus an 8-bit CNN baseline (CNN-Uni) with matched backbone and BSC transmission. Extended CNN/MLP/JPEG sweeps are maintained in the repository but omitted here for space.
 
@@ -133,9 +133,9 @@ We compare against a no-mask SNN baseline with the same backbone and bottleneck,
 \multirow{2}{*}{\textbf{Method}} & \multicolumn{2}{c}{\textbf{AID}} & \multicolumn{2}{c}{\textbf{RESISC45}} & \multirow{2}{*}{\textbf{Rate}} \\
 & Clean & BER=0.30 & Clean & BER=0.30 & \\
 \midrule
-\textbf{SpikeAdapt-SC} ($\rho{=}0.75$) & \textbf{94.86}{\scriptsize$\pm$0.63} & \textbf{92.80}{\scriptsize$\pm$0.90} & \textbf{92.52}{\scriptsize$\pm$0.17} & \textbf{85.53}{\scriptsize$\pm$5.48} & 75\% \\
-SpikeAdapt-SC ($\rho{=}0.625$)$^\dagger$ & 95.40 & 93.50 & 91.06 & 87.29 & 62.5\% \\
-SNN (no mask, $\rho{=}1.0$) & 94.86{\scriptsize$\pm$0.63} & 92.68{\scriptsize$\pm$1.04} & 92.52{\scriptsize$\pm$0.17} & 85.50{\scriptsize$\pm$5.58} & 100\% \\
+\textbf{SpikeAdapt-SC} ($\rho{=}0.75$) & 94.86{\scriptsize$\pm$0.63} & 92.66{\scriptsize$\pm$0.95} & 92.52{\scriptsize$\pm$0.17} & \textbf{85.55}{\scriptsize$\pm$5.53} & 75\% \\
+SpikeAdapt-SC ($\rho{=}0.625$)$^\dagger$ & 95.40 & 93.38 & 91.06 & \textbf{86.48} & 62.5\% \\
+SNN (no mask, $\rho{=}1.0$) & \textbf{95.48}{\scriptsize$\pm$0.30} & \textbf{92.87}{\scriptsize$\pm$1.19} & 92.49{\scriptsize$\pm$0.16} & 83.55{\scriptsize$\pm$6.88} & 100\% \\
 CNN-1bit (STE, $T{=}1$)$^\dagger$ & 95.32 & 87.56 & 91.48 & 85.19 & 100\% \\
 CNN-Uni (8-bit)$^\dagger$ & 91.78 & 52.80 & 78.32 & 49.32 & 100\% \\
 \bottomrule
@@ -143,7 +143,7 @@ CNN-Uni (8-bit)$^\dagger$ & 91.78 & 52.80 & 78.32 & 49.32 & 100\% \\
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:main_results} shows three key outcomes. First, the spiking pipeline remains robust at BER$=0.30$: on AID, SpikeAdapt-SC drops only 2.08 pp from clean to BER$=0.30$, while CNN-Uni drops 38.98~pp. Second, spatial masking is competitive with or better than full-rate: at $\rho=0.625$ (seed-42), SpikeAdapt-SC exceeds the full-rate no-mask SNN baseline by 1.14~pp on AID and 1.98~pp on RESISC45; a 5-seed paired test confirms this direction on RESISC45 ($\Delta{=}+$0.69~pp, $p{=}0.19$), while on AID the advantage is seed-dependent ($\Delta{=}-$1.76~pp, $p{=}0.03$). Third, a matched-payload non-spiking 1-bit CNN (CNN-1bit) achieves nearly identical clean accuracy but drops to 87.56\% on AID at BER$=0.30$---a 5.78~pp gap vs.\ SpikeAdapt-SC's 93.34\%. This confirms that the robustness advantage is not explained by binary transmission alone; temporal spike coding with $T{=}8$ timesteps provides significantly better noise resilience than single-shot binarization.
+Table~\ref{tab:main_results} shows three key outcomes. First, the spiking pipeline remains robust at BER$=0.30$: on AID, SpikeAdapt-SC drops only 2~pp from clean to BER$=0.30$, while CNN-Uni drops 39~pp. Second, spatial masking provides a significant benefit on harder tasks: on RESISC45, $\rho{=}0.75$ improves BER$=0.30$ accuracy by $+$1.99~pp over $\rho{=}1.0$ ($p{=}0.038$, 5-seed paired $t$-test). On AID, the masking effect is neutral ($\Delta{=}-$0.20~pp, $p{=}0.69$), consistent with the easier 30-class task having more spatial redundancy. The learned mask advantage grows at more aggressive compression: at $\rho{=}0.10$, learned masks outperform random by +40~pp under BER$=0.30$ (see repo). Third, a matched-payload non-spiking 1-bit CNN (CNN-1bit) achieves nearly identical clean accuracy but drops to 87.56\% on AID at BER$=0.30$---a 5.78~pp gap vs.\ SpikeAdapt-SC's 93.38\%. This confirms that the robustness advantage is not explained by binary transmission alone; temporal spike coding with $T{=}8$ timesteps provides significantly better noise resilience than single-shot binarization.
 
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.12}

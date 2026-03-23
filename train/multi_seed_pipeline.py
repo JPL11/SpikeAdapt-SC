@@ -105,21 +105,14 @@ def train_and_eval_seed(dataset_name, n_classes, seed):
     model.load_state_dict(ck['model']); back.load_state_dict(ck['back'])
     model.eval(); back.eval()
     
-    # Evaluate at ρ=1.0 and ρ=0.625, BER=0.0 and BER=0.30
+    # Evaluate at ρ=1.0, ρ=0.75, and ρ=0.625, BER=0.0 and BER=0.30
     results = {}
-    for rho in [1.0, 0.625]:
+    for rho in [1.0, 0.75, 0.625]:
         results[str(rho)] = {}
         for ber in [0.0, 0.30]:
-            rho_arg = None if rho == 1.0 else rho
-            acc = evaluate(model, back, front, test_loader, ber=ber, rho=rho_arg)
+            acc = evaluate(model, back, front, test_loader, ber=ber, rho=rho)
             results[str(rho)][str(ber)] = round(acc, 2)
             print(f"  ρ={rho} BER={ber}: {acc:.2f}%", flush=True)
-    
-    # Also record clean accuracy at default ρ=0.75
-    results['0.75'] = {}
-    for ber in [0.0, 0.30]:
-        acc = evaluate(model, back, front, test_loader, ber=ber, rho=0.75)
-        results['0.75'][str(ber)] = round(acc, 2)
     
     del model, back, front
     torch.cuda.empty_cache()
@@ -156,7 +149,7 @@ def main():
     summary = {}
     for ds_name in ['aid', 'resisc45']:
         summary[ds_name] = {}
-        for rho in ['1.0', '0.625']:
+        for rho in ['1.0', '0.75', '0.625']:
             summary[ds_name][rho] = {}
             for ber in ['0.0', '0.3']:
                 accs = [all_results[ds_name][str(s)][rho][ber] for s in seeds]
