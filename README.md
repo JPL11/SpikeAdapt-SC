@@ -142,38 +142,41 @@ Spikes S₂ ∈ {0,1}^{36×14×14} ──⊙ M──▶ Masked Spikes
 ```
 SpikeAdapt-SC/
 ├── train/                               # Training scripts
-│   ├── run_final_pipeline.py            #   Master pipeline: SpikeAdapt-SC on AID + RESISC45
-│   ├── multi_seed_pipeline.py           #   5-seed training + evaluation
-│   ├── train_noise_aware_ablation.py    #   Noise-aware ablation (BER/diversity)
-│   ├── train_1bit_baseline.py           #   Non-spiking 1-bit CNN baseline
-│   └── train_aid_v*.py                  #   Incremental model versions
+│   ├── run_final_pipeline.py            #   Master pipeline (AID + RESISC45)
+│   ├── multi_seed_pipeline.py           #   5-seed reproducibility pipeline
+│   ├── train_noise_aware_ablation.py    #   Noise-aware ablation training
+│   ├── train_1bit_baseline.py           #   CNN-1bit baseline
+│   └── train_aid_v2.py                  #   Core model classes (ResNet50Front/Back, BSC_Channel)
 │
 ├── models/                              # Model components
-│   └── noise_aware_scorer.py            #   Noise-aware importance scorer
+│   ├── spikeadapt_sc.py                 #   SpikeAdapt-SC v5c-NA model
+│   ├── noise_aware_scorer.py            #   BER-conditioned importance scorer
+│   ├── snn_modules.py                   #   SNN building blocks (LIF, BNTT, MPBN)
+│   ├── backbone.py                      #   ResNet-50 split definitions
+│   └── energy.py                        #   SynOps energy computation
 │
-├── eval/                                # Evaluation & analysis
-│   ├── run_ablations_final.py           #   ρ sweep + mask comparison (50 draws)
-│   ├── seed_results/                    #   5-seed JSON results (per-seed + summary)
-│   ├── noise_aware_ablation_aid.json    #   Ablation results (AID)
-│   ├── noise_aware_ablation_resisc45.json #   Ablation results (RESISC45)
-│   ├── 1bit_baseline_results.json       #   1-bit baseline BER sweep
-│   ├── compute_synops.py                #   SynOps/energy analysis
-│   └── gen_paper_figures.py             #   IEEE conference-grade figure generation
+├── eval/                                # Evaluation & figure generation
+│   ├── run_ablations_final.py           #   ρ sweep + mask comparison (Table III)
+│   ├── multichannel_eval.py             #   BSC/AWGN/Rayleigh eval (Table VI)
+│   ├── cnn_baselines.py                 #   CNN-Uni/NonUni baselines
+│   ├── cnn_multichannel.py              #   CNN cross-channel eval
+│   ├── eval_mlp_baseline.py             #   MLP-FC baseline
+│   ├── eval_mlp_multichannel.py         #   MLP cross-channel eval
+│   ├── eval_jpeg_conv.py                #   JPEG+Conv baseline
+│   ├── compute_synops.py                #   SynOps/energy analysis (Table VII)
+│   ├── gen_paper_figures.py             #   Figure generation
+│   ├── gen_ber_sweep_figure.py          #   BER sweep figure
+│   ├── gen_multichannel_figs.py         #   Cross-channel figures
+│   ├── block_importance_analysis.py     #   Block score analysis
+│   └── seed_results/                    #   5-seed JSON outputs (per-seed + summary)
 │
-├── baselines/                           # External baseline replications
-│   ├── SNN_SC_replication_Class.ipynb   #   Wang et al. SNN-SC classification
-│   └── SNN_SC_replication_Seg.ipynb     #   Wang et al. SNN-SC segmentation
-│
-├── paper/                               # Paper assets
+├── paper/                               # Paper source
 │   ├── main.tex                         #   Full manuscript
-│   ├── main_6page_revised.tex           #   6-page conference version
-│   └── figures/                         #   Publication-quality figures
+│   ├── main_6page_revised.tex           #   6-page GlobeCom version
+│   └── figures/                         #   Only figures referenced in paper (6 files)
 │
-├── data/
-│   ├── AID/                             #   AID dataset (30 classes, 10K images)
-│   └── NWPU-RESISC45/                   #   RESISC45 (45 classes, 31.5K images)
+├── archive/                             # Development history (old scripts, figures, docs)
 │
-├── snapshots_*/                         # Model checkpoints (per dataset/seed)
 ├── ARTIFACT_TRAIL.md                    # Table → script → output mapping (reviewer guide)
 ├── README.md
 ├── requirements.txt

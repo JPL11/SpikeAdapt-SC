@@ -1,0 +1,37 @@
+[
+  {
+    "slope_lr": 1e-05,
+    "clean_acc": 96.75,
+    "ber30_acc": 95.35,
+    "firing_rate": 0.0,
+    "avg_slope": 10.000406265258789
+  },
+  {
+    "slope_lr": 5e-05,
+    "clean_acc": 96.55,
+    "ber30_acc": 95.7,
+    "firing_rate": 0.0,
+    "avg_slope": 10.002151250839233
+  },
+  {
+    "slope_lr": 0.0001,
+    "clean_acc": 96.0,
+    "ber30_acc": 95.9,
+    "firing_rate": 0.0,
+    "avg_slope": 10.008819341659546
+  },
+  {
+    "slope_lr": 0.0005,
+    "clean_acc": 96.25,
+    "ber30_acc": 95.25,
+    "firing_rate": 0.0,
+    "avg_slope": 9.998678922653198
+  },
+  {
+    "slope_lr": 0.001,
+    "clean_acc": 96.15,
+    "ber30_acc": 95.45,
+    "firing_rate": 0.0,
+    "avg_slope": 10.044143915176392
+  }
+]

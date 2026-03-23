@@ -1,26 +1,23 @@
+# =========================
+# SpikeAdapt-SC .gitignore
+# =========================
+
 # Data & Datasets
 data/
 FoodSeg103/
 CCNet/
 *.zip
 
-# Paper source (LaTeX) - keep figures, exclude source
-paper/*.tex
-paper/*.bib
-paper/*.aux
-paper/*.bbl
-paper/*.blg
-paper/*.synctex*
-
-# Model checkpoints
+# Model checkpoints (large binary files)
 snapshots_*/
 *.pth
 
 # Logs
 *.log
+*.txt
 nohup.out
 
-# Python
+# Python bytecode
 __pycache__/
 *.pyc
 *.pyo
@@ -28,9 +25,11 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+.venv/
+
+# Build artifacts
 inplace_abn/
 inplace_abn.egg-info/
-.venv/
 
 # IDE
 .vscode/
@@ -45,9 +44,22 @@ Thumbs.db
 # Gemini agent
 .gemini/
 
-# Eval outputs (large)
+# Eval intermediate outputs (not in eval/seed_results/)
 eval_results/
+results/
 
-# Shell scripts (temporary)
-run_pooled_after.sh
-pooled_queue.log
+# Shell launch scripts (dev-only)
+*.sh
+
+# Jupyter notebooks (use archive/ for old ones)
+*.ipynb
+
+# LaTeX build artifacts
+paper/*.aux
+paper/*.bbl
+paper/*.blg
+paper/*.synctex*
+paper/*.bak
+
+# Archive directory (kept locally, not pushed)
+# archive/
