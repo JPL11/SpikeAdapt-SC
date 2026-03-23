@@ -1,9 +1,15 @@
 """Comprehensive ablations for V5C-NA on AID (50/50) and RESISC45 (20/80).
 
+PAPER TABLES GENERATED:
+  - Table III  (main.tex)  : Mask comparison — learned vs random (50 draws) vs uniform
+  - Table 2    (6-page)    : Same mask comparison
+
+Output:  eval/ablation_final_results.json
+
 Runs:
   1. ρ sweep: accuracy at ρ={0.10, 0.25, 0.375, 0.50, 0.625, 0.75, 0.875, 1.0}
      for BER={0.0, 0.15, 0.30}
-  2. Mask comparison: learned vs random (3 draws) vs uniform at ρ=0.50 and ρ=0.75
+  2. Mask comparison: learned vs random (50 draws) vs uniform at ρ=0.50 and ρ=0.75
      for BER={0.0, 0.15, 0.30}
   3. Noise-awareness test: Hamming distance of masks at BER=0 vs BER=0.30
 

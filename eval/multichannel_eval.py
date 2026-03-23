@@ -1,5 +1,11 @@
 """Multi-channel evaluation: BSC + AWGN + Rayleigh for V5C-NA on both datasets.
 
+PAPER TABLES GENERATED:
+  - Table II  (main.tex)  : BER sweep across BSC/AWGN/Rayleigh (with CNN/MLP baselines)
+  - Table VI  (main.tex)  : Matched-BER comparison across all 3 channels
+
+Output:  eval/multichannel_results_v2.json
+
 Two presentation modes:
   1. SNR sweep: Extended range down to -10 dB to show actual degradation
   2. Matched-BER comparison: Compute equivalent BER for each channel at each SNR,

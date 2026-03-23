@@ -174,6 +174,7 @@ SpikeAdapt-SC/
 │   └── NWPU-RESISC45/                   #   RESISC45 (45 classes, 31.5K images)
 │
 ├── snapshots_*/                         # Model checkpoints (per dataset/seed)
+├── ARTIFACT_TRAIL.md                    # Table → script → output mapping (reviewer guide)
 ├── README.md
 ├── requirements.txt
 └── LICENSE

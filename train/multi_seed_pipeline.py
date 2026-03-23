@@ -1,9 +1,16 @@
 #!/usr/bin/env python3
-"""5-seed paired comparison: ρ=0.625 vs ρ=1.0 on AID and RESISC45.
+"""5-seed reproducibility pipeline: full retraining + evaluation at ρ=1.0, 0.75, 0.625.
+
+PAPER TABLES GENERATED:
+  - Table I   (main.tex)  : Main BSC results (5-seed mean±std)
+  - Table V   (main.tex)  : Cross-dataset generalization (5-seed mean±std)
+  - Table 1   (6-page)    : Main BSC results (5-seed mean±std)
+
+Output:  eval/seed_results/summary_5seed.json  (+ per-seed JSONs)
 
 Trains the full pipeline (backbone → S2 → S3) for 5 seeds on both datasets,
-then evaluates at ρ=1.0 and ρ=0.625 under BER=0.0 and BER=0.30.
-Reports mean ± std and paired t-test p-value.
+then evaluates at ρ=1.0, 0.75, and 0.625 under BER=0.0 and BER=0.30.
+Reports mean ± std and paired t-test p-values.
 
 Usage:
     python train/multi_seed_pipeline.py          # train all seeds
