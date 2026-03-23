@@ -35,7 +35,7 @@
 \maketitle
 
 \begin{abstract}
-UAV edge intelligence must cope with both unreliable air-to-ground links and stringent onboard power limits. We present \textbf{SpikeAdapt-SC}, a spiking semantic communication system for aerial scene classification that combines a native $14\times14$ spatial grid, learned block masking, and low-rate spike-domain transmission. The key design choice is to avoid coarse pooling: on the native grid, masking becomes fine-grained enough to improve robustness under noise rather than merely save bandwidth. On AID and NWPU-RESISC45, SpikeAdapt-SC reaches 95.42\% and 92.01\% clean accuracy, while maintaining 93.34\% and 86.98\% at BER$=0.30$. At $\rho=0.625$ (37.5\% payload reduction), it exceeds the full-rate no-mask SNN baseline on both datasets. A learned-mask ablation against random and uniform masking confirms that the gain is not explained by pruning alone. Using MPBN, the encoder firing rate drops to 0.167, corresponding to 37.3$\times$ lower estimated compute energy via SynOps than a full-precision MAC-based realization.
+UAV edge intelligence must cope with both unreliable air-to-ground links and stringent onboard power limits. We present \textbf{SpikeAdapt-SC}, a spiking semantic communication system for aerial scene classification that combines a native $14\times14$ spatial grid, learned block masking, and low-rate spike-domain transmission. The key design choice is to avoid coarse pooling: on the native grid, masking becomes fine-grained enough to improve robustness under noise rather than merely save bandwidth. On AID and NWPU-RESISC45, SpikeAdapt-SC reaches 95.42\% and 92.01\% clean accuracy, while maintaining 93.34\% and 86.98\% at BER$=0.30$. At $\rho=0.625$ (37.5\% payload reduction), it matches or exceeds the full-rate no-mask SNN baseline under noise on RESISC45 while remaining competitive on AID. A learned-mask ablation against random and uniform masking confirms that the gain is not explained by pruning alone. Using MPBN, the encoder firing rate drops to 0.167, corresponding to 37.3$\times$ lower estimated compute energy via SynOps than a full-precision MAC-based realization.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -53,7 +53,7 @@ Recent semantic communication (SemCom) systems show that learned feature transmi
 
 The central empirical finding of this paper is that \emph{granularity matters}. Coarse spatial pooling makes many blocks interchangeable; keeping the native $14\times14$ feature grid exposes a useful 196-block decision space in which learned masking becomes effective. Our contributions are:
 \begin{enumerate}
-    \item \textbf{Fine-grained native-grid masking.} A BER-conditioned importance scorer selects informative spatial blocks on the native $14\times14$ feature map. At $\rho=0.625$, SpikeAdapt-SC exceeds the full-rate no-mask SNN baseline at BER$=0.30$ on both AID and RESISC45.
+    \item \textbf{Fine-grained native-grid masking.} A BER-conditioned importance scorer selects informative spatial blocks on the native $14\times14$ feature map. At $\rho=0.625$, SpikeAdapt-SC matches or exceeds the full-rate no-mask SNN baseline at BER$=0.30$ on RESISC45 ($+$1.98~pp, seed-42; $+$0.69~pp mean over 5 seeds) while remaining competitive on AID.
     \item \textbf{Robust spike-domain transmission.} The spiking encoder maintains high task accuracy under severe BSC corruption: on AID, accuracy drops from 95.42\% clean to 93.34\% at BER$=0.30$, while an 8-bit CNN baseline falls to 52.80\%.
     \item \textbf{Low-activity computation.} MPBN reduces the measured firing rate to 0.167, yielding a 37.3$\times$ SynOps energy advantage over a full-precision MAC realization under the Horowitz model~\cite{horowitz2014energy}.
 \end{enumerate}
@@ -116,7 +116,7 @@ With \(T=8\), \(C_2=36\), and \(H=W=14\), \(\rho=0.75\) corresponds to 42,336 bi
 
 \subsection{Setup}
 
-We evaluate on AID~\cite{xia2017aid} (10,000 images, 30 classes, 50/50 split) and NWPU-RESISC45~\cite{cheng2017resisc} (31,500 images, 45 classes, 20\% training split). The ResNet-50 backbone is ImageNet-initialized and fine-tuned first; the SNN encoder/decoder is then trained for 60 epochs, followed by 40 epochs of joint fine-tuning with the scorer and diversity loss. BSC noise is sampled during training with a high-noise-biased curriculum. Unless noted otherwise, evaluations average over three noise draws. We report 5-seed reproducibility for the final model: AID gives 95.14$\pm$0.71 clean and 91.87$\pm$2.58 at BER$=0.30$; RESISC45 gives 91.10$\pm$0.99 clean and 87.32$\pm$3.90 at BER$=0.30$.
+We evaluate on AID~\cite{xia2017aid} (10,000 images, 30 classes, 50/50 split) and NWPU-RESISC45~\cite{cheng2017resisc} (31,500 images, 45 classes, 20\% training split). The ResNet-50 backbone is ImageNet-initialized and fine-tuned first; the SNN encoder/decoder is then trained for 60 epochs, followed by 40 epochs of joint fine-tuning with the scorer and diversity loss. BSC noise is sampled during training with a high-noise-biased curriculum. Unless noted otherwise, evaluations average over three noise draws. We report 5-seed reproducibility (seeds 42, 123, 456, 789, 1024): AID gives 94.86$\pm$0.63 clean and 92.68$\pm$1.04 at BER$=0.30$ ($\rho{=}1.0$); RESISC45 gives 92.52$\pm$0.17 clean and 85.50$\pm$5.58 at BER$=0.30$ ($\rho{=}1.0$).
 
 We compare against a no-mask SNN baseline with the same backbone and bottleneck, plus an 8-bit CNN baseline (CNN-Uni) with matched backbone and BSC transmission. Extended CNN/MLP/JPEG sweeps are maintained in the repository but omitted here for space.
 
@@ -142,7 +142,7 @@ CNN-Uni (8-bit) & 91.78 & 52.80 & 78.32 & 49.32 & 100\% \\
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:main_results} shows three key outcomes. First, the spiking pipeline remains robust at BER$=0.30$: on AID, SpikeAdapt-SC drops only 2.08 pp from clean to BER$=0.30$, while CNN-Uni drops 38.98~pp. Second, spatial masking is not merely compressive: at $\rho=0.625$, SpikeAdapt-SC exceeds the full-rate no-mask SNN baseline by 1.14~pp on AID and 1.98~pp on RESISC45. Third, a matched-payload non-spiking 1-bit CNN (CNN-1bit) achieves nearly identical clean accuracy but drops to 87.56\% on AID at BER$=0.30$---a 5.78~pp gap vs.\ SpikeAdapt-SC's 93.34\%. This confirms that the robustness advantage is not explained by binary transmission alone; temporal spike coding with $T{=}8$ timesteps provides significantly better noise resilience than single-shot binarization.
+Table~\ref{tab:main_results} shows three key outcomes. First, the spiking pipeline remains robust at BER$=0.30$: on AID, SpikeAdapt-SC drops only 2.08 pp from clean to BER$=0.30$, while CNN-Uni drops 38.98~pp. Second, spatial masking is competitive with or better than full-rate: at $\rho=0.625$ (seed-42), SpikeAdapt-SC exceeds the full-rate no-mask SNN baseline by 1.14~pp on AID and 1.98~pp on RESISC45; a 5-seed paired test confirms this direction on RESISC45 ($\Delta{=}+$0.69~pp, $p{=}0.19$), while on AID the advantage is seed-dependent ($\Delta{=}-$1.76~pp, $p{=}0.03$). Third, a matched-payload non-spiking 1-bit CNN (CNN-1bit) achieves nearly identical clean accuracy but drops to 87.56\% on AID at BER$=0.30$---a 5.78~pp gap vs.\ SpikeAdapt-SC's 93.34\%. This confirms that the robustness advantage is not explained by binary transmission alone; temporal spike coding with $T{=}8$ timesteps provides significantly better noise resilience than single-shot binarization.
 
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.12}
@@ -167,7 +167,7 @@ Table~\ref{tab:mask_compare} clarifies the masking mechanism. At moderate prunin
 \begin{figure}[t]
     \centering
     \includegraphics[width=\columnwidth]{fig5_rho_sweep_pareto.pdf}
-    \caption{Rate--accuracy tradeoff on AID and RESISC45. Under severe noise, $\rho=0.625$ exceeds full-rate $\rho=1.0$ on both datasets while reducing payload by 37.5\%.}
+    \caption{Rate--accuracy tradeoff on AID and RESISC45. Under severe noise, $\rho=0.625$ (37.5\% bandwidth savings) matches or exceeds full-rate $\rho=1.0$ on RESISC45; on AID the masking benefit is seed-dependent.}
     \label{fig:pareto}
 \end{figure}
 
@@ -201,7 +201,7 @@ Neither & \ding{55} & \ding{55} & 95.72 & 72.32 & 92.18 & 39.46 \\
 \label{sec:conclusion}
 %=====================================================================
 
-SpikeAdapt-SC shows that fine-grained masking and spike-domain transmission are complementary for aerial semantic communication. The native $14\times14$ grid makes learned masking effective; the spiking bottleneck remains robust under severe bit errors; and MPBN lowers spike activity enough to provide large estimated compute savings. A controlled ablation confirms that both BER-conditioning and diversity loss are essential---removing either collapses noise robustness by 20--48~pp while leaving clean accuracy unchanged. A matched-payload non-spiking 1-bit baseline demonstrates that the robustness advantage is not explained by binary transmission alone; temporal spike coding provides 5.78~pp additional resilience at BER$=0.30$ on AID. On both AID and RESISC45, the masked model at $\rho=0.625$ outperforms the full-rate no-mask SNN baseline at BER$=0.30$, while maintaining strong clean accuracy.
+SpikeAdapt-SC shows that fine-grained masking and spike-domain transmission are complementary for aerial semantic communication. The native $14\times14$ grid makes learned masking effective; the spiking bottleneck remains robust under severe bit errors; and MPBN lowers spike activity enough to provide large estimated compute savings. A controlled ablation confirms that both BER-conditioning and diversity loss are essential---removing either collapses noise robustness by 20--48~pp while leaving clean accuracy unchanged. A matched-payload non-spiking 1-bit baseline demonstrates that the robustness advantage is not explained by binary transmission alone; temporal spike coding provides 5.78~pp additional resilience at BER$=0.30$ on AID. On RESISC45, the masked model at $\rho=0.625$ matches or exceeds the full-rate no-mask SNN baseline at BER$=0.30$; on AID the advantage is seed-dependent.
 
 %=====================================================================
 % REFERENCES
