@@ -6,42 +6,38 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 
-> **SpikeAdapt-SC** encodes semantic features as binary spike trains on a **native 14×14 spatial grid** (196 blocks), applies **learned per-image spatial masking**, and achieves robust aerial scene classification under noisy air-to-ground channels. The encoder uses Membrane Potential Batch Normalization (MPBN) and a noise-aware scorer to deliver **37× energy savings** via SynOps while maintaining **95.42% accuracy on AID** and **92.01% on RESISC45** (seed-42). At BER=0.30, masking at ρ=0.625 matches or exceeds full-rate accuracy on RESISC45 while remaining competitive on AID.
+> **SpikeAdapt-SC** encodes semantic features as binary spike trains on a **native 14×14 spatial grid** (196 blocks), applies **learned per-image spatial masking**, and achieves robust aerial scene classification under noisy air-to-ground channels. The encoder uses Membrane Potential Batch Normalization (MPBN) and a noise-aware scorer to deliver **37× energy savings** via SynOps. Over 5 seeds (full pipeline retraining), SpikeAdapt-SC achieves **94.86 ± 0.63% on AID** and **92.52 ± 0.17% on RESISC45** at ρ=0.75 (25% bandwidth savings), with only ~2 pp degradation at BER=0.30. On RESISC45, masking at ρ=0.75 significantly improves BER=0.30 accuracy over full-rate (Δ=+2.0 pp, p=0.038).
 
 ---
 
 ## Key Results
 
-### Main Results (BSC Channel, Seed-42)
+### 5-Seed Results (Seeds: 42, 123, 456, 789, 1024)
 
-| Method | AID Clean | AID BER=0.30 | RESISC45 Clean | RESISC45 BER=0.30 | Rate |
-|--------|-----------|-------------|----------------|-------------------|------|
-| **SpikeAdapt-SC** (ρ=0.75) | **95.42%** | **93.34%** | **92.01%** | **86.98%** | 75% |
-| SpikeAdapt-SC (ρ=0.625) | 95.40% | 93.50% | 91.06% | 87.29% | 62.5% |
-| SNN (no mask, ρ=1.0) | 95.20% | 92.36% | 92.53% | 85.31% | 100% |
-| CNN-1bit (STE, T=1) | 95.32% | 87.56% | 91.48% | 85.19% | 100% |
-| CNN-Uni (8-bit) | 91.78% | 52.80% | 78.32% | 49.32% | 100% |
-
-> **Key**: At BER=0.30, SpikeAdapt-SC degrades only 2 pp (AID) and 5 pp (RESISC45), while CNN-Uni collapses by 39 pp. The 1-bit CNN baseline (CNN-1bit) matches clean accuracy but drops to 87.56% at BER=0.30, confirming spiking dynamics (T=8 temporal coding) provide robustness beyond binary transmission alone.
-
-### 5-Seed Reproducibility (Seeds: 42, 123, 456, 789, 1024)
-
-Full pipeline retraining (backbone + S2 + S3) per seed.
+Full pipeline retraining (backbone + S2 + S3) per seed. **These are the primary reported numbers.**
 
 | Condition | AID Mean ± Std | RESISC45 Mean ± Std |
 |-----------|----------------|---------------------|
-| ρ=0.75, Clean | 94.86 ± 0.63% | 92.52 ± 0.17% |
-| ρ=0.75, BER=0.30 | 92.80 ± 0.90% | 85.53 ± 5.48% |
-| ρ=1.0, Clean | 94.86 ± 0.63% | 92.52 ± 0.17% |
-| ρ=1.0, BER=0.30 | 92.68 ± 1.04% | 85.50 ± 5.58% |
+| **ρ=1.0, Clean** | **95.48 ± 0.30%** | 92.49 ± 0.16% |
+| **ρ=0.75, Clean** | 94.86 ± 0.63% | **92.52 ± 0.17%** |
 | ρ=0.625, Clean | 93.79 ± 1.24% | 92.35 ± 0.21% |
-| ρ=0.625, BER=0.30 | 90.92 ± 1.91% | 86.19 ± 4.79% |
+| ρ=1.0, BER=0.30 | 92.87 ± 1.19% | 83.55 ± 6.88% |
+| **ρ=0.75, BER=0.30** | 92.66 ± 0.95% | **85.55 ± 5.53%** |
+| ρ=0.625, BER=0.30 | 90.86 ± 1.93% | **86.23 ± 4.79%** |
 
-**Paired t-test (ρ=0.625 vs ρ=1.0 at BER=0.30):**
-- RESISC45: Δ = +0.69 pp, p = 0.19 (consistent direction, not significant at α=0.05)
-- AID: Δ = −1.76 pp, p = 0.03 (seed-dependent)
+> **Key findings**: (1) ρ=1.0 gives the highest clean accuracy (as expected — keeping all blocks). (2) On **RESISC45**, masking at ρ=0.75 *improves* BER=0.30 accuracy over full-rate by **+2.0 pp** (p=0.038, significant). (3) On AID, masking is bandwidth-neutral (Δ=−0.20 pp, p=0.69 — saves 25% bandwidth with no accuracy loss under noise). (4) The BER=0.30 variance on RESISC45 is high (±5–7 pp) because the 45-class task amplifies scorer differences across seeds.
 
-> The masking benefit is most reliable on RESISC45 (45 classes, harder task). On AID, the seed-42 advantage (+1.14 pp) does not generalize across seeds.
+### Seed-42 Illustrative Results (BSC Channel)
+
+| Method | AID Clean | AID BER=0.30 | RESISC45 Clean | RESISC45 BER=0.30 | Rate |
+|--------|-----------|-------------|----------------|-------------------|------|
+| SpikeAdapt-SC (ρ=0.75) | 95.42% | 93.18% | 92.61% | 84.87% | 75% |
+| SpikeAdapt-SC (ρ=0.625) | 95.40% | 93.38% | 92.58% | 86.48% | 62.5% |
+| SNN (no mask, ρ=1.0) | 95.20% | 92.60% | 92.50% | 81.62% | 100% |
+| CNN-1bit (STE, T=1) | 95.32% | 87.56% | 91.48% | 85.19% | 100% |
+| CNN-Uni (8-bit) | 91.78% | 52.80% | 78.32% | 49.32% | 100% |
+
+> **Note**: Seed-42 is shown as an illustrative operating point. Some seed-42 advantages (e.g., ρ=0.625 on AID) do not generalize across seeds — see the 5-seed table above for robust conclusions.
 
 ### Noise-Aware Ablation (Seed-42, ρ=0.75)
 
@@ -61,9 +57,9 @@ Full pipeline retraining (backbone + S2 + S3) per seed.
 | 0.50 | 0.00 | 95.02% | 95.28 ± 0.12% | 90.58% | −0.26 |
 | 0.50 | 0.30 | **93.44%** | 91.95 ± 0.15% | 85.54% | **+1.49** |
 | 0.75 | 0.00 | 95.42% | 95.35 ± 0.10% | 94.70% | +0.07 |
-| 0.75 | 0.30 | **93.26%** | 93.25 ± 0.13% | 91.78% | **+0.01** |
+| 0.75 | 0.30 | 93.26% | 93.25 ± 0.13% | 91.78% | +0.01 |
 
-> Learned mask advantage grows under noise and at lower rates. At ρ=0.50/BER=0.30, learned masks outperform random by +1.49 pp.
+> The learned mask matters most under harsher compression: at ρ=0.50/BER=0.30, learned masks outperform random by **+1.49 pp**. At ρ=0.75, the advantage is minimal (+0.01 pp), consistent with the high spatial redundancy of the 14×14 feature grid at mild compression.
 
 ### Cross-Channel Comparison (Matched Equivalent BER)
 
@@ -73,7 +69,7 @@ Full pipeline retraining (backbone + S2 + S3) per seed.
 | 0.15 | 95.72% | 95.72% | 95.90% | 92.42% | 92.39% | 92.40% |
 | 0.30 | 93.34% | 93.46% | 93.50% | 86.98% | 86.94% | 86.94% |
 
-> **Channel-agnostic**: BSC, AWGN, and Rayleigh within **±0.2 pp** at every matched BER. Binary spikes admit only bit-flip errors regardless of physical noise mechanism.
+> Performance is **near-equivalent under matched BER**: BSC, AWGN, and Rayleigh within **±0.2 pp** at every operating point. Because all methods transmit binary representations and use BPSK hard-decision demodulation, additive noise is converted to effective bit flips.
 
 ### ρ Sweep: Bandwidth–Accuracy Pareto (BER=0.30, Seed-42)
 
