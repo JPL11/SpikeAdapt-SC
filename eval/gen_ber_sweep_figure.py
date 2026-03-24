@@ -1,7 +1,7 @@
 """Generate THE comprehensive unified BER sweep figure for the paper.
 
 One dual-panel figure with ALL baselines:
-  SpikeAdapt-SC (ρ=0.75), SNN-SC (ρ=1.0), CNN-Uni, CNN-NonUni, MLP-FC, JPEG+Conv
+  SpikeAdapt-SC (ρ=0.75), SNN (no mask, ρ=1.0), CNN-Uni, CNN-NonUni, MLP-FC, JPEG+Conv
 """
 import json
 import matplotlib
@@ -32,8 +32,6 @@ with open('eval/multichannel_results_v2.json') as f:
     snn_mc = json.load(f)
 with open('eval/cnn_multichannel.json') as f:
     cnn_mc = json.load(f)
-with open('eval/mlp_results.json') as f:
-    mlp_bsc = json.load(f)
 with open('eval/mlp_multichannel.json') as f:
     mlp_mc = json.load(f)
 
@@ -54,13 +52,13 @@ for ax, ds_label, ds_key in [(ax1, 'AID', 'aid'), (ax2, 'RESISC45', 'resisc45')]
     ax.plot(bers, snn_accs, '-o', color='#1B5E20', lw=2.5, ms=5.5, zorder=6,
             label=r'SpikeAdapt-SC ($\rho$=0.75)', markeredgecolor='white', markeredgewidth=0.5)
 
-    # SNN-SC (ρ=1.0) — from matched_ber data
+    # SNN (no mask, ρ=1.0) — from matched_ber data
     snn_mb = snn_mc[ds_key]['matched_ber']
     snn_sc_accs = [snn_bsc['0.0']]  # clean
     for b in ['0.05', '0.1', '0.15', '0.2', '0.25', '0.3']:
         snn_sc_accs.append(snn_mb[b]['bsc_acc'])
     ax.plot(bers, snn_sc_accs, '-s', color='#4CAF50', lw=1.8, ms=4, zorder=5,
-            label=r'SNN-SC ($\rho$=1.0)')
+            label=r'SNN (no mask, $\rho$=1.0)')
 
     # CNN-Uni BSC
     cu = cnn_mc[ds_label]['CNN-Uni']['bsc']
@@ -115,7 +113,7 @@ for ds_label, ds_key in [('AID', 'aid'), ('RESISC45', 'resisc45')]:
     snn_bsc = snn_mc[ds_key]['bsc']['results']
     snn_mb = snn_mc[ds_key]['matched_ber']
     print(f"  SpikeAdapt-SC:     clean={snn_bsc['0.0']:.2f}  0.15={snn_bsc['0.15']:.2f}  0.30={snn_bsc['0.3']:.2f}")
-    print(f"  SNN-SC:     clean={snn_bsc['0.0']:.2f}  0.15={snn_mb['0.15']['bsc_acc']:.2f}  0.30={snn_mb['0.3']['bsc_acc']:.2f}")
+    print(f"  SNN (no mask): clean={snn_bsc['0.0']:.2f}  0.15={snn_mb['0.15']['bsc_acc']:.2f}  0.30={snn_mb['0.3']['bsc_acc']:.2f}")
     cu = cnn_mc[ds_label]['CNN-Uni']['bsc']
     cnu = cnn_mc[ds_label]['CNN-NonUni']['bsc']
     print(f"  CNN-Uni:    clean={cu['0.0']:.2f}  0.15={cu['0.15']:.2f}  0.30={cu['0.3']:.2f}")
