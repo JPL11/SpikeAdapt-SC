@@ -375,7 +375,7 @@ Although trained exclusively on BSC, SpikeAdapt-SC's binary encoding produces ne
     \label{fig:multichannel}
 \end{figure}
 
-Table~\ref{tab:multichannel} and Fig.~\ref{fig:multichannel} confirm that at matched BER, all channels produce accuracy within $\pm$1~pp for \emph{all} methods. This is expected: BPSK hard-decision demodulation converts any additive noise into effective bit flips, reducing all channels to approximate BSC behavior. The key insight is that binary encoding---whether SNN or CNN-1bit---is the driver of noise resilience, not channel type.
+Table~\ref{tab:multichannel} and Fig.~\ref{fig:multichannel} confirm that at matched BER, BSC/AWGN/Rayleigh produce accuracy within $\pm$1~pp for \emph{all} methods. This is expected: BPSK hard-decision demodulation converts any additive noise into effective bit flips, reducing all channels to approximate BSC behavior. We also evaluate under a Binary Erasure Channel (BEC), where bits are erased to zero with probability $p$. Because the SNN encoder has a low firing rate (0.167), $\sim$83\% of transmitted bits are already zero; erasing ones to zero at BER$=0.30$ affects only $\sim$5\% of total bits, yielding near-zero degradation: 95.54\% on AID ($\Delta{=}{+}0.12$~pp vs.\  clean) and 92.43\% on RESISC45 ($\Delta{=}{-}0.18$~pp). This $+$7.5~pp BEC advantage over BSC on RESISC45 is a direct consequence of the spike representation's asymmetric bit distribution.
 
 \subsection{Latency}
 
