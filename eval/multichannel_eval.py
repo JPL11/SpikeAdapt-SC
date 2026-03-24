@@ -96,6 +96,13 @@ class Rayleigh_Channel_Eval(nn.Module):
         x_hat = (y / (h_mag + 1e-8) > 0).float()
         return x_hat
 
+class BEC_Channel_Eval(nn.Module):
+    """Binary Erasure Channel: each bit is erased (set to 0) with probability p."""
+    def forward(self, x, param):
+        if param <= 0: return x
+        erasure_mask = (torch.rand_like(x.float()) < param).float()
+        return x * (1.0 - erasure_mask)  # erased bits become 0
+
 
 def load_model(n_classes, bb_dir, v5c_dir):
     front = ResNet50Front(grid_size=14).to(device)
@@ -174,10 +181,19 @@ def run_multichannel(ds_name, n_classes, bb_dir, v5c_dir, DSClass, ds_args):
         ray_results[str(snr)] = {'acc': acc, 'eq_ber': eq_ber}
         print(f"    SNR={snr:+3d} dB (eq BER={eq_ber:.4f}): {acc:.2f}%")
     
+    bec = BEC_Channel_Eval().to(device)
+    bec_params = [0.0, 0.01, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40]
+    bec_results = {}
+    print(f"\n  BEC (erasure rate sweep):")
+    for er in bec_params:
+        acc = evaluate_channel(front, model, back, loader, bec, er)
+        bec_results[str(er)] = acc
+        print(f"    ER={er:.2f}: {acc:.2f}%")
+    
     # === Option 2: Matched-BER comparison ===
     print(f"\n  === MATCHED-BER COMPARISON ===")
-    print(f"  {'BER':>8s}  {'BSC Acc':>8s}  {'AWGN SNR':>10s}  {'AWGN Acc':>8s}  {'Ray SNR':>10s}  {'Ray Acc':>8s}")
-    print(f"  {'-'*60}")
+    print(f"  {'BER':>8s}  {'BSC Acc':>8s}  {'AWGN SNR':>10s}  {'AWGN Acc':>8s}  {'Ray SNR':>10s}  {'Ray Acc':>8s}  {'BEC Acc':>8s}")
+    print(f"  {'-'*80}")
     
     matched_results = {}
     target_bers = [0.01, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30]
@@ -192,17 +208,23 @@ def run_multichannel(ds_name, n_classes, bb_dir, v5c_dir, DSClass, ds_args):
         ray_snr = snr_for_ber_rayleigh(tb)
         ray_acc = evaluate_channel(front, model, back, loader, rayleigh, ray_snr)
         
+        bec_acc = bec_results.get(str(tb), None)
+        if bec_acc is None:
+            bec_acc = evaluate_channel(front, model, back, loader, bec, tb)
+        
         matched_results[str(tb)] = {
             'bsc_acc': bsc_acc,
             'awgn_snr': awgn_snr, 'awgn_acc': awgn_acc,
             'ray_snr': ray_snr, 'ray_acc': ray_acc,
+            'bec_acc': bec_acc,
         }
-        print(f"  {tb:8.2f}  {bsc_acc:7.2f}%  {awgn_snr:+8.2f}dB  {awgn_acc:7.2f}%  {ray_snr:+8.2f}dB  {ray_acc:7.2f}%")
+        print(f"  {tb:8.2f}  {bsc_acc:7.2f}%  {awgn_snr:+8.2f}dB  {awgn_acc:7.2f}%  {ray_snr:+8.2f}dB  {ray_acc:7.2f}%  {bec_acc:7.2f}%")
     
     return {
         'bsc': {'params': bsc_params, 'results': bsc_results},
         'awgn': {'params': awgn_params, 'results': awgn_results},
         'rayleigh': {'params': ray_params, 'results': ray_results},
+        'bec': {'params': bec_params, 'results': bec_results},
         'matched_ber': matched_results,
     }
 

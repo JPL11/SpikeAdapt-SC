@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""5-seed CNN-1bit baseline: BinaryCNN_SC (STE sign, T=1, C2=36).
+"""10-seed CNN-1bit baseline: BinaryCNN_SC (STE sign, T=1, C2=36).
 
 Uses the EXACT same model as train_1bit_baseline.py, which produced the
 paper's CNN-1bit results (AID: 95.32%/87.56%, R45: 91.48%/85.19% at seed-42).
 
-Trains for 5 seeds on both datasets using the SAME backbone per seed.
-Output: eval/seed_results/cnn1bit_5seed.json
+Trains for 10 seeds on both datasets using the SAME backbone per seed.
+Output: eval/seed_results/cnn1bit_10seed.json
 """
 
 import torch, torch.nn as nn, torch.optim as optim
@@ -22,7 +22,7 @@ from train_aid_v2 import ResNet50Front, ResNet50Back
 from train_1bit_baseline import BinaryCNN_SC
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-SEEDS = [42, 123, 456, 789, 1024]
+SEEDS = [42, 123, 456, 789, 1024, 2048, 3072, 4096, 5120, 6144]
 
 
 def train_and_eval_seed(dataset_name, n_classes, seed):
@@ -166,7 +166,7 @@ def main():
     from scipy import stats as scipy_stats
 
     print(f"\n{'='*60}")
-    print(f"  CNN-1BIT 5-SEED SUMMARY")
+    print(f"  CNN-1BIT 10-SEED SUMMARY")
     print(f"{'='*60}", flush=True)
 
     summary = {}
@@ -185,7 +185,7 @@ def main():
                 print(f"  {ds_name} BER={ber}: {mean_acc:.2f} ± {std_acc:.2f}", flush=True)
 
     # Save
-    with open('eval/seed_results/cnn1bit_5seed.json', 'w') as f:
+    with open('eval/seed_results/cnn1bit_10seed.json', 'w') as f:
         json.dump({'per_seed': all_results, 'summary': summary}, f, indent=2)
 
     print(f"\n✅ Results saved to eval/seed_results/cnn1bit_5seed.json")
