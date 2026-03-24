@@ -307,7 +307,7 @@ We sweep the mask rate $\rho$ from 0.10 to 1.0 on both datasets (Table~\ref{tab:
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{$\rho$ sweep: accuracy (\%) at BER$=$0.30 on AID and RESISC45.}
+\caption{$\rho$ sweep: accuracy (\%) at BER$=$0.30 on AID and RESISC45 (seed-42, illustrative).}
 \label{tab:rho_ablation}
 \begin{tabular}{c c cc}
 \toprule
@@ -332,7 +332,7 @@ $\rho$ & \textbf{BW Save} & \textbf{AID} & \textbf{RESISC45} \\
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{Mask comparison for SpikeAdapt-SC on AID (50/50). Random averaged over 50 independent draws.}
+\caption{Mask comparison for SpikeAdapt-SC on AID (seed-42, illustrative). Random averaged over 50 independent draws.}
 \label{tab:mask_compare}
 \begin{tabular}{c c ccc c}
 \toprule
@@ -411,7 +411,7 @@ Note that the RESISC45 CNN baselines exhibit \emph{non-monotonic} behavior at lo
 \renewcommand{\arraystretch}{1.15}
 \centering
 \small
-\caption{Full BER sweep accuracy (\%) on both datasets (BSC channel, SpikeAdapt-SC at $\rho{=}0.75$). The $\rho{=}0.625$ advantage over $\rho{=}1.0$ (Table~\ref{tab:cross_dataset}) persists across the BER range, not only at BER${=}0.30$.}
+\caption{Full BER sweep accuracy (\%) on both datasets (BSC channel, seed-42, illustrative). SpikeAdapt-SC at $\rho{=}0.75$. The $\rho{=}0.625$ advantage over $\rho{=}1.0$ (Table~\ref{tab:cross_dataset}) persists across the BER range, not only at BER${=}0.30$.}
 \label{tab:ber_sweep}
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{ll ccccccc}
@@ -442,7 +442,7 @@ Although SpikeAdapt-SC is trained exclusively on the BSC channel, its binary spi
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.15}
 \centering
-\caption{Matched-BER comparison across BSC, AWGN, and Rayleigh channels at equivalent error rates. All methods show channel convergence ($\pm$1~pp), but accuracy levels differ dramatically.}
+\caption{Matched-BER comparison across BSC, AWGN, and Rayleigh channels at equivalent error rates (seed-42, illustrative). All methods show channel convergence ($\pm$1~pp), but accuracy levels differ dramatically.}
 \label{tab:multichannel}
 \begin{tabular}{cl ccc ccc}
 \toprule

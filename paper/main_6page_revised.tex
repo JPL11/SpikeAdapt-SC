@@ -54,7 +54,7 @@ Recent semantic communication (SemCom) systems show that learned feature transmi
 The central empirical finding of this paper is that \emph{granularity matters}. Coarse spatial pooling makes many blocks interchangeable; keeping the native $14\times14$ feature grid exposes a useful 196-block decision space in which learned masking becomes effective. Our contributions are:
 \begin{enumerate}
     \item \textbf{Energy-efficient spiking transmission.} MPBN reduces the measured firing rate to 0.167, yielding a 37.3$\times$ SynOps energy advantage over a full-precision MAC realization under the Horowitz model~\cite{horowitz2014energy}. This architectural advantage is independent of channel conditions.
-    \item \textbf{Inherently robust binary spike encoding.} The spiking encoder maintains high task accuracy under severe BSC corruption: over 5~seeds, accuracy degrades only $\sim$2~pp from clean to BER$=0.30$ on AID, while an 8-bit CNN baseline falls to 52.80\%. At matched equivalent BER, BSC, AWGN, and Rayleigh channels produce near-equivalent accuracy ($\pm$1~pp) for all methods. A matched-payload non-spiking 1-bit CNN (CNN-1bit) achieves comparable noise robustness, confirming that binary encoding is the primary robustness driver; the SNN advantage lies in energy efficiency and lower variance.
+    \item \textbf{Inherently robust binary spike encoding.} The spiking encoder maintains high task accuracy under severe BSC corruption: over 10~seeds, accuracy degrades only $\sim$3~pp from clean to BER$=0.30$ on AID, while an 8-bit CNN baseline falls to 52.80\%. At matched equivalent BER, BSC, AWGN, and Rayleigh channels produce near-equivalent accuracy ($\pm$1~pp) for all methods. A matched-payload non-spiking 1-bit CNN (CNN-1bit) achieves comparable noise robustness, confirming that binary encoding is the primary robustness driver; the SNN advantage lies in energy efficiency and lower variance.
     \item \textbf{Fine-grained native-grid masking saves bandwidth and can improve robustness.} A BER-conditioned importance scorer selects informative spatial blocks on the native $14\times14$ feature map. On RESISC45, masking at $\rho{=}0.75$ improves BER$=0.30$ accuracy by $+$1.33~pp over full-rate ($p{=}0.005$, 10-seed paired $t$-test; 95\% bootstrap CI $[+0.72, +2.10]$, excluding zero); on AID, masking saves 25\% bandwidth with no accuracy loss under noise ($\Delta{=}+$0.26~pp, $p{=}0.55$). A controlled ablation confirms that both BER-conditioning and diversity loss are essential---removing either drops BER$=0.30$ accuracy by 20--48~pp while leaving clean accuracy unchanged. All ablation variants use the identical pipeline; only the BER branch and diversity term are toggled.
 \end{enumerate}
 
@@ -209,7 +209,7 @@ Table~\ref{tab:ber_sweep} and Fig.~\ref{fig:ber_sweep_baselines} present the ful
 \renewcommand{\arraystretch}{1.10}
 \centering
 \small
-\caption{Full BER sweep accuracy (\%) on both datasets. SpikeAdapt-SC at $\rho{=}0.75$, BSC channel. SNN encoding degrades $\leq$5~pp; 8-bit baselines collapse.}
+\caption{Full BER sweep accuracy (\%) on both datasets (seed-42, illustrative). SpikeAdapt-SC at $\rho{=}0.75$, BSC channel. SNN encoding degrades $\leq$5~pp; 8-bit baselines collapse.}
 \label{tab:ber_sweep}
 \setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{ll ccccccc}
@@ -252,7 +252,7 @@ Fig.~\ref{fig:mask_diversity} shows that the scorer produces \emph{content-adapt
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.12}
 \centering
-\caption{Mask comparison on AID. Random averaged over 50 draws. Learned mask advantage is most pronounced under noise at aggressive compression.}
+\caption{Mask comparison on AID (seed-42, illustrative). Random averaged over 50 draws. Learned mask advantage is most pronounced under noise at aggressive compression.}
 \label{tab:mask_compare}
 \begin{tabular}{c c ccc c}
 \toprule
@@ -281,7 +281,7 @@ Fig.~\ref{fig:pareto} shows how accuracy degrades as retention rate $\rho$ decre
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.12}
 \centering
-\caption{$\rho$ sweep: accuracy (\%) at BER$=0.30$ on AID and RESISC45 (seed-42). Masking at $\rho{=}0.625$ matches or exceeds full-rate on both datasets.}
+\caption{$\rho$ sweep: accuracy (\%) at BER$=0.30$ on AID and RESISC45 (seed-42, illustrative). Masking at $\rho{=}0.625$ matches or exceeds full-rate on both datasets.}
 \label{tab:rho_sweep}
 \begin{tabular}{c c cc}
 \toprule
@@ -336,7 +336,7 @@ Although trained exclusively on BSC, SpikeAdapt-SC's binary encoding produces ne
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.12}
 \centering
-\caption{Cross-channel results at matched BER. All methods show near-equivalent accuracy ($\pm$1~pp): BPSK hard-decision demodulation reduces any channel to approximate BSC behavior.}
+\caption{Cross-channel results at matched BER (seed-42, illustrative). All methods show near-equivalent accuracy ($\pm$1~pp): BPSK hard-decision demodulation reduces any channel to approximate BSC behavior.}
 \label{tab:multichannel}
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{cl ccc ccc}
