@@ -299,9 +299,8 @@ $\rho$ & \textbf{BW Save} & \textbf{AID} & \textbf{RESISC45} \\
 \end{tabular}
 \end{table}
 
-\textbf{Why does masking improve accuracy under noise?} The improvement stems from decoder capacity allocation. When all 196 blocks are transmitted under high noise, the decoder's ResNet-50 Layer~4 (with fixed representational capacity after global average pooling) must process both high-quality task-relevant blocks and low-quality, noise-corrupted blocks that contribute little semantically but inject significant noise. At $\rho{=}0.625$, the 122 retained blocks have higher average spike density and carry more redundant information, making them inherently more robust to bit flips. Removing the remaining 74 low-importance blocks eliminates a source of decoder confusion, effectively concentrating representational capacity on high-confidence semantic content. This is analogous to structured dropout~\cite{ghiasi2018dropblock}: masking acts as inference-time regularization that becomes more beneficial as channel noise increases.
+\textbf{Why does masking improve accuracy under noise?} We hypothesize this stems from decoder capacity allocation. When all 196 blocks are transmitted under high noise, the decoder must process both high-quality task-relevant blocks and noise-corrupted blocks that contribute little semantically but inject confusion. Removing low-importance blocks concentrates representational capacity on high-confidence content---analogous to structured dropout~\cite{ghiasi2018dropblock}---and this effect grows with channel noise. The 10-seed paired $t$-test confirms a significant improvement on RESISC45 ($\rho{=}0.75$ vs.\ $\rho{=}1.0$: $\Delta{=}+$1.33~pp, $p{=}0.005$, surviving Bonferroni correction). On AID, the masking advantage is bandwidth-neutral ($\Delta{=}+$0.26~pp, $p{=}0.55$), consistent with the easier 30-class task having more spatial redundancy.
 
-The 10-seed paired $t$-test confirms this effect on RESISC45 ($\rho{=}0.75$ vs.\ $\rho{=}1.0$: $\Delta{=}+$1.33~pp, $p{=}0.005$, $n{=}10$; surviving Bonferroni correction). On AID, the masking advantage is bandwidth-neutral ($\Delta{=}+$0.26~pp, $p{=}0.55$), consistent with the easier 30-class task having more spatial redundancy.
 
 \subsection{Noise-Aware Ablation}
 
@@ -373,24 +372,20 @@ Although trained exclusively on BSC, SpikeAdapt-SC's binary encoding produces ne
     \label{fig:multichannel}
 \end{figure}
 
-Table~\ref{tab:multichannel} and Fig.~\ref{fig:multichannel} confirm that at matched BER, all channels produce accuracy within $\pm$1~pp for \emph{all} methods---SNN, CNN, and MLP alike. This is expected: because all systems transmit binary representations (spikes or bit planes), BPSK hard-decision demodulation converts any additive noise into effective bit flips, reducing all channels to approximate BSC behavior.
+Table~\ref{tab:multichannel} and Fig.~\ref{fig:multichannel} confirm that at matched BER, all channels produce accuracy within $\pm$1~pp for \emph{all} methods. This is expected: BPSK hard-decision demodulation converts any additive noise into effective bit flips, reducing all channels to approximate BSC behavior. The key insight is that binary encoding---whether SNN or CNN-1bit---is the driver of noise resilience, not channel type.
 
-The critical difference is not channel sensitivity but \emph{noise resilience}: SpikeAdapt-SC retains 93.34--93.50\% at BER$=0.30$ across all channels, while CNN-Uni collapses to 49--53\%, CNN-NonUni to 50--65\%, and MLP-FC to 21--37\%. The practical significance is twofold: (i)~binary encoding makes \emph{any} system's performance nearly channel-independent under hard-decision demodulation, and (ii)~any binary encoding scheme---whether SNN or CNN-1bit---maintains robustness at high noise, as confirmed by Table~\ref{tab:main_results}. The SNN's temporal redundancy ($T{=}8$ timesteps) provides a secondary benefit of lower cross-seed variance rather than a qualitatively different robustness mechanism.
-
-\subsection{Semantic Feature Resilience}
+\subsection{Feature Resilience and Latency}
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\columnwidth]{fig3_feature_mse_dual.png}
-    \caption{Feature-space analysis under BSC noise. \textbf{Red}: feature MSE increases monotonically with BER, confirming real channel corruption. \textbf{Green}: classification confidence remains $>$90\% on AID and $>$80\% on RESISC45 despite feature degradation---the hallmark of semantic communication.}
+    \caption{Feature MSE (red) increases with BER, confirming real channel corruption; classification confidence (green) remains $>$90\% (AID) / $>$80\% (R45) despite degradation.}
     \label{fig:feature_mse}
 \end{figure}
 
-To verify that the system genuinely communicates \emph{through} a noisy channel (rather than trivially memorizing), we analyze the feature-space impact of channel noise (Fig.~\ref{fig:feature_mse}). The MSE between clean and noisy reconstructed features monotonically increases with BER on both AID and RESISC45, confirming that the channel does corrupt the transmitted spike trains. However, classification confidence remains above 90\% on AID and 80\% on RESISC45 even at BER$=0.30$. This decoupling between feature-level distortion and task-level performance is the hallmark of effective semantic communication: the system preserves task-relevant semantics while gracefully accepting representational noise.
+Fig.~\ref{fig:feature_mse} confirms the system communicates \emph{through} the noisy channel: feature MSE increases monotonically with BER, yet classification confidence remains above 90\% (AID) and 80\% (RESISC45) at BER$=0.30$---the hallmark of effective semantic communication.
 
-\subsection{Latency Analysis}
-
-On a single GPU (NVIDIA RTX 3090), the SNN encoder with $T{=}8$ timesteps adds 0.73~ms per image compared to the single-pass CNN encoder (SNN enc+dec: 0.79~ms vs.\ CNN enc+dec: 0.06~ms). However, the ResNet-50 backbone dominates end-to-end latency, so the full SNN pipeline (1.30~ms/image) is only 2.3$\times$ slower than the CNN pipeline (0.57~ms/image). On neuromorphic hardware such as Intel Loihi~\cite{davies2018loihi}, the $T{=}8$ timesteps would execute with sub-microsecond latency via massively parallel event-driven computation, effectively eliminating the SNN overhead entirely.
+On a single GPU (RTX 3090), the SNN encoder adds 0.73~ms per image over a single-pass CNN encoder (full pipeline: 1.30 vs.\ 0.57~ms/image, 2.3$\times$ overhead). The ResNet-50 backbone dominates end-to-end latency. On event-driven neuromorphic hardware such as Intel Loihi~\cite{davies2018loihi}, the $T{=}8$ timesteps could execute in parallel, substantially reducing the effective temporal overhead.
 
 %=====================================================================
 \section{Conclusion}
