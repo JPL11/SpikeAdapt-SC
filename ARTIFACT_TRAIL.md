@@ -31,21 +31,21 @@ Each seed directory contains a `selected_checkpoint.txt` manifest that pins the 
 
 | Row | Script | Output |
 |---|---|---|
-| SpikeAdapt-SC (ρ=0.75, 0.625) | `train/multi_seed_pipeline.py` | `eval/seed_results/summary_5seed.json` |
-| SNN (no mask, ρ=1.0) | `train/multi_seed_pipeline.py` | `eval/seed_results/summary_5seed.json` |
+| SpikeAdapt-SC (ρ=0.75, 0.625) | `train/multi_seed_pipeline.py` | `eval/seed_results/summary_10seed.json` |
+| SNN (no mask, ρ=1.0) | `train/multi_seed_pipeline.py` | `eval/seed_results/summary_10seed.json` |
 | CNN-1bit | `train/train_cnn1bit_5seed.py` | `eval/seed_results/cnn1bit_5seed.json` |
 | CNN-Uni, CNN-NonUni | `eval/cnn_baselines.py` | `eval/cnn_baseline_results.json` |
 | MLP-FC | `eval/eval_mlp_baseline.py` | stdout (seed-42) |
 | JPEG+Conv | `eval/eval_jpeg_conv.py` | stdout (seed-42) |
 
-All 5-seed rows use deterministic BER eval (`torch.manual_seed(42)`) and manifest-pinned checkpoints.
+All 10-seed rows use deterministic BER eval (`torch.manual_seed(42)`) and manifest-pinned checkpoints.
 
 ---
 
 ### Table 2: Cross-Dataset Results (`tab:cross_dataset`)
 **Paper**: `main.tex` L378
 
-Same sources as Table 1. Cross-dataset table presents both AID and RESISC45 columns from `summary_5seed.json`.
+Same sources as Table 1. Cross-dataset table presents both AID and RESISC45 columns from `summary_10seed.json`.
 
 ---
 
@@ -132,11 +132,21 @@ eval/seed_results/
 ├── aid_seed456.json
 ├── aid_seed789.json
 ├── aid_seed1024.json
+├── aid_seed2048.json
+├── aid_seed3072.json
+├── aid_seed4096.json
+├── aid_seed5120.json
+├── aid_seed6144.json
 ├── resisc45_seed42.json     # Deterministic eval (torch.manual_seed(42))
 ├── resisc45_seed123.json
 ├── resisc45_seed456.json
 ├── resisc45_seed789.json
 ├── resisc45_seed1024.json
-├── cnn1bit_5seed.json       # CNN-1bit 5-seed results
-└── summary_5seed.json       # Aggregated mean±std + paired t-tests
+├── resisc45_seed2048.json
+├── resisc45_seed3072.json
+├── resisc45_seed4096.json
+├── resisc45_seed5120.json
+├── resisc45_seed6144.json
+├── cnn1bit_5seed.json       # CNN-1bit 5-seed results (separate baseline)
+└── summary_10seed.json      # Aggregated 10-seed mean±std + paired t-tests
 ```

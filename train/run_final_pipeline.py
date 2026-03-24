@@ -1,7 +1,7 @@
 """Master pipeline for paper-ready experiments.
 
 Runs the full training pipeline for the FINAL model (V5C with noise-aware scorer)
-on AID (50/50 split) and RESISC45 (20/80 split), with 5-seed variance.
+on AID (50/50 split) and RESISC45 (20/80 split), with 10-seed variance.
 
 Usage:
     python train/run_final_pipeline.py --stage backbone_aid

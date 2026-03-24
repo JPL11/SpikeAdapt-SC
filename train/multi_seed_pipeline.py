@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""5-seed reproducibility pipeline: full retraining + evaluation at ρ=1.0, 0.75, 0.625.
+"""10-seed reproducibility pipeline: full retraining + evaluation at ρ=1.0, 0.75, 0.625.
 
 PAPER TABLES GENERATED:
-  - Table I   (main.tex)  : Main BSC results (5-seed mean±std)
-  - Table V   (main.tex)  : Cross-dataset generalization (5-seed mean±std)
-  - Table 1   (6-page)    : Main BSC results (5-seed mean±std)
+  - Table I   (main.tex)  : Main BSC results (10-seed mean±std)
+  - Table V   (main.tex)  : Cross-dataset generalization (10-seed mean±std)
+  - Table 1   (6-page)    : Main BSC results (10-seed mean±std)
 
-Output:  eval/seed_results/summary_5seed.json  (+ per-seed JSONs)
+Output:  eval/seed_results/summary_10seed.json  (+ per-seed JSONs)
 
-Trains the full pipeline (backbone → S2 → S3) for 5 seeds on both datasets,
+Trains the full pipeline (backbone → S2 → S3) for 10 seeds on both datasets,
 then evaluates at ρ=1.0, 0.75, and 0.625 under BER=0.0 and BER=0.30.
 Reports mean ± std and paired t-test p-values.
 
@@ -33,7 +33,7 @@ from run_final_pipeline import (
 from train_aid_v2 import ResNet50Front, ResNet50Back
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-SEEDS = [42, 123, 456, 789, 1024]
+SEEDS = [42, 123, 456, 789, 1024, 2048, 3072, 4096, 5120, 6144]
 
 
 def evaluate(model, back, front, test_loader, ber=0.0, rho=None):
@@ -195,7 +195,7 @@ def main():
         print(f"    Δ = {delta:+.2f} pp, t={t_stat:.4f}, p={p_val:.6f}", flush=True)
     
     # Save summary
-    with open('eval/seed_results/summary_5seed.json', 'w') as f:
+    with open('eval/seed_results/summary_10seed.json', 'w') as f:
         json.dump(summary, f, indent=2)
     
     print(f"\nAll results saved to eval/seed_results/")
