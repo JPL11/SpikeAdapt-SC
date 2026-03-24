@@ -174,7 +174,7 @@ We compare against: SNN no-mask ($\rho{=}1.0$, same backbone), CNN-1bit (STE bin
 
 \subsection{Main Results}
 
-\begin{table}[t]
+\begin{table*}[t]
 \renewcommand{\arraystretch}{1.12}
 \centering
 \caption{Main BSC results. Rows with $\pm$ report 10-seed mean$\pm$std. SpikeAdapt-SC degrades $\leq$5~pp at BER$=0.30$; 8-bit baselines collapse by 28--56~pp; JPEG+Conv exhibits a cliff effect.}
@@ -197,7 +197,7 @@ JPEG+Conv ($R{=}1/3$)$^{\dagger\dagger}$ & 95.16 & 2.68 & 93.55 & 1.80 & 300\% \
 \bottomrule
 \multicolumn{6}{l}{\scriptsize $^\dagger$Seed-42 only. $^{\dagger\dagger}$Cliff effect at BER$=$0.05; 3$\times$ payload.}
 \end{tabular}
-\end{table}
+\end{table*}
 
 Table~\ref{tab:main_results} shows three key outcomes. First, the spiking pipeline remains robust: SpikeAdapt-SC drops only 3~pp from clean to BER$=0.30$ on AID, while CNN-Uni collapses by 39~pp and MLP-FC by 56~pp. JPEG+Conv suffers a catastrophic cliff effect at BER$=0.05$, because even a few residual errors corrupt JPEG headers---this cliff is characteristic of separate source-channel coding and motivates joint source-channel approaches. Second, a matched-payload non-spiking 1-bit CNN (CNN-1bit) achieves comparable noise robustness on AID ($91.33{\pm}2.36$\% vs.\ $92.15{\pm}2.87$\%, $\Delta{=}0.82$~pp), confirming that binary encoding itself provides substantial protection. On RESISC45, the gap is small ($85.55{\pm}2.72$ for CNN-1bit vs.\ $86.18{\pm}4.78$ for SpikeAdapt-SC). The primary SNN advantage is thus energy efficiency (37$\times$ via SynOps) and lower variance rather than mean accuracy improvement over CNN-1bit. Third, spatial masking at $\rho{=}0.75$ saves 25\% bandwidth: on RESISC45, masking \emph{improves} BER$=0.30$ accuracy by $+$1.33~pp over full-rate ($p{=}0.005$, $n{=}10$; 95\% BCa bootstrap CI $[+0.72, +2.10]$, surviving Bonferroni correction), while on AID masking is bandwidth-neutral ($\Delta{=}+$0.26~pp, $p{=}0.55$).
 
@@ -249,23 +249,25 @@ Table~\ref{tab:ber_sweep} and Fig.~\ref{fig:ber_sweep_baselines} present the ful
 
 Fig.~\ref{fig:mask_diversity} shows that the scorer produces \emph{content-adaptive} masks: every test image receives a unique mask (5,000/5,000 unique on AID, 25,200/25,200 on RESISC45). Table~\ref{tab:mask_compare} compares mask types. At $\rho{=}0.75$, the high retention rate leaves little room for selection, so learned and random masks perform similarly ($\Delta{=}+0.01$~pp). At $\rho{=}0.50$/BER$=0.30$, learned masks outperform random by $+$1.49~pp, confirming the scorer learns a useful selection policy under harsher compression.
 
-\begin{table*}[t]
-\renewcommand{\arraystretch}{1.15}
+\begin{table}[t]
+\renewcommand{\arraystretch}{1.12}
 \centering
-\caption{Mask comparison on AID (seed-42, illustrative). Random averaged over 50 independent draws. Learned mask advantage is most pronounced under noise at aggressive compression.}
+\small
+\caption{Mask comparison on AID (seed-42, illustrative). Random averaged over 50 draws. Learned mask advantage is most pronounced under noise at aggressive compression.}
 \label{tab:mask_compare}
+\setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{cc ccc c}
 \toprule
-$\rho$ & BER & \textbf{Learned} & \textbf{Random (50-draw mean$\pm$std)} & \textbf{Uniform} & $\Delta_{\text{rand}}$ \\
+$\rho$ & BER & \textbf{Learned} & \textbf{Random} & \textbf{Uniform} & $\Delta_{\text{rand}}$ \\
 \midrule
-0.50 & 0.00 & 95.02 & 95.28 $\pm$ 0.12 & 90.58 & $-$0.26 \\
-0.50 & 0.30 & \textbf{93.44} & 91.95 $\pm$ 0.15 & 85.54 & $+$\textbf{1.49} \\
+0.50 & 0.00 & 95.02 & 95.28{\scriptsize$\pm$0.12} & 90.58 & $-$0.26 \\
+0.50 & 0.30 & \textbf{93.44} & 91.95{\scriptsize$\pm$0.15} & 85.54 & $+$\textbf{1.49} \\
 \midrule
-0.75 & 0.00 & 95.42 & 95.35 $\pm$ 0.10 & 94.70 & $+$0.07 \\
-0.75 & 0.30 & \textbf{93.26} & 93.25 $\pm$ 0.13 & 91.78 & $+$\textbf{0.01} \\
+0.75 & 0.00 & 95.42 & 95.35{\scriptsize$\pm$0.10} & 94.70 & $+$0.07 \\
+0.75 & 0.30 & \textbf{93.26} & 93.25{\scriptsize$\pm$0.13} & 91.78 & $+$\textbf{0.01} \\
 \bottomrule
 \end{tabular}
-\end{table*}
+\end{table}
 
 \subsection{Rate--Accuracy Tradeoff}
 
