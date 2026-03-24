@@ -6,26 +6,26 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 
-> **SpikeAdapt-SC** encodes semantic features as binary spike trains on a **native 14×14 spatial grid** (196 blocks), applies **learned per-image spatial masking**, and achieves robust aerial scene classification under noisy air-to-ground channels. The encoder uses Membrane Potential Batch Normalization (MPBN) and a noise-aware scorer to deliver **37× energy savings** via SynOps. Over 5 seeds (full pipeline retraining), SpikeAdapt-SC achieves **94.86 ± 0.63% on AID** and **92.40 ± 0.27% on RESISC45** at ρ=0.75 (25% bandwidth savings), with only ~2 pp degradation at BER=0.30. On RESISC45, masking at ρ=0.75 significantly improves BER=0.30 accuracy over full-rate (Δ=+1.67 pp, p=0.044).
+> **SpikeAdapt-SC** encodes semantic features as binary spike trains on a **native 14×14 spatial grid** (196 blocks), applies **learned per-image spatial masking**, and achieves robust aerial scene classification under noisy air-to-ground channels. The encoder uses Membrane Potential Batch Normalization (MPBN) and a noise-aware scorer to deliver **37× energy savings** via SynOps. Over 10 seeds (full pipeline retraining), SpikeAdapt-SC achieves **95.02 ± 0.55% on AID** and **92.34 ± 0.33% on RESISC45** at ρ=0.75 (25% bandwidth savings), with only ~3 pp degradation at BER=0.30. On RESISC45, masking at ρ=0.75 significantly improves BER=0.30 accuracy over full-rate (Δ=+1.33 pp, p=0.005; survives Bonferroni correction).
 
 ---
 
 ## Key Results
 
-### 5-Seed Results (Seeds: 42, 123, 456, 789, 1024)
+### 10-Seed Results (Seeds: 42, 123, 456, 789, 1024, 2048, 3072, 4096, 5120, 6144)
 
 Full pipeline retraining (backbone + S2 + S3) per seed. **These are the primary reported numbers.**
 
 | Condition | AID Mean ± Std | RESISC45 Mean ± Std |
 |-----------|----------------|---------------------|
-| **ρ=1.0, Clean** | **95.48 ± 0.30%** | 92.50 ± 0.16% |
-| **ρ=0.75, Clean** | 94.86 ± 0.63% | **92.40 ± 0.27%** |
-| ρ=0.625, Clean | 93.79 ± 1.24% | 92.05 ± 0.58% |
-| ρ=1.0, BER=0.30 | 92.83 ± 1.20% | 84.29 ± 6.82% |
-| **ρ=0.75, BER=0.30** | 92.72 ± 0.99% | **85.96 ± 5.54%** |
-| ρ=0.625, BER=0.30 | 90.87 ± 1.95% | **86.38 ± 4.82%** |
+| **ρ=1.0, Clean** | **95.49 ± 0.31%** | 92.59 ± 0.16% |
+| **ρ=0.75, Clean** | 95.02 ± 0.55% | **92.34 ± 0.33%** |
+| ρ=0.625, Clean | 94.12 ± 1.14% | 91.87 ± 0.70% |
+| ρ=1.0, BER=0.30 | 91.89 ± 3.69% | 84.85 ± 5.58% |
+| **ρ=0.75, BER=0.30** | 92.15 ± 2.87% | **86.18 ± 4.78%** |
+| ρ=0.625, BER=0.30 | 90.70 ± 3.26% | **86.07 ± 4.64%** |
 
-> **Key findings**: (1) ρ=1.0 gives the highest clean accuracy (as expected — keeping all blocks). (2) On **RESISC45**, masking at ρ=0.75 *improves* BER=0.30 accuracy over full-rate by **+1.67 pp** (p=0.044, significant at α=0.05). (3) On AID, masking is bandwidth-neutral (Δ=−0.11 pp, p=0.84 — saves 25% bandwidth with no accuracy loss under noise). (4) The BER=0.30 variance on RESISC45 is high (±5–7 pp) because the 45-class task amplifies scorer differences across seeds.
+> **Key findings**: (1) ρ=1.0 gives the highest clean accuracy (as expected — keeping all blocks). (2) On **RESISC45**, masking at ρ=0.75 *improves* BER=0.30 accuracy over full-rate by **+1.33 pp** (p=0.005, 10-seed paired t-test; 95% BCa bootstrap CI [+0.72, +2.10], survives Bonferroni correction). (3) On AID, masking is bandwidth-neutral (Δ=+0.26 pp, p=0.55 — saves 25% bandwidth with no accuracy loss under noise). (4) The BER=0.30 variance on RESISC45 is high (±5–6 pp) because the 45-class task amplifies scorer differences across seeds.
 
 ### Seed-42 Illustrative Results (BSC Channel)
 
@@ -37,7 +37,7 @@ Full pipeline retraining (backbone + S2 + S3) per seed. **These are the primary 
 | CNN-1bit (STE, T=1) | 95.32% | 87.56% | 91.48% | 85.19% | 100% |
 | CNN-Uni (8-bit) | 91.78% | 52.80% | 78.32% | 49.32% | 100% |
 
-> **Note**: Seed-42 is shown as an illustrative operating point. The individual seed-42 numbers differ from the 5-seed mean because each seed produces a different trained model. All paper headline claims use the 5-seed mean±std. Seeds: 42, 123, 456, 789, 1024. All seed-42 BER evaluations use a fixed random seed for deterministic noise draws.
+> **Note**: Seed-42 is shown as an illustrative operating point. The individual seed-42 numbers differ from the 10-seed mean because each seed produces a different trained model. All paper headline claims use the 10-seed mean±std. Seeds: 42, 123, 456, 789, 1024, 2048, 3072, 4096, 5120, 6144. All seed-42 BER evaluations use a fixed random seed for deterministic noise draws.
 
 ### CNN-1bit 5-Seed Results
 
@@ -46,7 +46,7 @@ Full pipeline retraining (backbone + S2 + S3) per seed. **These are the primary 
 | **Clean** | **95.49 ± 0.22%** | 91.22 ± 0.54% |
 | **BER=0.30** | 91.33 ± 2.36% | 85.55 ± 2.72% |
 
-> **Key finding**: The 5-seed CNN-1bit gap to SpikeAdapt-SC is **much smaller** than the seed-42 illustrative result suggested: AID Δ=1.39 pp (was 5.78 pp at seed-42), R45 Δ≈0 pp. Binary encoding—not temporal coding—is the primary robustness driver. The SNN advantage is lower variance and 37× energy efficiency via SynOps.
+> **Key finding**: The 5-seed CNN-1bit gap to SpikeAdapt-SC is **much smaller** than the seed-42 illustrative result suggested: AID Δ=0.82 pp (10-seed), R45 Δ≈0.6 pp. Binary encoding—not temporal coding—is the primary robustness driver. The SNN advantage is lower variance and 37× energy efficiency via SynOps.
 
 ### Noise-Aware Ablation (Seed-42, ρ=0.75)
 
@@ -152,7 +152,7 @@ Spikes S₂ ∈ {0,1}^{36×14×14} ──⊙ M──▶ Masked Spikes
 SpikeAdapt-SC/
 ├── train/                               # Training scripts
 │   ├── run_final_pipeline.py            #   Master pipeline (AID + RESISC45)
-│   ├── multi_seed_pipeline.py           #   5-seed reproducibility pipeline
+│   ├── multi_seed_pipeline.py           #   10-seed reproducibility pipeline
 │   ├── train_noise_aware_ablation.py    #   Noise-aware ablation training
 │   ├── train_1bit_baseline.py           #   CNN-1bit baseline
 │   ├── train_aid_v2.py                  #   Core classes (ResNet50Front/Back, BSC_Channel)
@@ -178,7 +178,7 @@ SpikeAdapt-SC/
 │   ├── gen_ber_sweep_figure.py          #   BER sweep figure
 │   ├── gen_multichannel_figs.py         #   Cross-channel figures
 │   ├── block_importance_analysis.py     #   Block score analysis
-│   └── seed_results/                    #   5-seed JSON outputs (per-seed + summary)
+│   └── seed_results/                    #   10-seed JSON outputs (per-seed + summary)
 │
 ├── paper/                               # Paper assets
 │   └── figures/                         #   Only figures referenced in paper (6 files)
@@ -214,7 +214,7 @@ python train/run_final_pipeline.py --stage v5c_resisc
 # Run ablations (ρ sweep + mask comparison, 50 random draws)
 python eval/run_ablations_final.py
 
-# 5-seed reproducibility
+# 10-seed reproducibility
 python train/multi_seed_pipeline.py
 
 # Noise-aware ablation

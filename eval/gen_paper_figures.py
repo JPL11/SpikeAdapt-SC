@@ -126,7 +126,7 @@ def fig6_ber_robustness(results):
 
     ber_values = [0.0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30]
 
-    # Get V5C-NA results from training logs
+    # Get SpikeAdapt-SC results from training logs
     aid_ber_sweep = {
         0.0: 95.42, 0.05: 95.54, 0.10: 95.72,
         0.15: 95.74, 0.20: 95.74, 0.25: 95.20, 0.30: 93.42
@@ -145,7 +145,7 @@ def fig6_ber_robustness(results):
         ax = axes[idx]
 
         snn_accs = [snn_data[b] for b in ber_values]
-        ax.plot(ber_values, snn_accs, 'o-', color=C_BLUE, label='V5C-NA (SNN)', zorder=3)
+        ax.plot(ber_values, snn_accs, 'o-', color=C_BLUE, label='SpikeAdapt-SC (SNN)', zorder=3)
 
         if idx == 0:  # CNN baseline only for AID
             cnn_accs = [cnn_ber[b] for b in ber_values]
