@@ -374,16 +374,7 @@ Although trained exclusively on BSC, SpikeAdapt-SC's binary encoding produces ne
 
 Table~\ref{tab:multichannel} and Fig.~\ref{fig:multichannel} confirm that at matched BER, all channels produce accuracy within $\pm$1~pp for \emph{all} methods. This is expected: BPSK hard-decision demodulation converts any additive noise into effective bit flips, reducing all channels to approximate BSC behavior. The key insight is that binary encoding---whether SNN or CNN-1bit---is the driver of noise resilience, not channel type.
 
-\subsection{Feature Resilience and Latency}
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=\columnwidth]{fig3_feature_mse_dual.png}
-    \caption{Feature MSE (red) increases with BER, confirming real channel corruption; classification confidence (green) remains $>$90\% (AID) / $>$80\% (R45) despite degradation.}
-    \label{fig:feature_mse}
-\end{figure}
-
-Fig.~\ref{fig:feature_mse} confirms the system communicates \emph{through} the noisy channel: feature MSE increases monotonically with BER, yet classification confidence remains above 90\% (AID) and 80\% (RESISC45) at BER$=0.30$---the hallmark of effective semantic communication.
+\subsection{Latency}
 
 On a single GPU (RTX 3090), the SNN encoder adds 0.73~ms per image over a single-pass CNN encoder (full pipeline: 1.30 vs.\ 0.57~ms/image, 2.3$\times$ overhead). The ResNet-50 backbone dominates end-to-end latency. On event-driven neuromorphic hardware such as Intel Loihi~\cite{davies2018loihi}, the $T{=}8$ timesteps could execute in parallel, substantially reducing the effective temporal overhead.
 
