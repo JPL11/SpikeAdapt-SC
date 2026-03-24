@@ -1,7 +1,7 @@
 """Generate THE comprehensive unified BER sweep figure for the paper.
 
 One dual-panel figure with ALL baselines:
-  V5C-NA (ρ=0.75), SNN-SC (ρ=1.0), CNN-Uni, CNN-NonUni, MLP-FC, JPEG+Conv
+  SpikeAdapt-SC (ρ=0.75), SNN-SC (ρ=1.0), CNN-Uni, CNN-NonUni, MLP-FC, JPEG+Conv
 """
 import json
 import matplotlib
@@ -48,11 +48,11 @@ jpeg_aid = {'0.0': 95.16, '0.05': 2.66, '0.1': 2.68, '0.15': 2.68,
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.0, 3.0))
 
 for ax, ds_label, ds_key in [(ax1, 'AID', 'aid'), (ax2, 'RESISC45', 'resisc45')]:
-    # V5C-NA (our method)
+    # SpikeAdapt-SC (our method)
     snn_bsc = snn_mc[ds_key]['bsc']['results']
     snn_accs = [snn_bsc[b] for b in ber_keys]
     ax.plot(bers, snn_accs, '-o', color='#1B5E20', lw=2.5, ms=5.5, zorder=6,
-            label=r'V5C-NA ($\rho$=0.75)', markeredgecolor='white', markeredgewidth=0.5)
+            label=r'SpikeAdapt-SC ($\rho$=0.75)', markeredgecolor='white', markeredgewidth=0.5)
 
     # SNN-SC (ρ=1.0) — from matched_ber data
     snn_mb = snn_mc[ds_key]['matched_ber']
@@ -114,7 +114,7 @@ for ds_label, ds_key in [('AID', 'aid'), ('RESISC45', 'resisc45')]:
     print(f"\n{ds_label}:")
     snn_bsc = snn_mc[ds_key]['bsc']['results']
     snn_mb = snn_mc[ds_key]['matched_ber']
-    print(f"  V5C-NA:     clean={snn_bsc['0.0']:.2f}  0.15={snn_bsc['0.15']:.2f}  0.30={snn_bsc['0.3']:.2f}")
+    print(f"  SpikeAdapt-SC:     clean={snn_bsc['0.0']:.2f}  0.15={snn_bsc['0.15']:.2f}  0.30={snn_bsc['0.3']:.2f}")
     print(f"  SNN-SC:     clean={snn_bsc['0.0']:.2f}  0.15={snn_mb['0.15']['bsc_acc']:.2f}  0.30={snn_mb['0.3']['bsc_acc']:.2f}")
     cu = cnn_mc[ds_label]['CNN-Uni']['bsc']
     cnu = cnn_mc[ds_label]['CNN-NonUni']['bsc']

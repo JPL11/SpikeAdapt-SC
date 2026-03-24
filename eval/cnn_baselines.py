@@ -171,14 +171,14 @@ def generate_merged_figure(all_results, snn_results):
     ber_list = [0.0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30]
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(7.0, 3.0), sharey=False)
 
-    colors = {'V5C-NA': '#1B5E20', 'SNN-SC': '#4CAF50',
+    colors = {'SpikeAdapt-SC': '#1B5E20', 'SNN-SC': '#4CAF50',
               'CNN-Uni': '#E53935', 'CNN-NonUni': '#FF9800', 'CNN-Bern': '#9C27B0'}
-    markers = {'V5C-NA': 'o', 'SNN-SC': 's',
+    markers = {'SpikeAdapt-SC': 'o', 'SNN-SC': 's',
                'CNN-Uni': '^', 'CNN-NonUni': 'D', 'CNN-Bern': 'v'}
 
     for ax, ds_name in [(ax1, 'AID'), (ax2, 'RESISC45')]:
         # SNN results
-        for method in ['V5C-NA', 'SNN-SC']:
+        for method in ['SpikeAdapt-SC', 'SNN-SC']:
             if method in snn_results.get(ds_name, {}):
                 accs = [snn_results[ds_name][method][str(b)] for b in ber_list]
                 ax.plot(ber_list, accs, f'-{markers[method]}', color=colors[method],
@@ -245,7 +245,7 @@ def main():
             ds_key = 'AID' if ds == 'aid' else 'RESISC45'
             bsc = mc[ds]['bsc']['results']
             snn_results[ds_key] = {
-                'V5C-NA': bsc,
+                'SpikeAdapt-SC': bsc,
                 'SNN-SC': {str(b): bsc[str(b)] for b in [0.0,0.05,0.1,0.15,0.2,0.25,0.3]}
             }
 

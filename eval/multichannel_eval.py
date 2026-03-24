@@ -1,4 +1,4 @@
-"""Multi-channel evaluation: BSC + AWGN + Rayleigh for V5C-NA on both datasets.
+"""Multi-channel evaluation: BSC + AWGN + Rayleigh for SpikeAdapt-SC on both datasets.
 
 PAPER TABLES GENERATED:
   - Table II  (main.tex)  : BER sweep across BSC/AWGN/Rayleigh (with CNN/MLP baselines)
@@ -243,7 +243,7 @@ if __name__ == '__main__':
     
     # Print summary
     print(f"\n{'='*70}")
-    print("PAPER TABLE — Matched-BER Comparison (V5C-NA, ρ=0.75)")
+    print("PAPER TABLE — Matched-BER Comparison (SpikeAdapt-SC, ρ=0.75)")
     print(f"{'='*70}")
     for ds in ['aid', 'resisc45']:
         m = all_results[ds]['matched_ber']
