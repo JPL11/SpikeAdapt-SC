@@ -206,27 +206,27 @@ Table~\ref{tab:main_results} shows three key outcomes. First, the spiking pipeli
 Table~\ref{tab:ber_sweep} and Fig.~\ref{fig:ber_sweep_baselines} present the full BER sweep from 0.00 to 0.30 on both datasets. SNN encoding degrades gracefully ($\leq$5~pp even at BER$=0.30$), while all continuous-valued baselines exhibit steep degradation. Note the non-monotonic CNN behavior on RESISC45: CNN-Uni improves from 78.32\% (clean) to 82.68\% (BER$=0.10$) before degrading, because the noise curriculum acts as a dropout-like regularizer at low BER. This regularization benefit diminishes as information loss dominates at higher BER.
 
 \begin{table}[t]
-\renewcommand{\arraystretch}{1.10}
+\renewcommand{\arraystretch}{1.12}
 \centering
 \small
-\caption{Full BER sweep accuracy (\%) on both datasets (seed-42, illustrative). SpikeAdapt-SC at $\rho{=}0.75$, BSC channel. SNN encoding degrades $\leq$5~pp; 8-bit baselines collapse.}
+\caption{BER sweep accuracy (\%) at key operating points (seed-42, illustrative). SpikeAdapt-SC at $\rho{=}0.75$, BSC channel. Full sweep in Fig.~\ref{fig:ber_sweep_baselines}.}
 \label{tab:ber_sweep}
-\setlength{\tabcolsep}{2.5pt}
-\begin{tabular}{ll ccccccc}
+\setlength{\tabcolsep}{3.5pt}
+\begin{tabular}{ll ccc}
 \toprule
-\textbf{Data} & \textbf{Method} & \textbf{0.00} & \textbf{0.05} & \textbf{0.10} & \textbf{0.15} & \textbf{0.20} & \textbf{0.25} & \textbf{0.30} \\
+\textbf{Data} & \textbf{Method} & \textbf{Clean} & \textbf{BER=0.15} & \textbf{BER=0.30} \\
 \midrule
-\multirow{5}{*}{AID} & \textbf{SpikeAdapt} & \textbf{95.42} & \textbf{95.64} & \textbf{95.70} & \textbf{95.72} & \textbf{95.76} & \textbf{95.16} & \textbf{93.34} \\
- & CNN-Uni & 91.78 & 91.90 & 90.82 & 88.46 & 83.40 & 72.96 & 52.80 \\
- & CNN-NonUni & 91.74 & 91.50 & 90.50 & 89.00 & 85.56 & 78.68 & 63.58 \\
- & MLP-FC & 91.98 & 88.46 & 84.16 & 76.84 & 66.32 & 51.48 & 36.12 \\
- & JPEG+Conv & 95.16 & 2.66 & 2.68 & 2.68 & 2.68 & 2.68 & 2.68 \\
+\multirow{5}{*}{AID} & \textbf{SpikeAdapt-SC} & \textbf{95.42} & \textbf{95.72} & \textbf{93.34} \\
+ & CNN-Uni & 91.78 & 88.46 & 52.80 \\
+ & CNN-NonUni & 91.74 & 89.00 & 63.58 \\
+ & MLP-FC & 91.98 & 76.84 & 36.12 \\
+ & JPEG+Conv & 95.16 & 2.68 & 2.68 \\
 \midrule
-\multirow{5}{*}{R45} & \textbf{SpikeAdapt} & \textbf{92.01} & \textbf{92.15} & \textbf{92.31} & \textbf{92.42} & \textbf{92.31} & \textbf{91.30} & \textbf{86.98} \\
- & CNN-Uni & 78.32 & 81.38 & 82.68 & 81.20 & 77.00 & 67.10 & 49.32 \\
- & CNN-NonUni & 78.32 & 78.63 & 77.96 & 76.42 & 72.21 & 64.45 & 50.77 \\
- & MLP-FC & 82.23 & 74.73 & 65.58 & 54.77 & 43.11 & 31.27 & 20.89 \\
- & JPEG+Conv & 93.55 & 1.80 & 1.80 & 1.80 & 1.80 & 1.80 & 1.80 \\
+\multirow{5}{*}{R45} & \textbf{SpikeAdapt-SC} & \textbf{92.01} & \textbf{92.42} & \textbf{86.98} \\
+ & CNN-Uni & 78.32 & 81.20 & 49.32 \\
+ & CNN-NonUni & 78.32 & 76.42 & 50.77 \\
+ & MLP-FC & 82.23 & 54.77 & 20.89 \\
+ & JPEG+Conv & 93.55 & 1.80 & 1.80 \\
 \bottomrule
 \end{tabular}
 \end{table}
