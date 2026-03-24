@@ -8,7 +8,7 @@
 
 > **SpikeAdapt-SC** combines three design elements for energy-efficient, noise-robust aerial scene classification over unreliable UAV channels:
 > 1. **37× energy savings** — MPBN reduces the encoder firing rate to 0.167, yielding 37.3× estimated SynOps energy savings (Horowitz model).
-> 2. **Binary spike robustness** — At BER=0.30, SNN encoding degrades only ~3 pp while 8-bit CNN baselines collapse by 28–56 pp. A matched-payload CNN-1bit confirms binary encoding is the primary robustness driver (AID gap: 0.82 pp); the SNN advantage is lower variance and energy efficiency.
+> 2. **Binary spike robustness** — At BER=0.30, SNN encoding degrades only ~3 pp while 8-bit CNN baselines collapse by 28–56 pp. A matched-payload CNN-1bit (10 seeds) confirms binary encoding is the primary robustness driver (AID gap: 1.29 pp); the SNN advantage is lower variance and energy efficiency.
 > 3. **Learned spatial masking** — A BER-conditioned scorer on the native 14×14 grid (196 blocks) saves 25% bandwidth. On RESISC45, masking at ρ=0.75 *improves* BER=0.30 accuracy by **+1.33 pp** over full-rate (p=0.005, 10-seed paired t-test; 95% BCa bootstrap CI [+0.72, +2.10], survives Bonferroni correction). On AID, masking is bandwidth-neutral (Δ=+0.26 pp, p=0.55).
 >
 > Over **10 seeds** with full pipeline retraining, SpikeAdapt-SC achieves **95.02 ± 0.55%** (AID) and **92.34 ± 0.33%** (RESISC45) clean accuracy at ρ=0.75.
@@ -37,14 +37,27 @@ Seeds: 42, 123, 456, 789, 1024, 2048, 3072, 4096, 5120, 6144. Full pipeline retr
 - On **AID**, masking is bandwidth-neutral (Δ=+0.26 pp, p=0.55) — the easier 30-class task has more spatial redundancy, so dropping 25% of blocks has little effect.
 - The BER=0.30 std on RESISC45 is ±4.78 pp — the harder 45-class task amplifies scorer sensitivity across seeds, so the robustness claim should be interpreted as a consistent directional effect supported by formal hypothesis testing rather than a narrow-CI guarantee.
 
-### CNN-1bit Baseline (5-Seed)
+### CNN-1bit Baseline (10-Seed)
 
 | Condition | AID Mean ± Std | RESISC45 Mean ± Std |
 |-----------|----------------|---------------------|
-| Clean | 95.49 ± 0.22% | 91.22 ± 0.54% |
-| BER=0.30 | 91.33 ± 2.36% | 85.55 ± 2.72% |
+| Clean | 95.41 ± 0.33% | 91.37 ± 0.44% |
+| BER=0.30 | 90.86 ± 1.75% | 85.77 ± 2.00% |
 
-> **Honest comparison:** CNN-1bit (STE binarization, T=1) achieves comparable noise robustness: AID gap is only 0.82 pp, R45 gap ≈0.6 pp. Binary encoding — not temporal coding alone — is the primary driver of noise robustness. The SNN advantage lies in **37× energy efficiency** (via SynOps) and **lower variance** across seeds, not a dramatic accuracy edge over CNN-1bit.
+> **Honest comparison:** CNN-1bit (STE binarization, T=1, 10 seeds) achieves comparable noise robustness: AID gap is 1.29 pp, R45 gap 0.41 pp. Binary encoding — not temporal coding alone — is the primary driver of noise robustness. The SNN advantage lies in **37× energy efficiency** (via SynOps) and **lower variance** across seeds, not a dramatic accuracy edge over CNN-1bit.
+
+### Cross-Channel Generalization & BEC Immunity
+
+SpikeAdapt-SC trained only on BSC generalizes across all channel types at matched BER:
+
+| Channel | AID (BER=0.30) | RESISC45 (BER=0.30) |
+|---------|----------------|---------------------|
+| BSC | 93.38% | 84.90% |
+| AWGN | 93.34% | 84.92% |
+| Rayleigh | 93.40% | 84.92% |
+| **BEC** | **95.54%** | **92.43%** |
+
+> **BEC immunity:** BEC erases bits to 0. With SNN firing rate 0.167, ~83% of bits are already 0 — erasures are harmless. This gives SpikeAdapt-SC **+7.5 pp BEC advantage** over BSC on RESISC45, a direct consequence of the sparse spike representation.
 
 ---
 
