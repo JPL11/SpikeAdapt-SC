@@ -252,17 +252,19 @@ Fig.~\ref{fig:mask_diversity} shows that the scorer produces \emph{content-adapt
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.12}
 \centering
+\small
 \caption{Mask comparison on AID (seed-42, illustrative). Random averaged over 50 draws. Learned mask advantage is most pronounced under noise at aggressive compression.}
 \label{tab:mask_compare}
-\begin{tabular}{c c ccc c}
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{cc ccc c}
 \toprule
 $\rho$ & BER & \textbf{Learned} & \textbf{Random} & \textbf{Uniform} & $\Delta_{\text{rand}}$ \\
 \midrule
-0.50 & 0.00 & 95.02 & 95.28{\scriptsize$\pm$0.12} & 90.58 & -0.26 \\
-0.50 & 0.30 & \textbf{93.44} & 91.95{\scriptsize$\pm$0.15} & 85.54 & +\textbf{1.49} \\
+0.50 & 0.00 & 95.02 & 95.28{\scriptsize$\pm$0.12} & 90.58 & $-$0.26 \\
+0.50 & 0.30 & \textbf{93.44} & 91.95{\scriptsize$\pm$0.15} & 85.54 & $+$\textbf{1.49} \\
 \midrule
-0.75 & 0.00 & 95.42 & 95.35{\scriptsize$\pm$0.10} & 94.70 & +0.07 \\
-0.75 & 0.30 & \textbf{93.26} & 93.25{\scriptsize$\pm$0.13} & 91.78 & +\textbf{0.01} \\
+0.75 & 0.00 & 95.42 & 95.35{\scriptsize$\pm$0.10} & 94.70 & $+$0.07 \\
+0.75 & 0.30 & \textbf{93.26} & 93.25{\scriptsize$\pm$0.13} & 91.78 & $+$\textbf{0.01} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -308,9 +310,10 @@ To validate that both the BER-conditioning branch and the diversity loss are ess
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.12}
 \centering
+\small
 \caption{Noise-aware ablation ($\rho{=}0.75$, seed-42). Removing either component collapses BER$=0.30$ accuracy by 20--48~pp while leaving clean accuracy unchanged.}
 \label{tab:na_ablation}
-\setlength{\tabcolsep}{3pt}
+\setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{l cc cc cc}
 \toprule
 & \multicolumn{2}{c}{\textbf{Component}} & \multicolumn{2}{c}{\textbf{AID}} & \multicolumn{2}{c}{\textbf{RESISC45}} \\
@@ -336,9 +339,10 @@ Although trained exclusively on BSC, SpikeAdapt-SC's binary encoding produces ne
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.12}
 \centering
+\small
 \caption{Cross-channel results at matched BER (seed-42, illustrative). All methods show near-equivalent accuracy ($\pm$1~pp): BPSK hard-decision demodulation reduces any channel to approximate BSC behavior.}
 \label{tab:multichannel}
-\setlength{\tabcolsep}{3pt}
+\setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{cl ccc ccc}
 \toprule
  & & \multicolumn{3}{c}{\textbf{AID}} & \multicolumn{3}{c}{\textbf{RESISC45}} \\
