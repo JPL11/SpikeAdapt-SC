@@ -201,7 +201,7 @@ JPEG+Conv ($R{=}1/3$)$^{\dagger\dagger}$ & 95.16 & 2.68 & 93.55 & 1.80 & 300\% \
 
 Table~\ref{tab:main_results} shows three key outcomes. First, the spiking pipeline remains robust: SpikeAdapt-SC drops only 3~pp from clean to BER$=0.30$ on AID, while CNN-Uni collapses by 39~pp and MLP-FC by 56~pp. JPEG+Conv suffers a catastrophic cliff effect at BER$=0.05$, because even a few residual errors corrupt JPEG headers---this cliff is characteristic of separate source-channel coding and motivates joint source-channel approaches. Second, a matched-payload non-spiking 1-bit CNN (CNN-1bit) achieves comparable noise robustness on AID ($91.33{\pm}2.36$\% vs.\ $92.15{\pm}2.87$\%, $\Delta{=}0.82$~pp), confirming that binary encoding itself provides substantial protection. On RESISC45, the gap is small ($85.55{\pm}2.72$ for CNN-1bit vs.\ $86.18{\pm}4.78$ for SpikeAdapt-SC). The primary SNN advantage is thus energy efficiency (37$\times$ via SynOps) and lower variance rather than mean accuracy improvement over CNN-1bit. Third, spatial masking at $\rho{=}0.75$ saves 25\% bandwidth: on RESISC45, masking \emph{improves} BER$=0.30$ accuracy by $+$1.33~pp over full-rate ($p{=}0.005$, $n{=}10$; 95\% BCa bootstrap CI $[+0.72, +2.10]$, surviving Bonferroni correction), while on AID masking is bandwidth-neutral ($\Delta{=}+$0.26~pp, $p{=}0.55$).
 
-\textbf{Why does SNN encoding survive high BER?} The SNN encoder produces $T{=}8$ binary spike patterns per channel. Each timestep independently encodes a thresholded version of the accumulated membrane potential (Eq.~\ref{eq:spike}). A bit flip at BER$=0.30$ corrupts one timestep but leaves the other 7 intact, so the decoder's gated linear converter can reconstruct the original feature from the surviving temporal pattern. In contrast, an 8-bit quantized CNN concentrates all information into a single multi-bit representation where MSB corruption causes catastrophic errors.
+\textbf{Why does binary SNN encoding survive high BER?} The primary driver of robustness is binary encoding itself: since each transmitted value is 0 or 1, a bit flip changes the value by at most 1 unit, bounding the distortion per symbol. The CNN-1bit baseline confirms this---it achieves comparable noise resilience to SpikeAdapt-SC (Table~\ref{tab:main_results}). A secondary stabilizing factor in the SNN is temporal redundancy: the encoder produces $T{=}8$ spike patterns per channel, so a bit flip at BER$=0.30$ corrupts one timestep but leaves the other 7 intact, providing a modest variance reduction compared to the single-pass CNN-1bit. In contrast, an 8-bit quantized CNN concentrates all information into a multi-bit representation where MSB corruption causes catastrophic errors.
 
 Table~\ref{tab:ber_sweep} and Fig.~\ref{fig:ber_sweep_baselines} present the full BER sweep from 0.00 to 0.30 on both datasets. SNN encoding degrades gracefully ($\leq$5~pp even at BER$=0.30$), while all continuous-valued baselines exhibit steep degradation. Note the non-monotonic CNN behavior on RESISC45: CNN-Uni improves from 78.32\% (clean) to 82.68\% (BER$=0.10$) before degrading, because the noise curriculum acts as a dropout-like regularizer at low BER. This regularization benefit diminishes as information loss dominates at higher BER.
 
@@ -274,7 +274,7 @@ $\rho$ & BER & \textbf{Learned} & \textbf{Random} & \textbf{Uniform} & $\Delta_{
 \begin{figure}[t]
     \centering
     \includegraphics[width=\columnwidth]{fig5_rho_sweep_pareto.pdf}
-    \caption{Rate--accuracy Pareto on AID and RESISC45. Under severe noise, $\rho=0.625$ matches or exceeds full-rate on RESISC45 while saving 37.5\% bandwidth.}
+    \caption{Rate--accuracy Pareto on AID and RESISC45 (seed-42, illustrative). On RESISC45 under severe noise, $\rho=0.625$ matches or exceeds full-rate while saving 37.5\% bandwidth; on AID, masking is bandwidth-neutral.}
     \label{fig:pareto}
 \end{figure}
 
@@ -283,7 +283,7 @@ Fig.~\ref{fig:pareto} shows how accuracy degrades as retention rate $\rho$ decre
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.12}
 \centering
-\caption{$\rho$ sweep: accuracy (\%) at BER$=0.30$ on AID and RESISC45 (seed-42, illustrative). Masking at $\rho{=}0.625$ matches or exceeds full-rate on both datasets.}
+\caption{$\rho$ sweep: accuracy (\%) at BER$=0.30$ on AID and RESISC45 (seed-42, illustrative). On RESISC45, masking at $\rho{=}0.625$ matches or exceeds full-rate; on AID, masking is bandwidth-neutral.}
 \label{tab:rho_sweep}
 \begin{tabular}{c c cc}
 \toprule
@@ -375,7 +375,7 @@ Although trained exclusively on BSC, SpikeAdapt-SC's binary encoding produces ne
 
 Table~\ref{tab:multichannel} and Fig.~\ref{fig:multichannel} confirm that at matched BER, all channels produce accuracy within $\pm$1~pp for \emph{all} methods---SNN, CNN, and MLP alike. This is expected: because all systems transmit binary representations (spikes or bit planes), BPSK hard-decision demodulation converts any additive noise into effective bit flips, reducing all channels to approximate BSC behavior.
 
-The critical difference is not channel sensitivity but \emph{noise resilience}: SpikeAdapt-SC retains 93.34--93.50\% at BER$=0.30$ across all channels, while CNN-Uni collapses to 49--53\%, CNN-NonUni to 50--65\%, and MLP-FC to 21--37\%. The practical significance is twofold: (i)~binary encoding makes \emph{any} system's performance nearly channel-independent under hard-decision demodulation, and (ii)~only SNN's 1-bit bounded-distortion encoding with temporal redundancy maintains robustness at high noise---a property that holds regardless of the physical channel model.
+The critical difference is not channel sensitivity but \emph{noise resilience}: SpikeAdapt-SC retains 93.34--93.50\% at BER$=0.30$ across all channels, while CNN-Uni collapses to 49--53\%, CNN-NonUni to 50--65\%, and MLP-FC to 21--37\%. The practical significance is twofold: (i)~binary encoding makes \emph{any} system's performance nearly channel-independent under hard-decision demodulation, and (ii)~any binary encoding scheme---whether SNN or CNN-1bit---maintains robustness at high noise, as confirmed by Table~\ref{tab:main_results}. The SNN's temporal redundancy ($T{=}8$ timesteps) provides a secondary benefit of lower cross-seed variance rather than a qualitatively different robustness mechanism.
 
 \subsection{Semantic Feature Resilience}
 
