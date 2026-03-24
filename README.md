@@ -6,58 +6,73 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 
-> **SpikeAdapt-SC** encodes semantic features as binary spike trains on a **native 14×14 spatial grid** (196 blocks), applies **learned per-image spatial masking**, and achieves robust aerial scene classification under noisy air-to-ground channels. The encoder uses Membrane Potential Batch Normalization (MPBN) and a noise-aware scorer to deliver **37× energy savings** via SynOps. Over 10 seeds (full pipeline retraining), SpikeAdapt-SC achieves **95.02 ± 0.55% on AID** and **92.34 ± 0.33% on RESISC45** at ρ=0.75 (25% bandwidth savings), with only ~3 pp degradation at BER=0.30. On RESISC45, masking at ρ=0.75 significantly improves BER=0.30 accuracy over full-rate (Δ=+1.33 pp, p=0.005; survives Bonferroni correction).
+> **SpikeAdapt-SC** combines three design elements for energy-efficient, noise-robust aerial scene classification over unreliable UAV channels:
+> 1. **37× energy savings** — MPBN reduces the encoder firing rate to 0.167, yielding 37.3× estimated SynOps energy savings (Horowitz model).
+> 2. **Binary spike robustness** — At BER=0.30, SNN encoding degrades only ~3 pp while 8-bit CNN baselines collapse by 28–56 pp. A matched-payload CNN-1bit confirms binary encoding is the primary robustness driver (AID gap: 0.82 pp); the SNN advantage is lower variance and energy efficiency.
+> 3. **Learned spatial masking** — A BER-conditioned scorer on the native 14×14 grid (196 blocks) saves 25% bandwidth. On RESISC45, masking at ρ=0.75 *improves* BER=0.30 accuracy by **+1.33 pp** over full-rate (p=0.005, 10-seed paired t-test; 95% BCa bootstrap CI [+0.72, +2.10], survives Bonferroni correction). On AID, masking is bandwidth-neutral (Δ=+0.26 pp, p=0.55).
+>
+> Over **10 seeds** with full pipeline retraining, SpikeAdapt-SC achieves **95.02 ± 0.55%** (AID) and **92.34 ± 0.33%** (RESISC45) clean accuracy at ρ=0.75.
 
 ---
 
 ## Key Results
 
-### 10-Seed Results (Seeds: 42, 123, 456, 789, 1024, 2048, 3072, 4096, 5120, 6144)
+### Primary Evidence: 10-Seed Results
 
-Full pipeline retraining (backbone + S2 + S3) per seed. **These are the primary reported numbers.**
+Seeds: 42, 123, 456, 789, 1024, 2048, 3072, 4096, 5120, 6144. Full pipeline retraining (backbone → S2 → S3) per seed.
 
 | Condition | AID Mean ± Std | RESISC45 Mean ± Std |
 |-----------|----------------|---------------------|
-| **ρ=1.0, Clean** | **95.49 ± 0.31%** | 92.59 ± 0.16% |
-| **ρ=0.75, Clean** | 95.02 ± 0.55% | **92.34 ± 0.33%** |
+| **ρ=1.0, Clean** | **95.49 ± 0.31%** | **92.59 ± 0.16%** |
+| **ρ=0.75, Clean** | 95.02 ± 0.55% | 92.34 ± 0.33% |
 | ρ=0.625, Clean | 94.12 ± 1.14% | 91.87 ± 0.70% |
 | ρ=1.0, BER=0.30 | 91.89 ± 3.69% | 84.85 ± 5.58% |
 | **ρ=0.75, BER=0.30** | 92.15 ± 2.87% | **86.18 ± 4.78%** |
-| ρ=0.625, BER=0.30 | 90.70 ± 3.26% | **86.07 ± 4.64%** |
+| ρ=0.625, BER=0.30 | 90.70 ± 3.26% | 86.07 ± 4.64% |
 
-> **Key findings**: (1) ρ=1.0 gives the highest clean accuracy (as expected — keeping all blocks). (2) On **RESISC45**, masking at ρ=0.75 *improves* BER=0.30 accuracy over full-rate by **+1.33 pp** (p=0.005, 10-seed paired t-test; 95% BCa bootstrap CI [+0.72, +2.10], survives Bonferroni correction). (3) On AID, masking is bandwidth-neutral (Δ=+0.26 pp, p=0.55 — saves 25% bandwidth with no accuracy loss under noise). (4) The BER=0.30 variance on RESISC45 is high (±5–6 pp) because the 45-class task amplifies scorer differences across seeds.
+**Interpretation:**
+- **ρ=1.0** gives the highest clean accuracy (no blocks dropped).
+- **ρ=0.75** is the practical operating point: saves 25% bandwidth with competitive or improved noise performance.
+- On **RESISC45**, masking at ρ=0.75 improves BER=0.30 accuracy by **+1.33 pp** over full-rate (p=0.005, n=10; 95% BCa bootstrap CI [+0.72, +2.10], excludes zero, survives Bonferroni correction for 2 comparisons).
+- On **AID**, masking is bandwidth-neutral (Δ=+0.26 pp, p=0.55) — the easier 30-class task has more spatial redundancy, so dropping 25% of blocks has little effect.
+- The BER=0.30 std on RESISC45 is ±4.78 pp — the harder 45-class task amplifies scorer sensitivity across seeds, so the robustness claim should be interpreted as a consistent directional effect supported by formal hypothesis testing rather than a narrow-CI guarantee.
 
-### Seed-42 Illustrative Results (BSC Channel)
+### CNN-1bit Baseline (5-Seed)
 
-| Method | AID Clean | AID BER=0.30 | RESISC45 Clean | RESISC45 BER=0.30 | Rate |
-|--------|-----------|-------------|----------------|-------------------|------|
-| SpikeAdapt-SC (ρ=0.75) | 95.42% | 93.44% | 92.01% | 86.95% | 75% |
+| Condition | AID Mean ± Std | RESISC45 Mean ± Std |
+|-----------|----------------|---------------------|
+| Clean | 95.49 ± 0.22% | 91.22 ± 0.54% |
+| BER=0.30 | 91.33 ± 2.36% | 85.55 ± 2.72% |
+
+> **Honest comparison:** CNN-1bit (STE binarization, T=1) achieves comparable noise robustness: AID gap is only 0.82 pp, R45 gap ≈0.6 pp. Binary encoding — not temporal coding alone — is the primary driver of noise robustness. The SNN advantage lies in **37× energy efficiency** (via SynOps) and **lower variance** across seeds, not a dramatic accuracy edge over CNN-1bit.
+
+---
+
+## Illustrative Results (Seed-42, BSC Channel)
+
+> All tables below use seed-42 as a single illustrative operating point. Seed-42 numbers differ from the 10-seed mean because each seed produces a different trained model. **All paper headline claims use the 10-seed mean±std above.** BER evaluations use a fixed random seed for deterministic noise draws.
+
+### Main Comparison
+
+| Method | AID Clean | AID BER=0.30 | R45 Clean | R45 BER=0.30 | Rate |
+|--------|-----------|-------------|-----------|--------------|------|
+| **SpikeAdapt-SC (ρ=0.75)** | 95.42% | 93.44% | 92.01% | 86.95% | 75% |
 | SpikeAdapt-SC (ρ=0.625) | 95.40% | 93.44% | 91.06% | 87.25% | 62.5% |
 | SNN (no mask, ρ=1.0) | 95.20% | 92.40% | 92.53% | 85.31% | 100% |
 | CNN-1bit (STE, T=1) | 95.32% | 87.56% | 91.48% | 85.19% | 100% |
 | CNN-Uni (8-bit) | 91.78% | 52.80% | 78.32% | 49.32% | 100% |
 
-> **Note**: Seed-42 is shown as an illustrative operating point. The individual seed-42 numbers differ from the 10-seed mean because each seed produces a different trained model. All paper headline claims use the 10-seed mean±std. Seeds: 42, 123, 456, 789, 1024, 2048, 3072, 4096, 5120, 6144. All seed-42 BER evaluations use a fixed random seed for deterministic noise draws.
-
-### CNN-1bit 5-Seed Results
-
-| Condition | AID Mean ± Std | RESISC45 Mean ± Std |
-|-----------|----------------|---------------------|
-| **Clean** | **95.49 ± 0.22%** | 91.22 ± 0.54% |
-| **BER=0.30** | 91.33 ± 2.36% | 85.55 ± 2.72% |
-
-> **Key finding**: The 5-seed CNN-1bit gap to SpikeAdapt-SC is **much smaller** than the seed-42 illustrative result suggested: AID Δ=0.82 pp (10-seed), R45 Δ≈0.6 pp. Binary encoding—not temporal coding—is the primary robustness driver. The SNN advantage is lower variance and 37× energy efficiency via SynOps.
-
-### Noise-Aware Ablation (Seed-42, ρ=0.75)
+### Noise-Aware Ablation (ρ=0.75)
 
 | Variant | BER | Div | AID Clean | AID BER=0.30 | R45 Clean | R45 BER=0.30 |
 |---------|-----|-----|-----------|-------------|-----------|-------------|
-| **Full** | ✓ | ✓ | 95.42 | **93.44** | 92.01 | **86.95** |
+| **Full** | ✓ | ✓ | 95.42 | **93.40** | 92.01 | **87.10** |
 | No BER branch | ✗ | ✓ | 95.94 | 72.54 | 92.27 | 41.52 |
 | No diversity loss | ✓ | ✗ | 95.94 | 72.88 | 92.35 | 42.83 |
 | Neither | ✗ | ✗ | 95.96 | 72.48 | 92.18 | 39.46 |
+| SNN (no mask, ρ=1.0) | — | — | 95.20 | 92.40 | 92.53 | 85.31 |
 
-> Both components are essential. Removing either collapses BER=0.30 accuracy by ~20 pp on AID and ~45 pp on RESISC45, while clean accuracy is unaffected.
+> Both BER-conditioning and diversity loss are essential. Removing either collapses BER=0.30 accuracy by ~20 pp on AID and ~45 pp on RESISC45, while clean accuracy is unaffected (even slightly higher). The ablation variants are *worse* than even unmasked SNN (ρ=1.0), confirming the collapse is from the scorer, not from sending fewer blocks.
 
 ### Mask Comparison (AID, 50 Independent Random Draws)
 
@@ -68,7 +83,7 @@ Full pipeline retraining (backbone + S2 + S3) per seed. **These are the primary 
 | 0.75 | 0.00 | 95.42% | 95.35 ± 0.10% | 94.70% | +0.07 |
 | 0.75 | 0.30 | 93.44% | 93.25 ± 0.13% | 91.78% | +0.19 |
 
-> The learned mask matters most under harsher compression: at ρ=0.50/BER=0.30, learned masks outperform random by **+1.49 pp**. At ρ=0.75, the advantage is minimal (+0.19 pp), consistent with the high spatial redundancy of the 14×14 feature grid at mild compression.
+> The learned mask matters most under aggressive compression: at ρ=0.50/BER=0.30, learned masks outperform random by **+1.49 pp**. At ρ=0.75, the advantage is small (+0.19 pp) — the 14×14 grid has high spatial redundancy at mild compression.
 
 ### Cross-Channel Comparison (Matched Equivalent BER)
 
@@ -78,9 +93,9 @@ Full pipeline retraining (backbone + S2 + S3) per seed. **These are the primary 
 | 0.15 | 95.84% | 95.72% | 95.90% | 92.34% | 92.39% | 92.40% |
 | 0.30 | 93.44% | 93.46% | 93.50% | 86.95% | 86.94% | 86.94% |
 
-> Performance is **near-equivalent under matched BER**: BSC, AWGN, and Rayleigh within **±0.2 pp** at every operating point. Because all methods transmit binary representations and use BPSK hard-decision demodulation, additive noise is converted to effective bit flips.
+> BSC, AWGN, and Rayleigh produce accuracy within **±0.2 pp** at matched BER. BPSK hard-decision demodulation converts any additive noise channel to approximate BSC behavior, so channel type does not matter — only effective BER.
 
-### ρ Sweep: Bandwidth–Accuracy Pareto (BER=0.30, Seed-42)
+### ρ Sweep: Bandwidth–Accuracy Pareto (BER=0.30)
 
 | ρ | BW Save | AID | RESISC45 |
 |---|---------|-----|----------|
@@ -104,7 +119,9 @@ Full pipeline retraining (backbone + S2 + S3) per seed. **These are the primary 
 ---
 
 ## Architecture
+
 ![Architecture](https://github.com/JPL11/SpikeAdapt-SC/blob/main/paper/figures/fig1_architecture.png?raw=true)
+
 ```
 Input Image (3×224×224)
     │
@@ -159,21 +176,21 @@ SpikeAdapt-SC/
 │   └── train_aid_v5.py                  #   SNN building blocks (EncoderV5, DecoderV5, MPBN)
 │
 ├── models/                              # Model components
-│   ├── spikeadapt_sc.py                 #   SpikeAdapt-SC v5c-NA model
+│   ├── spikeadapt_sc.py                 #   SpikeAdapt-SC model definition
 │   ├── noise_aware_scorer.py            #   BER-conditioned importance scorer
 │   ├── snn_modules.py                   #   SNN building blocks (LIF, BNTT, MPBN)
 │   ├── backbone.py                      #   ResNet-50 split definitions
 │   └── energy.py                        #   SynOps energy computation
 │
 ├── eval/                                # Evaluation & figure generation
-│   ├── run_ablations_final.py           #   ρ sweep + mask comparison (Table III)
-│   ├── multichannel_eval.py             #   BSC/AWGN/Rayleigh eval (Table VI)
+│   ├── run_ablations_final.py           #   ρ sweep + mask comparison
+│   ├── multichannel_eval.py             #   BSC/AWGN/Rayleigh eval
 │   ├── cnn_baselines.py                 #   CNN-Uni/NonUni baselines
 │   ├── cnn_multichannel.py              #   CNN cross-channel eval
 │   ├── eval_mlp_baseline.py             #   MLP-FC baseline
 │   ├── eval_mlp_multichannel.py         #   MLP cross-channel eval
 │   ├── eval_jpeg_conv.py                #   JPEG+Conv baseline
-│   ├── compute_synops.py                #   SynOps/energy analysis (Table VII)
+│   ├── compute_synops.py                #   SynOps/energy analysis
 │   ├── gen_paper_figures.py             #   Figure generation
 │   ├── gen_ber_sweep_figure.py          #   BER sweep figure
 │   ├── gen_multichannel_figs.py         #   Cross-channel figures
@@ -181,9 +198,9 @@ SpikeAdapt-SC/
 │   └── seed_results/                    #   10-seed JSON outputs (per-seed + summary)
 │
 ├── paper/                               # Paper assets
-│   └── figures/                         #   Only figures referenced in paper (6 files)
+│   └── figures/                         #   Figures referenced in paper
 │
-├── archive/                             # Development history (old scripts, figures, docs)
+├── archive/                             # Development history
 │
 ├── ARTIFACT_TRAIL.md                    # Table → script → output mapping (reviewer guide)
 ├── README.md
