@@ -53,7 +53,7 @@ Recent semantic communication (SemCom) systems show that learned feature transmi
 
 The central empirical finding of this paper is that \emph{granularity matters}. Coarse spatial pooling makes many blocks interchangeable; keeping the native $14\times14$ feature grid exposes a useful 196-block decision space in which learned masking becomes effective. Our contributions are:
 \begin{enumerate}
-    \item \textbf{Energy-efficient spiking transmission.} MPBN reduces the firing rate to 0.167, yielding $37.3{\times}$ SynOps energy savings (Horowitz model~\cite{horowitz2014energy}), independent of channel conditions.
+    \item \textbf{Energy-efficient spiking transmission.} MPBN reduces the firing rate to 0.167, yielding $37{\times}$ SynOps energy savings (Horowitz model~\cite{horowitz2014energy}), independent of channel conditions.
     \item \textbf{Inherently robust binary spike encoding.} Over 10~seeds, SNN encoding degrades only $\sim$3~pp at BER$=0.30$ on AID; 8-bit baselines collapse by 28--56~pp. A matched-payload CNN-1bit achieves comparable robustness, confirming binary encoding as the primary driver; the SNN advantage is energy efficiency and lower variance.
     \item \textbf{Fine-grained spatial masking.} A BER-conditioned scorer on the native $14\times14$ grid saves 25\% bandwidth. On RESISC45, masking at $\rho{=}0.75$ improves BER$=0.30$ accuracy by $+$1.33~pp ($p{=}0.005$, 10-seed; BCa CI $[+0.72, +2.10]$); on AID, masking is bandwidth-neutral ($p{=}0.55$). Ablation confirms both BER-conditioning and diversity loss are essential.
 \end{enumerate}
@@ -135,9 +135,9 @@ The transmitted payload is $B_{\text{tx}} = \rho \cdot T \cdot C_2 \cdot H \cdot
 \toprule
 \textbf{Version} & \textbf{FR} & \textbf{SynOps (M)} & \textbf{Energy Ratio} \\
 \midrule
-V2 (IF baseline) & 0.266 & 321.1 & 23.4$\times$ \\
-\textbf{SpikeAdapt-SC} & \textbf{0.167} & \textbf{201.5} & \textbf{37.3}$\times$ \\
-SpikeAdapt-SC ($\rho{=}0.50$) & 0.167 & 140.1 & 53.5$\times$ \\
+V2 (IF baseline) & 0.266 & 2,890.2 & 23.4$\times$ \\
+\textbf{SpikeAdapt-SC} & \textbf{0.167} & \textbf{1,814.5} & \textbf{37.2}$\times$ \\
+SpikeAdapt-SC ($\rho{=}0.50$) & 0.167 & 1,423.0 & 47.4$\times$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -200,6 +200,9 @@ JPEG+Conv ($R{=}1/3$)$^{\dagger\dagger}$ & 95.16 & 2.68 & 93.55 & 1.80 & 300\% \
 \end{table*}
 
 Table~\ref{tab:main_results} shows three key outcomes. First, the spiking pipeline remains robust: SpikeAdapt-SC drops only 3~pp from clean to BER$=0.30$ on AID, while CNN-Uni collapses by 39~pp and MLP-FC by 56~pp. JPEG+Conv suffers a catastrophic cliff effect at BER$=0.05$, because even a few residual errors corrupt JPEG headers---this cliff is characteristic of separate source-channel coding and motivates joint source-channel approaches. Second, a matched-payload non-spiking 1-bit CNN (CNN-1bit) achieves comparable noise robustness on AID ($91.33{\pm}2.36$\% vs.\ $92.15{\pm}2.87$\%, $\Delta{=}0.82$~pp), confirming that binary encoding itself provides substantial protection. On RESISC45, the gap is small ($85.55{\pm}2.72$ for CNN-1bit vs.\ $86.18{\pm}4.78$ for SpikeAdapt-SC). The primary SNN advantage is thus energy efficiency (37$\times$ via SynOps) and lower variance rather than mean accuracy improvement over CNN-1bit. Third, spatial masking at $\rho{=}0.75$ saves 25\% bandwidth: on RESISC45, masking \emph{improves} BER$=0.30$ accuracy by $+$1.33~pp over full-rate ($p{=}0.005$, $n{=}10$; 95\% BCa bootstrap CI $[+0.72, +2.10]$, surviving Bonferroni correction), while on AID masking is bandwidth-neutral ($\Delta{=}+$0.26~pp, $p{=}0.55$).
+
+\textbf{Variance caveat.} At BER$=0.30$, per-seed accuracy swings are large (RESISC45 $\rho{=}0.75$: range 76--92\%, std 4.78~pp; AID $\rho{=}1.0$: range 83--95\%, std 3.69~pp). Clean accuracy is stable (std $\leq$0.55~pp), so this instability is specific to noisy operation and reflects the sensitivity of 
+learned spike representations to random training initialization under severe channel noise.
 
 \textbf{Why does binary SNN encoding survive high BER?} The primary driver of robustness is binary encoding itself: since each transmitted value is 0 or 1, a bit flip changes the value by at most 1 unit, bounding the distortion per symbol. The CNN-1bit baseline confirms this---it achieves comparable noise resilience to SpikeAdapt-SC (Table~\ref{tab:main_results}). A secondary stabilizing factor in the SNN is temporal redundancy: the encoder produces $T{=}8$ spike patterns per channel, so a bit flip at BER$=0.30$ corrupts one timestep but leaves the other 7 intact, providing a modest variance reduction compared to the single-pass CNN-1bit. In contrast, an 8-bit quantized CNN concentrates all information into a multi-bit representation where MSB corruption causes catastrophic errors.
 
@@ -310,7 +313,7 @@ To validate that both the BER-conditioning branch and the diversity loss are ess
 \renewcommand{\arraystretch}{1.12}
 \centering
 \small
-\caption{Noise-aware ablation ($\rho{=}0.75$, seed-42). Removing either component collapses BER$=0.30$ accuracy by 20--48~pp while leaving clean accuracy unchanged.}
+\caption{Noise-aware ablation ($\rho{=}0.75$, seed-42, final epoch). Without BER-conditioning or diversity loss, BER$=0.30$ accuracy is unstable across training: ablation variants oscillate between 39--91\% across epochs (see repo training logs), while the full model converges stably. Reported numbers are at epoch 40.}
 \label{tab:na_ablation}
 \setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{l cc cc cc}
@@ -329,7 +332,7 @@ SNN (no mask, $\rho{=}1.0$) & --- & --- & 95.20 & 92.40 & 92.53 & 85.31 \\
 \end{tabular}
 \end{table}
 
-Table~\ref{tab:na_ablation} confirms that both components are essential. Removing either collapses BER$=0.30$ accuracy by $\sim$20~pp on AID and $\sim$45~pp on RESISC45, while clean accuracy is \emph{unaffected} (even slightly higher). The RESISC45 effect is more dramatic because the harder 45-class task is more sensitive to mask quality under noise.
+Table~\ref{tab:na_ablation} confirms that both components are essential for \emph{stable} convergence under noise. Without either, BER$=0.30$ accuracy oscillates wildly during training (RESISC45: 39--82\% across epochs; AID: 49--91\%), while clean accuracy remains stable. The full model converges to 87.10\% (RESISC45) and 93.40\% (AID) and stays there. The instability reflects that without BER-conditioning, the scorer has never seen noise during training, so it selects blocks optimized for clean accuracy that are catastrophically misaligned under noise---and this misalignment varies unpredictably with the training trajectory.
 
 \subsection{Cross-Channel Generalization}
 

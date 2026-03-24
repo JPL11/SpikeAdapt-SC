@@ -41,37 +41,37 @@ def compute_layer_ops(fan_in, out_h, out_w, out_c, firing_rate):
 def compute_model_synops(version, firing_rate, rho=0.75):
     """Compute total SynOps for one forward pass (T timesteps)."""
     
-    # Encoder L1: Conv2d(C_in, C1, 1×1) → LIF → spike
+    # Encoder L1: Conv2d(C_in, C1, 3×3) → LIF → spike
     enc_l1_synops, enc_l1_macs = compute_layer_ops(
-        fan_in=C_in, out_h=H, out_w=W, out_c=C1, firing_rate=firing_rate
+        fan_in=C_in * 9, out_h=H, out_w=W, out_c=C1, firing_rate=firing_rate
     )
     
-    # Encoder L2: Conv2d(C1, C2, 1×1) → LIF → spike
+    # Encoder L2: Conv2d(C1, C2, 3×3) → LIF → spike
     enc_l2_synops, enc_l2_macs = compute_layer_ops(
-        fan_in=C1, out_h=H, out_w=W, out_c=C2, firing_rate=firing_rate
+        fan_in=C1 * 9, out_h=H, out_w=W, out_c=C2, firing_rate=firing_rate
     )
     
     # After masking: only ρ fraction of spatial locations transmitted
     # Channel: BSC bit flips (no computation)
     
-    # Decoder L1: Conv2d(C2, C_dec1, 1×1)
+    # Decoder L1: Conv2d(C2, C_dec1, 3×3)
     dec_l1_synops, dec_l1_macs = compute_layer_ops(
-        fan_in=C2, out_h=H, out_w=W, out_c=C_dec1, firing_rate=firing_rate * rho
+        fan_in=C2 * 9, out_h=H, out_w=W, out_c=C_dec1, firing_rate=firing_rate * rho
     )
     
-    # Decoder L2: Conv2d(C_dec1, C_dec2, 1×1) → LIF → spike
+    # Decoder L2: Conv2d(C_dec1, C_dec2, 3×3) → LIF → spike
     dec_l2_synops, dec_l2_macs = compute_layer_ops(
-        fan_in=C_dec1, out_h=H, out_w=W, out_c=C_dec2, firing_rate=firing_rate * rho
+        fan_in=C_dec1 * 9, out_h=H, out_w=W, out_c=C_dec2, firing_rate=firing_rate * rho
     )
     
-    # Decoder L3: Conv2d(C_dec2, C_dec3, 1×1)
+    # Decoder L3: Conv2d(C_dec2, C_dec3, 3×3)
     dec_l3_synops, dec_l3_macs = compute_layer_ops(
-        fan_in=C_dec2, out_h=H, out_w=W, out_c=C_dec3, firing_rate=firing_rate * rho
+        fan_in=C_dec2 * 9, out_h=H, out_w=W, out_c=C_dec3, firing_rate=firing_rate * rho
     )
     
-    # Scorer: Conv2d(C2, 32, 1×1) + Conv2d(32, 1, 1×1) — runs once (averaged over T)
+    # Scorer: Conv2d(C2, 32, 3×3) + Conv2d(32, 1, 1×1) — runs once (averaged over T)
     scorer_synops, scorer_macs = compute_layer_ops(
-        fan_in=C2, out_h=H, out_w=W, out_c=32, firing_rate=firing_rate
+        fan_in=C2 * 9, out_h=H, out_w=W, out_c=32, firing_rate=firing_rate
     )
     scorer_synops2, scorer_macs2 = compute_layer_ops(
         fan_in=32, out_h=H, out_w=W, out_c=1, firing_rate=0.5  # ReLU output
