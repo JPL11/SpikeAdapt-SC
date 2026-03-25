@@ -170,7 +170,7 @@ S3 & Scorer + diversity & 40 & 1e-5 & Scorer+Enc+Dec \\
 
 Each training batch samples BER uniformly, with 50\% probability biased toward the high-noise range $[0.15, 0.40]$, ensuring the model encounters severe channel conditions frequently. For 10-seed reproducibility, all three stages are retrained per seed.
 
-We compare against: SNN no-mask ($\rho{=}1.0$, same backbone), CNN-1bit (STE binarization, $T{=}1$), CNN-Uni (8-bit uniform quantization), CNN-NonUni (8-bit non-uniform), MLP-FC (8-bit fully connected), and JPEG+Conv (JPEG with $R{=}1/3$ repetition code). All baselines share the same ResNet-50 backbone and training data splits.
+We compare against: SNN no-mask ($\rho{=}1.0$, same backbone), CNN-1bit (STE binarization, $T{=}1$), JSCC (continuous-valued encoder, AWGN-trained), CNN-Uni (8-bit uniform quantization), CNN-NonUni (8-bit non-uniform), MLP-FC (8-bit fully connected), and JPEG+Conv (JPEG with $R{=}1/3$ repetition code). All baselines share the same ResNet-50 backbone and training data splits.
 
 \subsection{Main Results}
 
@@ -189,6 +189,7 @@ We compare against: SNN no-mask ($\rho{=}1.0$, same backbone), CNN-1bit (STE bin
 SpikeAdapt-SC ($\rho{=}0.625$) & 94.12{\scriptsize$\pm$1.14} & 90.70{\scriptsize$\pm$3.26} & 91.87{\scriptsize$\pm$0.70} & 86.07{\scriptsize$\pm$4.64} & 62.5\% \\
 SNN (no mask, $\rho{=}1.0$) & \textbf{95.49}{\scriptsize$\pm$0.31} & \textbf{91.89}{\scriptsize$\pm$3.69} & \textbf{92.59}{\scriptsize$\pm$0.16} & 84.85{\scriptsize$\pm$5.58} & 100\% \\
 CNN-1bit (STE, $T{=}1$) & 95.41{\scriptsize$\pm$0.33} & 90.86{\scriptsize$\pm$1.75} & 91.37{\scriptsize$\pm$0.44} & 85.77{\scriptsize$\pm$2.00} & 100\% \\
+JSCC (continuous) & 96.05{\scriptsize$\pm$0.34} & 22.98{\scriptsize$\pm$6.16} & 92.90{\scriptsize$\pm$0.50} & 12.43{\scriptsize$\pm$3.49} & 100\% \\
 \midrule
 CNN-Uni (8-bit)$^\dagger$ & 91.78 & 52.80 & 78.32 & 49.32 & 100\% \\
 CNN-NonUni (8-bit)$^\dagger$ & 91.74 & 63.58 & 78.32 & 50.77 & 100\% \\
@@ -199,7 +200,7 @@ JPEG+Conv ($R{=}1/3$)$^{\dagger\dagger}$ & 95.16 & 2.68 & 93.55 & 1.80 & 300\% \
 \end{tabular}
 \end{table*}
 
-Table~\ref{tab:main_results} shows three key outcomes. First, the spiking pipeline remains robust: SpikeAdapt-SC drops only 3~pp from clean to BER$=0.30$ on AID, while CNN-Uni collapses by 39~pp and MLP-FC by 56~pp. JPEG+Conv suffers a catastrophic cliff effect at BER$=0.05$, because even a few residual errors corrupt JPEG headers---this cliff is characteristic of separate source-channel coding and motivates joint source-channel approaches. Second, a matched-payload non-spiking 1-bit CNN (CNN-1bit, 10 seeds) achieves comparable noise robustness on AID ($90.86{\pm}1.75$\% vs.\ $92.15{\pm}2.87$\%, $\Delta{=}1.29$~pp), confirming that binary encoding itself provides substantial protection. On RESISC45, the gap is small ($85.77{\pm}2.00$ for CNN-1bit vs.\ $86.18{\pm}4.78$ for SpikeAdapt-SC, $\Delta{=}0.41$~pp). The primary SNN advantage is thus energy efficiency (37$\times$ via SynOps) and lower variance rather than mean accuracy improvement over CNN-1bit. Third, spatial masking at $\rho{=}0.75$ saves 25\% bandwidth: on RESISC45, masking \emph{improves} BER$=0.30$ accuracy by $+$1.33~pp over full-rate ($p{=}0.005$, $n{=}10$; 95\% BCa bootstrap CI $[+0.72, +2.10]$, surviving Bonferroni correction), while on AID masking is bandwidth-neutral ($\Delta{=}+$0.26~pp, $p{=}0.55$).
+Table~\ref{tab:main_results} shows four key outcomes. First, the spiking pipeline remains robust: SpikeAdapt-SC drops only 3~pp from clean to BER$=0.30$ on AID, while CNN-Uni collapses by 39~pp and MLP-FC by 56~pp. JPEG+Conv suffers a catastrophic cliff effect at BER$=0.05$, because even a few residual errors corrupt JPEG headers---this cliff is characteristic of separate source-channel coding and motivates joint source-channel approaches. Second, a matched-payload non-spiking 1-bit CNN (CNN-1bit, 10 seeds) achieves comparable noise robustness on AID ($90.86{\pm}1.75$\% vs.\ $92.15{\pm}2.87$\%, $\Delta{=}1.29$~pp), confirming that binary encoding itself provides substantial protection. On RESISC45, the gap is small ($85.77{\pm}2.00$ for CNN-1bit vs.\ $86.18{\pm}4.78$ for SpikeAdapt-SC, $\Delta{=}0.41$~pp). Third, a continuous-valued JSCC baseline (inspired by DHF-JSCC~\cite{dhf_jscc}, 10 seeds) achieves the highest clean accuracy ($96.05$\%), but \emph{collapses} to $22.98$\% on AID and $12.43$\% on RESISC45 at BSC BER$=0.30$---continuous symbols are catastrophically vulnerable to bit flips. This highlights that binary encoding is essential for BSC robustness. Fourth, spatial masking at $\rho{=}0.75$ saves 25\% bandwidth: on RESISC45, masking \emph{improves} BER$=0.30$ accuracy by $+$1.33~pp over full-rate ($p{=}0.005$, $n{=}10$; 95\% BCa bootstrap CI $[+0.72, +2.10]$, surviving Bonferroni correction), while on AID masking is bandwidth-neutral ($\Delta{=}+$0.26~pp, $p{=}0.55$).
 
 \textbf{Variance caveat.} At BER$=0.30$, per-seed accuracy swings are large (RESISC45 $\rho{=}0.75$: range 76--92\%, std 4.78~pp; AID $\rho{=}1.0$: range 83--95\%, std 3.69~pp). Clean accuracy is stable (std $\leq$0.55~pp), so this instability is specific to noisy operation and reflects the sensitivity of 
 learned spike representations to random training initialization under severe channel noise.
@@ -448,6 +449,9 @@ G.~Ghiasi, T.~Y.~Lin, and Q.~V.~Le, ``DropBlock: A regularization method for con
 
 \bibitem{davies2018loihi}
 M.~Davies \emph{et al.}, ``Loihi: A neuromorphic manycore processor with on-chip learning,'' \emph{IEEE Micro}, vol.~38, no.~1, pp.~82--99, 2018.
+
+\bibitem{dhf_jscc}
+T.~Li, Q.~Yang, and Z.~Chen, ``DHF-JSCC: Deep hybrid feature joint source-channel coding,'' in \emph{Proc. IEEE WCNC}, 2024.
 
 \end{thebibliography}
 
