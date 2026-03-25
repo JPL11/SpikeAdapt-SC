@@ -376,7 +376,30 @@ Although trained exclusively on BSC, SpikeAdapt-SC's binary encoding produces ne
     \label{fig:multichannel}
 \end{figure}
 
-Table~\ref{tab:multichannel} and Fig.~\ref{fig:multichannel} confirm that at matched BER, BSC/AWGN/Rayleigh produce accuracy within $\pm$1~pp for \emph{all} methods. This is expected: BPSK hard-decision demodulation converts any additive noise into effective bit flips, reducing all channels to approximate BSC behavior. We also evaluate under a Binary Erasure Channel (BEC), where bits are erased to zero with probability $p$. Because the SNN encoder has a low firing rate (0.167), $\sim$83\% of transmitted bits are already zero; erasing ones to zero at BER$=0.30$ affects only $\sim$5\% of total bits, yielding near-zero degradation: 95.54\% on AID ($\Delta{=}{+}0.12$~pp vs.\  clean) and 92.43\% on RESISC45 ($\Delta{=}{-}0.18$~pp). This $+$7.5~pp BEC advantage over BSC on RESISC45 is a direct consequence of the spike representation's asymmetric bit distribution.
+Table~\ref{tab:multichannel} and Fig.~\ref{fig:multichannel} confirm that at matched BER, BSC/AWGN/Rayleigh produce accuracy within $\pm$1~pp for \emph{all} methods. This is expected: BPSK hard-decision demodulation converts any additive noise into effective bit flips, reducing all channels to approximate BSC behavior.
+
+\textbf{BEC immunity.} Under a Binary Erasure Channel (BEC, erasure to zero at rate $p$), the SNN's sparse firing rate (0.167) provides a unique advantage: $\sim$83\% of transmitted bits are already zero, so erasures are mostly harmless. Table~\ref{tab:bec} compares three encoding regimes at ER$=0.30$.
+
+\begin{table}[t]
+\renewcommand{\arraystretch}{1.12}
+\centering
+\small
+\caption{BEC comparison at ER$=0.30$ (seed-42). SNN with 83\% zeros is immune; CNN-1bit and JSCC degrade. $\Delta$: drop from clean.}
+\label{tab:bec}
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{l c cc cc}
+\toprule
+& & \multicolumn{2}{c}{\textbf{AID}} & \multicolumn{2}{c}{\textbf{RESISC45}} \\
+\textbf{Method} & \textbf{Zero\%} & Clean & BEC & Clean & BEC \\
+\midrule
+\textbf{SpikeAdapt-SC} & 83\% & 95.42 & \textbf{95.48} & 92.61 & \textbf{92.43} \\
+JSCC (continuous) & $\sim$8\% & 95.86 & 94.18 & 92.42 & 88.46 \\
+CNN-1bit (STE) & 50\% & 95.32 & 92.74 & 91.48 & 87.58 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+SpikeAdapt-SC degrades by only 0.18~pp on RESISC45, while CNN-1bit loses 3.90~pp and JSCC loses 3.96~pp. The ordering at ER$=0.30$ (SNN~$\gg$~JSCC~$>$~CNN-1bit) differs from BSC where SNN and CNN-1bit were comparable ($\Delta{=}0.41$~pp), confirming that BEC immunity is specific to the SNN's asymmetric bit distribution, not binary encoding generally. This is a distinct advantage over CNN-1bit that does not appear on symmetric channels.
 
 \subsection{Latency}
 
@@ -387,7 +410,7 @@ On a single GPU (RTX 3090), the SNN encoder adds 0.73~ms per image over a single
 \label{sec:conclusion}
 %=====================================================================
 
-We presented SpikeAdapt-SC, a spiking semantic communication framework for aerial scene classification. Three findings emerge: (i)~MPBN reduces the encoder firing rate to 0.167, yielding $37{\times}$ estimated energy savings via SynOps---an architectural advantage independent of channel conditions. (ii)~Binary spike encoding provides near-equivalent robustness across channel types: at matched BER, BSC/AWGN/Rayleigh produce accuracy within $\pm$1~pp. Five baselines confirm the robustness of binary encoding: CNN-Uni (8-bit) collapses by 39~pp, MLP-FC by 56~pp, and JPEG+Conv exhibits a cliff at BER$=0.05$. A matched-payload CNN-1bit (10 seeds) achieves comparable noise resilience to SpikeAdapt-SC (AID: $\Delta{=}1.29$~pp; R45: $\Delta{=}0.41$~pp), confirming that binary encoding---not temporal coding alone---is the primary driver of robustness. The SNN advantage lies in lower variance and 37$\times$ energy efficiency. (iii)~Fine-grained spatial masking on a native $14{\times}14$ grid saves 25\% bandwidth and can improve accuracy under noise---on RESISC45, masking at $\rho{=}0.75$ improves BER$=0.30$ accuracy by $+$1.33~pp ($p{=}0.005$, 10-seed paired $t$-test; 95\% bootstrap CI~$[+0.72, +2.10]$, surviving Bonferroni correction), while on AID masking is bandwidth-neutral. Future work includes HARQ-style retransmission, temporal early exit, and neuromorphic hardware validation on Intel Loihi~\cite{davies2018loihi}.
+We presented SpikeAdapt-SC, a spiking semantic communication framework for aerial scene classification. Four findings emerge: (i)~MPBN reduces the encoder firing rate to 0.167, yielding $37{\times}$ estimated energy savings via SynOps---an architectural advantage independent of channel conditions. (ii)~Binary spike encoding provides near-equivalent robustness across BSC/AWGN/Rayleigh at matched BER ($\pm$1~pp). A matched-payload CNN-1bit (10 seeds) achieves comparable noise resilience on BSC (AID: $\Delta{=}1.29$~pp; R45: $\Delta{=}0.41$~pp), while a continuous JSCC baseline collapses to 23\%/12\% at BER$=0.30$---confirming that binary encoding is essential for BSC robustness. (iii)~Under BEC, the SNN's sparse spikes provide unique immunity ($\leq$0.18~pp drop at ER$=0.30$), while CNN-1bit loses 3.9~pp and JSCC loses 4.0~pp---a clear advantage of spike sparsity over dense binary encoding. (iv)~Fine-grained spatial masking on a native $14{\times}14$ grid saves 25\% bandwidth and can improve accuracy under noise---on RESISC45, masking at $\rho{=}0.75$ improves BER$=0.30$ accuracy by $+$1.33~pp ($p{=}0.005$, 10-seed paired $t$-test; 95\% bootstrap CI~$[+0.72, +2.10]$). Future work includes HARQ-style retransmission, temporal early exit, and neuromorphic hardware deployment.
 
 %=====================================================================
 % REFERENCES
