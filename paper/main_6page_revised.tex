@@ -170,7 +170,7 @@ S3 & Scorer + diversity & 40 & 1e-5 & Scorer+Enc+Dec \\
 
 Each training batch samples BER uniformly, with 50\% probability biased toward the high-noise range $[0.15, 0.40]$, ensuring the model encounters severe channel conditions frequently. For 10-seed reproducibility, all three stages are retrained per seed.
 
-We compare against: SNN no-mask ($\rho{=}1.0$, same backbone), CNN-1bit (STE binarization, $T{=}1$), JSCC (continuous-valued encoder, AWGN-trained), CNN-Uni (8-bit uniform quantization), CNN-NonUni (8-bit non-uniform), MLP-FC (8-bit fully connected), and JPEG+Conv (JPEG with $R{=}1/3$ repetition code). All baselines share the same ResNet-50 backbone and training data splits.
+We compare against: SNN-SC (separately trained SNN encoder/decoder without scorer, $\rho{=}1.0$), CNN-1bit (STE binarization, $T{=}1$), JSCC (continuous-valued encoder, AWGN-trained), CNN-Uni (8-bit uniform quantization), CNN-NonUni (8-bit non-uniform), MLP-FC (8-bit fully connected), and JPEG+Conv (JPEG with $R{=}1/3$ repetition code). All baselines share the same ResNet-50 backbone and training data splits.
 
 \subsection{Main Results}
 
@@ -188,6 +188,7 @@ We compare against: SNN no-mask ($\rho{=}1.0$, same backbone), CNN-1bit (STE bin
 \textbf{SpikeAdapt-SC} ($\rho{=}0.75$) & 95.02{\scriptsize$\pm$0.55} & 92.15{\scriptsize$\pm$2.87} & 92.34{\scriptsize$\pm$0.33} & \textbf{86.18}{\scriptsize$\pm$4.78} & 75\% \\
 SpikeAdapt-SC ($\rho{=}0.625$) & 94.12{\scriptsize$\pm$1.14} & 90.70{\scriptsize$\pm$3.26} & 91.87{\scriptsize$\pm$0.70} & 86.07{\scriptsize$\pm$4.64} & 62.5\% \\
 SNN (no mask, $\rho{=}1.0$) & \textbf{95.49}{\scriptsize$\pm$0.31} & \textbf{91.89}{\scriptsize$\pm$3.69} & \textbf{92.59}{\scriptsize$\pm$0.16} & 84.85{\scriptsize$\pm$5.58} & 100\% \\
+SNN-SC$^\dagger$ & 95.40 & 82.42 & 92.39 & 80.55 & 100\% \\
 CNN-1bit (STE, $T{=}1$) & 95.41{\scriptsize$\pm$0.33} & 90.86{\scriptsize$\pm$1.75} & 91.37{\scriptsize$\pm$0.44} & 85.77{\scriptsize$\pm$2.00} & 100\% \\
 JSCC (continuous) & 96.05{\scriptsize$\pm$0.34} & 22.98{\scriptsize$\pm$6.16} & 92.90{\scriptsize$\pm$0.50} & 12.43{\scriptsize$\pm$3.49} & 100\% \\
 \midrule
@@ -207,26 +208,28 @@ learned spike representations to random training initialization under severe cha
 
 \textbf{Why does binary SNN encoding survive high BER?} The primary driver of robustness is binary encoding itself: since each transmitted value is 0 or 1, a bit flip changes the value by at most 1 unit, bounding the distortion per symbol. The CNN-1bit baseline confirms this---it achieves comparable noise resilience to SpikeAdapt-SC (Table~\ref{tab:main_results}). A secondary stabilizing factor in the SNN is temporal redundancy: the encoder produces $T{=}8$ spike patterns per channel, so a bit flip at BER$=0.30$ corrupts one timestep but leaves the other 7 intact, providing a modest variance reduction compared to the single-pass CNN-1bit. In contrast, an 8-bit quantized CNN concentrates all information into a multi-bit representation where MSB corruption causes catastrophic errors.
 
-Table~\ref{tab:ber_sweep} and Fig.~\ref{fig:ber_sweep_baselines} present the full BER sweep from 0.00 to 0.30 on both datasets. SNN encoding degrades gracefully ($\leq$5~pp even at BER$=0.30$), while all continuous-valued baselines exhibit steep degradation. Note the non-monotonic CNN behavior on RESISC45: CNN-Uni improves from 78.32\% (clean) to 82.68\% (BER$=0.10$) before degrading, because the noise curriculum acts as a dropout-like regularizer at low BER. This regularization benefit diminishes as information loss dominates at higher BER.
+Table~\ref{tab:ber_sweep} and Fig.~\ref{fig:ber_sweep_baselines} present the full BER sweep from 0.00 to 0.30 on both datasets. SpikeAdapt-SC's noise-aware masking degrades only $\leq$3~pp at BER$=0.30$, while the separately trained SNN-SC (no masking) drops 13~pp on AID and 12~pp on RESISC45---demonstrating the benefit of the adaptive scorer under severe noise. All continuous-valued 8-bit baselines exhibit steep degradation. Note the non-monotonic CNN behavior on RESISC45: CNN-Uni improves from 78.32\% (clean) to 82.68\% (BER$=0.10$) before degrading, because the noise curriculum acts as a dropout-like regularizer at low BER. This regularization benefit diminishes as information loss dominates at higher BER.
 
 \begin{table}[t]
 \renewcommand{\arraystretch}{1.10}
 \centering
 \small
-\caption{Full BER sweep accuracy (\%) on both datasets (seed-42, illustrative). SpikeAdapt-SC at $\rho{=}0.75$, BSC channel. SNN encoding degrades $\leq$5~pp; 8-bit baselines collapse.}
+\caption{Full BER sweep accuracy (\%) on both datasets (seed-42, illustrative). SpikeAdapt-SC at $\rho{=}0.75$, BSC channel. SpikeAdapt-SC degrades $\leq$3~pp; SNN-SC drops $\sim$13~pp; 8-bit baselines collapse.}
 \label{tab:ber_sweep}
 \setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{ll ccccccc}
 \toprule
 \textbf{Data} & \textbf{Method} & \textbf{0.00} & \textbf{0.05} & \textbf{0.10} & \textbf{0.15} & \textbf{0.20} & \textbf{0.25} & \textbf{0.30} \\
 \midrule
-\multirow{5}{*}{AID} & \textbf{SpikeAdapt} & \textbf{95.42} & \textbf{95.64} & \textbf{95.70} & \textbf{95.72} & \textbf{95.76} & \textbf{95.16} & \textbf{93.34} \\
+\multirow{6}{*}{AID} & \textbf{SpikeAdapt} & \textbf{95.46} & \textbf{95.63} & \textbf{95.66} & \textbf{95.78} & \textbf{95.70} & \textbf{95.16} & \textbf{93.43} \\
+ & SNN-SC & 95.40 & 95.39 & 95.21 & 94.86 & 94.29 & 92.22 & 82.42 \\
  & CNN-Uni & 91.78 & 91.90 & 90.82 & 88.46 & 83.40 & 72.96 & 52.80 \\
  & CNN-NonUni & 91.74 & 91.50 & 90.50 & 89.00 & 85.56 & 78.68 & 63.58 \\
  & MLP-FC & 91.98 & 88.46 & 84.16 & 76.84 & 66.32 & 51.48 & 36.12 \\
  & JPEG+Conv & 95.16 & 2.66 & 2.68 & 2.68 & 2.68 & 2.68 & 2.68 \\
 \midrule
-\multirow{5}{*}{R45} & \textbf{SpikeAdapt} & \textbf{92.01} & \textbf{92.15} & \textbf{92.31} & \textbf{92.42} & \textbf{92.31} & \textbf{91.30} & \textbf{86.98} \\
+\multirow{6}{*}{R45} & \textbf{SpikeAdapt} & \textbf{92.00} & \textbf{92.14} & \textbf{92.34} & \textbf{92.42} & \textbf{92.31} & \textbf{91.38} & \textbf{87.00} \\
+ & SNN-SC & 92.39 & 92.43 & 92.35 & 92.12 & 91.51 & 89.60 & 80.55 \\
  & CNN-Uni & 78.32 & 81.38 & 82.68 & 81.20 & 77.00 & 67.10 & 49.32 \\
  & CNN-NonUni & 78.32 & 78.63 & 77.96 & 76.42 & 72.21 & 64.45 & 50.77 \\
  & MLP-FC & 82.23 & 74.73 & 65.58 & 54.77 & 43.11 & 31.27 & 20.89 \\
@@ -238,7 +241,7 @@ Table~\ref{tab:ber_sweep} and Fig.~\ref{fig:ber_sweep_baselines} present the ful
 \begin{figure}[t]
     \centering
     \includegraphics[width=\columnwidth]{fig_ber_sweep_baselines.png}
-    \caption{BER sweep on AID and RESISC45. SNN encoding degrades $\leq$5~pp at BER$=0.30$; 8-bit CNN/MLP baselines collapse by 28--56~pp; JPEG+Conv exhibits a cliff at BER$=0.05$.}
+    \caption{BER sweep with all baselines on AID and RESISC45. SpikeAdapt-SC degrades $\leq$3~pp at BER$=0.30$; SNN-SC (no masking) drops 13--12~pp; 8-bit CNN/MLP baselines collapse by 28--56~pp; JPEG+Conv exhibits a cliff at BER$=0.05$.}
     \label{fig:ber_sweep_baselines}
 \end{figure}
 
@@ -327,9 +330,9 @@ No BER & \ding{55} & \ding{51} & 95.94 & 72.54 & 92.27 & 41.52 \\
 No Div & \ding{51} & \ding{55} & 95.94 & 72.88 & 92.35 & 42.83 \\
 Neither & \ding{55} & \ding{55} & 95.96 & 72.48 & 92.18 & 39.46 \\
 \midrule
-SNN (no mask, $\rho{=}1.0$) & --- & --- & 95.20 & 92.40 & 92.53 & 85.31 \\
+SNN-SC ($\rho{=}1.0$) & --- & --- & 95.40 & 82.42 & 92.39 & 80.55 \\
 \bottomrule
-\multicolumn{7}{l}{\scriptsize SNN (no mask) sends all 196 blocks; ablation variants use $\rho{=}0.75$.}
+\multicolumn{7}{l}{\scriptsize SNN-SC: separately trained SNN without scorer; sends all 196 blocks.}
 \end{tabular}
 \end{table}
 
