@@ -168,7 +168,7 @@ for ax, ds_name, split in [(ax1, 'AID', '50/50'), (ax2, 'RESISC45', '20/80')]:
     panel = chr(97 + [ax1, ax2].index(ax))
     ax.set_xlabel('Bit Error Rate (BER)')
     ax.set_ylabel('Accuracy (%)')
-    ax.set_title(f'({panel}) {ds_name} ({split}) — Zoomed', fontweight='bold')
+    ax.set_title(f'({panel}) {ds_name} ({split})', fontweight='bold')
     ax.set_xlim(-0.01, 0.31)
     ax.set_ylim(75, 97)
     ax.grid(True, alpha=0.25)
