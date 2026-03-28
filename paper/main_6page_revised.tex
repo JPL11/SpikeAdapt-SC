@@ -343,7 +343,7 @@ Although trained exclusively on BSC, SpikeAdapt-SC's binary encoding produces ne
 \renewcommand{\arraystretch}{1.12}
 \centering
 \small
-\caption{Cross-channel results at matched BER (seed-42, illustrative). All methods show near-equivalent accuracy ($\pm$1~pp): BPSK hard-decision demodulation reduces any channel to approximate BSC behavior.}
+\caption{Cross-channel results at matched BER (seed-42, illustrative). All methods show near-equivalent accuracy ($\pm$1~pp): BPSK hard-decision demodulation reduces any channel to approximate BSC behavior~\cite{proakis2008digital}.}
 \label{tab:multichannel}
 \setlength{\tabcolsep}{2.5pt}
 \begin{tabular}{cl ccc ccc}
@@ -371,12 +371,12 @@ Although trained exclusively on BSC, SpikeAdapt-SC's binary encoding produces ne
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{fig7_unified_ber.pdf}
-    \caption{Accuracy vs.\ equivalent BER under BSC (solid), AWGN (dashed), and Rayleigh (dot-dash). All methods show channel convergence within $\pm$1~pp. Binary encoding (SNN and CNN-1bit) retains accuracy at high BER; 8-bit baselines collapse.}
+    \includegraphics[width=\columnwidth]{fig7_unified_ber_zoomed.pdf}
+    \caption{Accuracy vs.\ equivalent BER under BSC (solid), AWGN (dashed), and Rayleigh (dotted). Curves nearly overlap because BPSK hard-decision decoding reduces all channels to equivalent BSC at matched BER~\cite{proakis2008digital}. Maximum accuracy deviation across channels is $< 0.2$~pp for SpikeAdapt-SC.}
     \label{fig:multichannel}
 \end{figure}
 
-Table~\ref{tab:multichannel} and Fig.~\ref{fig:multichannel} confirm that at matched BER, BSC/AWGN/Rayleigh produce accuracy within $\pm$1~pp for \emph{all} methods. This is expected: BPSK hard-decision demodulation converts any additive noise into effective bit flips, reducing all channels to approximate BSC behavior.
+Table~\ref{tab:multichannel} and Fig.~\ref{fig:multichannel} confirm that at matched BER, BSC/AWGN/Rayleigh produce accuracy within $\pm$1~pp for \emph{all} methods. This near-equivalence is a well-established result in digital communications: for uncoded binary signaling with hard-decision decoding, the BSC is the equivalent channel model for any additive-noise channel at the same bit error probability~\cite{proakis2008digital}. Since SNN spikes are inherently binary ($\{0,1\}$) and the receiver applies hard-decision thresholding, the effective error pattern depends \emph{only} on the aggregate BER, not the physical noise mechanism. The maximum accuracy deviation across all three channels is $< 0.2$~pp for SpikeAdapt-SC, confirming that spike-based semantic communication is inherently \emph{channel-agnostic}---a practical advantage, as the system need only be trained on BSC to generalize to any digital channel.
 
 \textbf{BEC immunity.} Under a Binary Erasure Channel (BEC, erasure to zero at rate $p$), the SNN's sparse firing rate (0.167) provides a unique advantage: $\sim$83\% of transmitted bits are already zero, so erasures are mostly harmless. Table~\ref{tab:bec} compares three encoding regimes at ER$=0.30$.
 
@@ -475,6 +475,9 @@ M.~Davies \emph{et al.}, ``Loihi: A neuromorphic manycore processor with on-chip
 
 \bibitem{dhf_jscc}
 T.~Li, Q.~Yang, and Z.~Chen, ``DHF-JSCC: Deep hybrid feature joint source-channel coding,'' in \emph{Proc. IEEE WCNC}, 2024.
+
+\bibitem{proakis2008digital}
+J.~G.~Proakis and M.~Salehi, \emph{Digital Communications}, 5th~ed. New York, NY: McGraw-Hill, 2008.
 
 \end{thebibliography}
 
