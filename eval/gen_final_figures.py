@@ -145,7 +145,7 @@ for ax, ds, title in [(axes[0], 'aid', 'AID'), (axes[1], 'resisc45', 'RESISC45')
                        arrowprops=dict(arrowstyle='->', color='#666', lw=0.8),
                        bbox=dict(boxstyle='round,pad=0.15', fc='white', ec='#ccc', alpha=0.8))
     ax.set_xlabel('Equivalent BER')
-    ax.set_title(f'{title} (Detail)', fontweight='bold')
+    ax.set_title(title, fontweight='bold')
     ax.grid(True, alpha=0.3)
     ax.legend(loc='upper right' if ds == 'resisc45' else 'lower left', fontsize=7, framealpha=0.9)
     if ds == 'aid':
