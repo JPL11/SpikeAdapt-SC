@@ -10,7 +10,7 @@
 > 1. **37× energy savings** — MPBN reduces the encoder firing rate to 0.167, yielding 37.3× estimated SynOps energy savings (Horowitz model).
 > 2. **Binary spike robustness** — At BER=0.30, SpikeAdapt-SC degrades only ~3 pp while a separately trained SNN-SC (no masking) drops ~13 pp and 8-bit CNN baselines collapse by 28–56 pp. A matched-payload CNN-1bit (10 seeds) confirms binary encoding is the primary robustness driver (AID gap: 1.29 pp); the SNN advantage is noise-aware masking, lower variance, and energy efficiency.
 > 3. **Learned spatial masking** — A BER-conditioned scorer on the native 14×14 grid (196 blocks) saves 25% bandwidth. On RESISC45, masking at ρ=0.75 *improves* BER=0.30 accuracy by **+1.33 pp** over full-rate (p=0.005, 10-seed paired t-test; 95% BCa bootstrap CI [+0.72, +2.10], survives Bonferroni correction). On AID, masking is bandwidth-neutral (Δ=+0.26 pp, p=0.55).
-> 4. **Channel-agnostic** — Trained only on BSC, SpikeAdapt-SC generalizes to AWGN and Rayleigh channels at matched BER (max Δ < 0.2 pp). This is a well-known theoretical result: for uncoded binary signaling with hard-decision decoding, the BSC is the equivalent channel model for any additive-noise channel at the same bit error probability (Proakis, 2008).
+> 4. **Near-equivalent under matched BER** — Trained only on BSC, SpikeAdapt-SC produces near-equivalent results on AWGN and Rayleigh channels at matched BER (max Δ < 0.2 pp). This follows from binary signaling with hard-decision decoding: the BSC is the equivalent channel model for any additive-noise channel at the same bit error probability (Proakis, 2008).
 >
 > Over **10 seeds** with full pipeline retraining, SpikeAdapt-SC achieves **95.02 ± 0.55%** (AID) and **92.34 ± 0.33%** (RESISC45) clean accuracy at ρ=0.75.
 
@@ -154,6 +154,22 @@ SpikeAdapt-SC trained only on BSC generalizes across all channel types at matche
 
 ---
 
+### Baseline Taxonomy
+
+| Label | What it is | Training |
+|---|---|---|
+| **SpikeAdapt-SC** | Full proposed system (encoder + scorer + decoder) | 3-stage: backbone → SNN → joint w/ scorer |
+| **SNN (no mask, ρ=1.0)** | SpikeAdapt-SC with scorer disabled; all 196 blocks sent | Same model as SpikeAdapt-SC, evaluated at ρ=1.0 |
+| **SNN-SC†** | Separately trained SNN encoder/decoder; **no scorer** | 2-stage only: backbone → SNN (no S3) |
+| **CNN-1bit** | Non-spiking 1-bit CNN (STE sign binarization, T=1) | Same backbone, sign-based binary encoder |
+| **CNN-Uni / NonUni** | 8-bit uniform/non-uniform quantized CNN | Same backbone, quantized features |
+| **MLP-FC** | 8-bit fully connected baseline | Same backbone, flattened features |
+| **JPEG+Conv** | Traditional separate source-channel coding | JPEG Q=50 + repetition code R=1/3 |
+
+> **Key distinction**: "SNN (no mask)" and "SNN-SC†" are **not** the same baseline. SNN (no mask) uses the SpikeAdapt-SC checkpoint with the scorer effectively disabled (ρ=1.0, all blocks pass). SNN-SC† is a **separate model** trained without any scorer component, reproducing the prior SNN-SC architecture. The 10-seed headline results use SNN (no mask) from the same checkpoints as SpikeAdapt-SC; SNN-SC† is a separate seed-42 reference.
+
+---
+
 ## Architecture
 
 ![Architecture](https://github.com/JPL11/SpikeAdapt-SC/blob/main/paper/figures/fig1_architecture.png?raw=true)
@@ -207,7 +223,9 @@ SpikeAdapt-SC/
 │   ├── run_final_pipeline.py            #   Master pipeline (AID + RESISC45)
 │   ├── multi_seed_pipeline.py           #   10-seed reproducibility pipeline
 │   ├── train_noise_aware_ablation.py    #   Noise-aware ablation training
-│   ├── train_1bit_baseline.py           #   CNN-1bit baseline
+│   ├── train_1bit_baseline.py           #   CNN-1bit baseline (single seed)
+│   ├── train_cnn1bit_10seed.py          #   CNN-1bit 10-seed pipeline
+│   ├── train_jscc_baseline.py           #   JSCC continuous baseline
 │   ├── train_aid_v2.py                  #   Core classes (ResNet50Front/Back, BSC_Channel)
 │   └── train_aid_v5.py                  #   SNN building blocks (EncoderV5, DecoderV5, MPBN)
 │
@@ -222,21 +240,19 @@ SpikeAdapt-SC/
 │   ├── run_ablations_final.py           #   ρ sweep + mask comparison
 │   ├── multichannel_eval.py             #   BSC/AWGN/Rayleigh eval
 │   ├── cnn_baselines.py                 #   CNN-Uni/NonUni baselines
-│   ├── cnn_multichannel.py              #   CNN cross-channel eval
 │   ├── eval_mlp_baseline.py             #   MLP-FC baseline
-│   ├── eval_mlp_multichannel.py         #   MLP cross-channel eval
 │   ├── eval_jpeg_conv.py                #   JPEG+Conv baseline
 │   ├── compute_synops.py                #   SynOps/energy analysis
-│   ├── gen_paper_figures.py             #   Figure generation
-│   ├── gen_ber_sweep_figure.py          #   BER sweep figure
-│   ├── gen_multichannel_figs.py         #   Cross-channel figures
+│   ├── gen_rho_sweep_enhanced.py        #   ρ sweep Pareto figure
+│   ├── gen_final_figures.py             #   Channel comparison figures
 │   ├── block_importance_analysis.py     #   Block score analysis
 │   └── seed_results/                    #   10-seed JSON outputs (per-seed + summary)
 │
 ├── paper/                               # Paper assets
 │   └── figures/                         #   Figures referenced in paper
 │
-├── archive/                             # Development history
+├── archive/                             # Development history & exploratory work
+│   └── detection/                       #   DOTA object detection (not in paper)
 │
 ├── ARTIFACT_TRAIL.md                    # Table → script → output mapping (reviewer guide)
 ├── README.md

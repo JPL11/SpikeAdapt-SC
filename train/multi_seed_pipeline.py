@@ -160,7 +160,7 @@ def main():
     
     # Compute statistics
     print(f"\n{'='*60}")
-    print(f"  5-SEED SUMMARY")
+    print(f"  10-SEED SUMMARY")
     print(f"{'='*60}", flush=True)
     
     summary = {}
