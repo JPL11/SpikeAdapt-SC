@@ -6,6 +6,8 @@
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![PyTorch 2.0+](https://img.shields.io/badge/PyTorch-2.0+-ee4c2c.svg)](https://pytorch.org/)
 
+> **Globecom artifact scope.** This repository contains the complete classification pipeline for the Globecom 2025 submission. The `train/`, `models/`, and `eval/` directories are the paper artifact set. Scripts in `archive/detection/` are exploratory extensions to object detection (DOTA dataset) and are **not** part of the current submission. See [ARTIFACT_TRAIL.md](ARTIFACT_TRAIL.md) for the exact mapping from every paper table/figure to its generating script and output file.
+
 > **SpikeAdapt-SC** combines three design elements for energy-efficient, noise-robust aerial scene classification over unreliable UAV channels:
 > 1. **37× energy savings** — MPBN reduces the encoder firing rate to 0.167, yielding 37.3× estimated SynOps energy savings (Horowitz model).
 > 2. **Binary spike robustness** — At BER=0.30, SpikeAdapt-SC degrades only ~3 pp while a separately trained SNN-SC (no masking) drops ~13 pp and 8-bit CNN baselines collapse by 28–56 pp. A matched-payload CNN-1bit (10 seeds) confirms binary encoding is the primary robustness driver (AID gap: 1.29 pp); the SNN advantage is noise-aware masking, lower variance, and energy efficiency.

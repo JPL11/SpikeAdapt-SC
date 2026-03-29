@@ -16,21 +16,21 @@ Each seed directory contains a `selected_checkpoint.txt` manifest that pins the 
 | `snapshots_aid_v5cna_seed456/` | `v5cna_best_95.00.pth` |
 | `snapshots_aid_v5cna_seed789/` | `v5cna_best_94.34.pth` |
 | `snapshots_aid_v5cna_seed1024/` | `v5cna_best_95.48.pth` |
-| `snapshots_aid_v5cna_seed2048/` | (see manifest) |
-| `snapshots_aid_v5cna_seed3072/` | (see manifest) |
-| `snapshots_aid_v5cna_seed4096/` | (see manifest) |
-| `snapshots_aid_v5cna_seed5120/` | (see manifest) |
-| `snapshots_aid_v5cna_seed6144/` | (see manifest) |
+| `snapshots_aid_v5cna_seed2048/` | `v5cna_best_95.38.pth` |
+| `snapshots_aid_v5cna_seed3072/` | `v5cna_best_95.22.pth` |
+| `snapshots_aid_v5cna_seed4096/` | `v5cna_best_94.44.pth` |
+| `snapshots_aid_v5cna_seed5120/` | `v5cna_best_95.18.pth` |
+| `snapshots_aid_v5cna_seed6144/` | `v5cna_best_95.68.pth` |
 | `snapshots_resisc45_v5cna_seed42/` | `v5cna_best_92.01.pth` |
 | `snapshots_resisc45_v5cna_seed123/` | `v5cna_best_92.73.pth` |
 | `snapshots_resisc45_v5cna_seed456/` | `v5cna_best_92.29.pth` |
 | `snapshots_resisc45_v5cna_seed789/` | `v5cna_best_92.55.pth` |
 | `snapshots_resisc45_v5cna_seed1024/` | `v5cna_best_92.41.pth` |
-| `snapshots_resisc45_v5cna_seed2048/` | (see manifest) |
-| `snapshots_resisc45_v5cna_seed3072/` | (see manifest) |
-| `snapshots_resisc45_v5cna_seed4096/` | (see manifest) |
-| `snapshots_resisc45_v5cna_seed5120/` | (see manifest) |
-| `snapshots_resisc45_v5cna_seed6144/` | (see manifest) |
+| `snapshots_resisc45_v5cna_seed2048/` | `v5cna_best_92.37.pth` |
+| `snapshots_resisc45_v5cna_seed3072/` | `v5cna_best_91.59.pth` |
+| `snapshots_resisc45_v5cna_seed4096/` | `v5cna_best_92.38.pth` |
+| `snapshots_resisc45_v5cna_seed5120/` | `v5cna_best_92.68.pth` |
+| `snapshots_resisc45_v5cna_seed6144/` | `v5cna_best_92.40.pth` |
 
 > **Note**: `snapshots_resisc45_v5cna_seed42/v5cna_best_92.61.pth` was renamed to `.SPURIOUS` — it was created by a later retraining run with higher clean accuracy but worse BER=0.30 robustness. All evals use the pinned checkpoint.
 
