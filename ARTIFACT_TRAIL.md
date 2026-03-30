@@ -159,7 +159,6 @@ eval/seed_results/
 └── bootstrap_cis.json         # 95% BCa bootstrap CIs for key claims
 ```
 
-> `summary_5seed.json` and `cnn1bit_5seed.json` are retained for reproducibility of intermediate results but are NOT referenced by the final paper.
 
 ---
 
