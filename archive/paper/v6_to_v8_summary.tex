@@ -1,0 +1,39 @@
+\documentclass[10pt, conference]{IEEEtran}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+
+\begin{document}
+
+\section{Evolution of the SpikeAdapt-SC Architecture}
+\label{sec:architecture_evolution}
+
+The SpikeAdapt-SC framework underwent a rigorous, multi-stage architectural evolution (spanning Versions 6 through 8) to successfully transition from robust semantic classification to ultra-dense aerial object detection. This section delineates the progressive structural enhancements, training methodologies, and ablation findings that formalized the final model variant.
+
+\subsection{Version 6 (V6): Classification and Fundamental Feature Reconstruction}
+The V6 architecture established the foundation of the SpikeAdapt-SC paradigm. It verified the viability of zero-parameter content-adaptive masking driven by a Spike Rate Entropy Estimator.
+\begin{itemize}
+    \item \textbf{Training Methodology}: The network was initially trained via a 200-epoch Mean Squared Error (MSE) feature reconstruction objective to enforce representation fidelity across binary symmetric channel (BSC) noise.
+    \item \textbf{Task \& Performance}: Fine-tuned subsequently for classification with cross-entropy loss, V6 set state-of-the-art robustness on the AID and RESISC45 datasets. It showcased graceful degradation even at Bit Error Rates (BER) up to $0.30$, maintaining top-1 classification accuracies above $93\%$.
+    \item \textbf{Limitations}: Because the architecture concluded with global average pooling, it inadvertently discarded fine-grained spatial mappings. This structural bottleneck rendered V6 conceptually adequate for image-level classification but mathematically insufficient for precision-based spatial localization (i.e., bounding box regression).
+\end{itemize}
+
+\subsection{Version 7 (V7): Bridging to Spatial Object Detection}
+Addressing the spatial limitations of V6, the V7 framework pivoted towards Joint Source-Channel Coding (JSCC) for object detection using the aerial DOTA dataset.
+\begin{itemize}
+    \item \textbf{Detection Integration}: V7 replaced the global classification head with a complete YOLO-styled hierarchical detection neck and head. The intermediate SNN layers were ``hooked'' to align with corresponding spatial resolutions (P3, P4, P5).
+    \item \textbf{Architectural Intervention (P2 Bridge)}: Empirical analysis revealed that standard hooked SNN representations severely deteriorated the recall of extremely small objects (e.g., small vehicles and ships) common in aerial perspectives. V7 introduced the \textit{P2 Bridge Integrator}, a lateral connection fusing high-resolution ($160\times 160$) $P_2$ temporal representations directly into the $P_3$ spatial stream to salvage minute structural details.
+\end{itemize}
+
+\subsection{Version 8 (V8): MaxFormer SNN and Ultra-Dense Optimization}
+The V8 architecture constitutes the culmination of the framework, optimized explicitly for maximum parameter efficiency and maximum noise resilience in ultra-dense spatial scenarios.
+\begin{itemize}
+    \item \textbf{MaxFormer Encoding}: V8 transitions to a MaxFormer-HF backbone for superior initial feature extraction, followed again by a mandated 200-epoch MSE latent reconstruction stage. This explicit ``clean latent'' phase proved critical for subsequent parameter stability.
+    \item \textbf{Ablation of Squeeze-and-Excitation (V8A-Slim)}: An extensive ablation study was conducted differentiating between the necessity of Spatial/Channel Squeeze-and-Excitation (SE) Enhancers versus the P2 Bridge. We discovered that while SE enhancers yielded trivial benefits on zero-noise channels ($\Delta \text{mAP} \approx -0.003$), the P2 Bridge provided statistically significant advantages primarily under extreme noise (+0.019 mAP at BER=0.30). Consequently, we converged on the \textbf{V8A-Slim} standard, entirely deprecating SE enhancers to reclaim over 150K parameters while enhancing robustness.
+    \item \textbf{Ultra-Dense Slicing Aided Hyper Inference (SAHI)}: Leveraging the noise-invariant spatial anchors provided by the P2 Bridge, V8 was mathematically coupled with SAHI tiled inference and localized Non-Maximum Suppression (NMS) deduplication. In scenes with dense ground truth overlapping (e.g., Airport instances with $n>200$ bounding boxes), robust recall improved from $202$ to $754$ deduplicated true positive proposals.
+\end{itemize}
+
+\end{document}
