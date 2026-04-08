@@ -1,0 +1,1122 @@
+{
+  "awgn": {
+    "1": {
+      "0.125": {
+        "learned": {
+          "psnr": 15.836,
+          "ms_ssim": 0.64244,
+          "cbr": 0.125,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 15.709,
+          "ms_ssim": 0.62561
+        },
+        "gap_psnr": 0.127
+      },
+      "0.25": {
+        "learned": {
+          "psnr": 18.277,
+          "ms_ssim": 0.69352,
+          "cbr": 0.25,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 17.278,
+          "ms_ssim": 0.66446
+        },
+        "gap_psnr": 0.999
+      },
+      "0.375": {
+        "learned": {
+          "psnr": 21.119,
+          "ms_ssim": 0.73683,
+          "cbr": 0.375,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 19.059,
+          "ms_ssim": 0.70218
+        },
+        "gap_psnr": 2.06
+      },
+      "0.5": {
+        "learned": {
+          "psnr": 23.423,
+          "ms_ssim": 0.77123,
+          "cbr": 0.5,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 21.066,
+          "ms_ssim": 0.73933
+        },
+        "gap_psnr": 2.357
+      },
+      "0.625": {
+        "learned": {
+          "psnr": 25.123,
+          "ms_ssim": 0.79855,
+          "cbr": 0.625,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 22.988,
+          "ms_ssim": 0.77075
+        },
+        "gap_psnr": 2.135
+      },
+      "0.75": {
+        "learned": {
+          "psnr": 26.314,
+          "ms_ssim": 0.8185,
+          "cbr": 0.75,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 24.96,
+          "ms_ssim": 0.80097
+        },
+        "gap_psnr": 1.354
+      },
+      "1.0": {
+        "learned": {
+          "psnr": 27.847,
+          "ms_ssim": 0.84208,
+          "cbr": 1.0,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 27.815,
+          "ms_ssim": 0.84185
+        },
+        "gap_psnr": 0.032
+      }
+    },
+    "4": {
+      "0.125": {
+        "learned": {
+          "psnr": 16.072,
+          "ms_ssim": 0.64561,
+          "cbr": 0.125,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 15.933,
+          "ms_ssim": 0.62895
+        },
+        "gap_psnr": 0.139
+      },
+      "0.25": {
+        "learned": {
+          "psnr": 18.624,
+          "ms_ssim": 0.69775,
+          "cbr": 0.25,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 17.701,
+          "ms_ssim": 0.66724
+        },
+        "gap_psnr": 0.923
+      },
+      "0.375": {
+        "learned": {
+          "psnr": 21.448,
+          "ms_ssim": 0.74122,
+          "cbr": 0.375,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 19.419,
+          "ms_ssim": 0.70648
+        },
+        "gap_psnr": 2.029
+      },
+      "0.5": {
+        "learned": {
+          "psnr": 23.652,
+          "ms_ssim": 0.77614,
+          "cbr": 0.5,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 21.356,
+          "ms_ssim": 0.7439
+        },
+        "gap_psnr": 2.296
+      },
+      "0.625": {
+        "learned": {
+          "psnr": 25.281,
+          "ms_ssim": 0.80366,
+          "cbr": 0.625,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 23.356,
+          "ms_ssim": 0.77816
+        },
+        "gap_psnr": 1.925
+      },
+      "0.75": {
+        "learned": {
+          "psnr": 26.416,
+          "ms_ssim": 0.82444,
+          "cbr": 0.75,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 25.417,
+          "ms_ssim": 0.80668
+        },
+        "gap_psnr": 0.999
+      },
+      "1.0": {
+        "learned": {
+          "psnr": 28.209,
+          "ms_ssim": 0.84898,
+          "cbr": 1.0,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 28.214,
+          "ms_ssim": 0.84901
+        },
+        "gap_psnr": -0.005
+      }
+    },
+    "7": {
+      "0.125": {
+        "learned": {
+          "psnr": 16.236,
+          "ms_ssim": 0.64799,
+          "cbr": 0.125,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 16.03,
+          "ms_ssim": 0.62876
+        },
+        "gap_psnr": 0.206
+      },
+      "0.25": {
+        "learned": {
+          "psnr": 18.826,
+          "ms_ssim": 0.70031,
+          "cbr": 0.25,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 17.856,
+          "ms_ssim": 0.66842
+        },
+        "gap_psnr": 0.97
+      },
+      "0.375": {
+        "learned": {
+          "psnr": 21.543,
+          "ms_ssim": 0.74334,
+          "cbr": 0.375,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 19.635,
+          "ms_ssim": 0.70847
+        },
+        "gap_psnr": 1.908
+      },
+      "0.5": {
+        "learned": {
+          "psnr": 23.708,
+          "ms_ssim": 0.77816,
+          "cbr": 0.5,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 21.547,
+          "ms_ssim": 0.74718
+        },
+        "gap_psnr": 2.161
+      },
+      "0.625": {
+        "learned": {
+          "psnr": 25.299,
+          "ms_ssim": 0.80618,
+          "cbr": 0.625,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 23.612,
+          "ms_ssim": 0.7815
+        },
+        "gap_psnr": 1.687
+      },
+      "0.75": {
+        "learned": {
+          "psnr": 26.397,
+          "ms_ssim": 0.82713,
+          "cbr": 0.75,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 25.727,
+          "ms_ssim": 0.81037
+        },
+        "gap_psnr": 0.67
+      },
+      "1.0": {
+        "learned": {
+          "psnr": 28.399,
+          "ms_ssim": 0.85222,
+          "cbr": 1.0,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 28.367,
+          "ms_ssim": 0.85223
+        },
+        "gap_psnr": 0.032
+      }
+    },
+    "10": {
+      "0.125": {
+        "learned": {
+          "psnr": 16.322,
+          "ms_ssim": 0.64875,
+          "cbr": 0.125,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 16.109,
+          "ms_ssim": 0.62934
+        },
+        "gap_psnr": 0.213
+      },
+      "0.25": {
+        "learned": {
+          "psnr": 18.919,
+          "ms_ssim": 0.70121,
+          "cbr": 0.25,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 17.889,
+          "ms_ssim": 0.67041
+        },
+        "gap_psnr": 1.03
+      },
+      "0.375": {
+        "learned": {
+          "psnr": 21.623,
+          "ms_ssim": 0.74438,
+          "cbr": 0.375,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 19.868,
+          "ms_ssim": 0.71121
+        },
+        "gap_psnr": 1.755
+      },
+      "0.5": {
+        "learned": {
+          "psnr": 23.719,
+          "ms_ssim": 0.77912,
+          "cbr": 0.5,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 21.827,
+          "ms_ssim": 0.74805
+        },
+        "gap_psnr": 1.892
+      },
+      "0.625": {
+        "learned": {
+          "psnr": 25.256,
+          "ms_ssim": 0.80712,
+          "cbr": 0.625,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 23.796,
+          "ms_ssim": 0.78212
+        },
+        "gap_psnr": 1.46
+      },
+      "0.75": {
+        "learned": {
+          "psnr": 26.441,
+          "ms_ssim": 0.82843,
+          "cbr": 0.75,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 25.657,
+          "ms_ssim": 0.81147
+        },
+        "gap_psnr": 0.784
+      },
+      "1.0": {
+        "learned": {
+          "psnr": 28.47,
+          "ms_ssim": 0.85385,
+          "cbr": 1.0,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 28.463,
+          "ms_ssim": 0.85381
+        },
+        "gap_psnr": 0.007
+      }
+    },
+    "13": {
+      "0.125": {
+        "learned": {
+          "psnr": 16.368,
+          "ms_ssim": 0.64925,
+          "cbr": 0.125,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 16.157,
+          "ms_ssim": 0.63021
+        },
+        "gap_psnr": 0.211
+      },
+      "0.25": {
+        "learned": {
+          "psnr": 18.968,
+          "ms_ssim": 0.70178,
+          "cbr": 0.25,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 18.016,
+          "ms_ssim": 0.67078
+        },
+        "gap_psnr": 0.952
+      },
+      "0.375": {
+        "learned": {
+          "psnr": 21.669,
+          "ms_ssim": 0.74487,
+          "cbr": 0.375,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 19.894,
+          "ms_ssim": 0.71
+        },
+        "gap_psnr": 1.775
+      },
+      "0.5": {
+        "learned": {
+          "psnr": 23.737,
+          "ms_ssim": 0.77973,
+          "cbr": 0.5,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 21.774,
+          "ms_ssim": 0.74848
+        },
+        "gap_psnr": 1.963
+      },
+      "0.625": {
+        "learned": {
+          "psnr": 25.272,
+          "ms_ssim": 0.80785,
+          "cbr": 0.625,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 23.801,
+          "ms_ssim": 0.78312
+        },
+        "gap_psnr": 1.471
+      },
+      "0.75": {
+        "learned": {
+          "psnr": 26.433,
+          "ms_ssim": 0.82908,
+          "cbr": 0.75,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 25.793,
+          "ms_ssim": 0.81219
+        },
+        "gap_psnr": 0.64
+      },
+      "1.0": {
+        "learned": {
+          "psnr": 28.492,
+          "ms_ssim": 0.85459,
+          "cbr": 1.0,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 28.497,
+          "ms_ssim": 0.85459
+        },
+        "gap_psnr": -0.005
+      }
+    },
+    "19": {
+      "0.125": {
+        "learned": {
+          "psnr": 16.408,
+          "ms_ssim": 0.64953,
+          "cbr": 0.125,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 16.232,
+          "ms_ssim": 0.6306
+        },
+        "gap_psnr": 0.176
+      },
+      "0.25": {
+        "learned": {
+          "psnr": 19.019,
+          "ms_ssim": 0.7022,
+          "cbr": 0.25,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 18.002,
+          "ms_ssim": 0.67067
+        },
+        "gap_psnr": 1.017
+      },
+      "0.375": {
+        "learned": {
+          "psnr": 21.661,
+          "ms_ssim": 0.74513,
+          "cbr": 0.375,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 19.973,
+          "ms_ssim": 0.71179
+        },
+        "gap_psnr": 1.688
+      },
+      "0.5": {
+        "learned": {
+          "psnr": 23.741,
+          "ms_ssim": 0.78009,
+          "cbr": 0.5,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 21.842,
+          "ms_ssim": 0.74898
+        },
+        "gap_psnr": 1.899
+      },
+      "0.625": {
+        "learned": {
+          "psnr": 25.258,
+          "ms_ssim": 0.80822,
+          "cbr": 0.625,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 23.843,
+          "ms_ssim": 0.78363
+        },
+        "gap_psnr": 1.415
+      },
+      "0.75": {
+        "learned": {
+          "psnr": 26.436,
+          "ms_ssim": 0.82953,
+          "cbr": 0.75,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 25.839,
+          "ms_ssim": 0.81286
+        },
+        "gap_psnr": 0.597
+      },
+      "1.0": {
+        "learned": {
+          "psnr": 28.527,
+          "ms_ssim": 0.85516,
+          "cbr": 1.0,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 28.528,
+          "ms_ssim": 0.85516
+        },
+        "gap_psnr": -0.001
+      }
+    }
+  },
+  "bsc": {
+    "0.0": {
+      "0.125": {
+        "learned": {
+          "psnr": 16.415,
+          "ms_ssim": 0.64963,
+          "cbr": 0.125,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 16.163,
+          "ms_ssim": 0.62959
+        },
+        "gap_psnr": 0.252
+      },
+      "0.25": {
+        "learned": {
+          "psnr": 19.025,
+          "ms_ssim": 0.70226,
+          "cbr": 0.25,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 18.039,
+          "ms_ssim": 0.67031
+        },
+        "gap_psnr": 0.986
+      },
+      "0.375": {
+        "learned": {
+          "psnr": 21.671,
+          "ms_ssim": 0.74525,
+          "cbr": 0.375,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 19.886,
+          "ms_ssim": 0.71165
+        },
+        "gap_psnr": 1.785
+      },
+      "0.5": {
+        "learned": {
+          "psnr": 23.731,
+          "ms_ssim": 0.78016,
+          "cbr": 0.5,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 21.829,
+          "ms_ssim": 0.7492
+        },
+        "gap_psnr": 1.902
+      },
+      "0.625": {
+        "learned": {
+          "psnr": 25.254,
+          "ms_ssim": 0.80837,
+          "cbr": 0.625,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 23.779,
+          "ms_ssim": 0.78237
+        },
+        "gap_psnr": 1.475
+      },
+      "0.75": {
+        "learned": {
+          "psnr": 26.428,
+          "ms_ssim": 0.82967,
+          "cbr": 0.75,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 25.796,
+          "ms_ssim": 0.81275
+        },
+        "gap_psnr": 0.632
+      },
+      "1.0": {
+        "learned": {
+          "psnr": 28.531,
+          "ms_ssim": 0.85538,
+          "cbr": 1.0,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 28.531,
+          "ms_ssim": 0.85538
+        },
+        "gap_psnr": 0.0
+      }
+    },
+    "0.05": {
+      "0.125": {
+        "learned": {
+          "psnr": 16.329,
+          "ms_ssim": 0.64821,
+          "cbr": 0.125,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 16.13,
+          "ms_ssim": 0.62941
+        },
+        "gap_psnr": 0.199
+      },
+      "0.25": {
+        "learned": {
+          "psnr": 18.921,
+          "ms_ssim": 0.70023,
+          "cbr": 0.25,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 17.897,
+          "ms_ssim": 0.66834
+        },
+        "gap_psnr": 1.024
+      },
+      "0.375": {
+        "learned": {
+          "psnr": 21.608,
+          "ms_ssim": 0.74262,
+          "cbr": 0.375,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 19.711,
+          "ms_ssim": 0.70826
+        },
+        "gap_psnr": 1.897
+      },
+      "0.5": {
+        "learned": {
+          "psnr": 23.766,
+          "ms_ssim": 0.77751,
+          "cbr": 0.5,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 21.559,
+          "ms_ssim": 0.74541
+        },
+        "gap_psnr": 2.207
+      },
+      "0.625": {
+        "learned": {
+          "psnr": 25.42,
+          "ms_ssim": 0.80593,
+          "cbr": 0.625,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 23.508,
+          "ms_ssim": 0.77982
+        },
+        "gap_psnr": 1.912
+      },
+      "0.75": {
+        "learned": {
+          "psnr": 26.724,
+          "ms_ssim": 0.8279,
+          "cbr": 0.75,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 25.469,
+          "ms_ssim": 0.80977
+        },
+        "gap_psnr": 1.255
+      },
+      "1.0": {
+        "learned": {
+          "psnr": 28.842,
+          "ms_ssim": 0.85535,
+          "cbr": 1.0,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 28.888,
+          "ms_ssim": 0.85551
+        },
+        "gap_psnr": -0.046
+      }
+    },
+    "0.1": {
+      "0.125": {
+        "learned": {
+          "psnr": 16.254,
+          "ms_ssim": 0.64585,
+          "cbr": 0.125,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 16.064,
+          "ms_ssim": 0.62751
+        },
+        "gap_psnr": 0.19
+      },
+      "0.25": {
+        "learned": {
+          "psnr": 18.779,
+          "ms_ssim": 0.69687,
+          "cbr": 0.25,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 17.655,
+          "ms_ssim": 0.66454
+        },
+        "gap_psnr": 1.124
+      },
+      "0.375": {
+        "learned": {
+          "psnr": 21.394,
+          "ms_ssim": 0.73838,
+          "cbr": 0.375,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 19.297,
+          "ms_ssim": 0.70208
+        },
+        "gap_psnr": 2.097
+      },
+      "0.5": {
+        "learned": {
+          "psnr": 23.571,
+          "ms_ssim": 0.77281,
+          "cbr": 0.5,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 21.193,
+          "ms_ssim": 0.74046
+        },
+        "gap_psnr": 2.378
+      },
+      "0.625": {
+        "learned": {
+          "psnr": 25.287,
+          "ms_ssim": 0.8012,
+          "cbr": 0.625,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 22.978,
+          "ms_ssim": 0.77357
+        },
+        "gap_psnr": 2.309
+      },
+      "0.75": {
+        "learned": {
+          "psnr": 26.661,
+          "ms_ssim": 0.82389,
+          "cbr": 0.75,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 24.94,
+          "ms_ssim": 0.80496
+        },
+        "gap_psnr": 1.721
+      },
+      "1.0": {
+        "learned": {
+          "psnr": 28.67,
+          "ms_ssim": 0.85282,
+          "cbr": 1.0,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 28.661,
+          "ms_ssim": 0.85283
+        },
+        "gap_psnr": 0.009
+      }
+    },
+    "0.15": {
+      "0.125": {
+        "learned": {
+          "psnr": 16.155,
+          "ms_ssim": 0.64254,
+          "cbr": 0.125,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 15.92,
+          "ms_ssim": 0.62474
+        },
+        "gap_psnr": 0.235
+      },
+      "0.25": {
+        "learned": {
+          "psnr": 18.577,
+          "ms_ssim": 0.69196,
+          "cbr": 0.25,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 17.425,
+          "ms_ssim": 0.6593
+        },
+        "gap_psnr": 1.152
+      },
+      "0.375": {
+        "learned": {
+          "psnr": 21.023,
+          "ms_ssim": 0.73138,
+          "cbr": 0.375,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 18.992,
+          "ms_ssim": 0.6963
+        },
+        "gap_psnr": 2.031
+      },
+      "0.5": {
+        "learned": {
+          "psnr": 23.132,
+          "ms_ssim": 0.76547,
+          "cbr": 0.5,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 20.614,
+          "ms_ssim": 0.73094
+        },
+        "gap_psnr": 2.518
+      },
+      "0.625": {
+        "learned": {
+          "psnr": 24.759,
+          "ms_ssim": 0.79366,
+          "cbr": 0.625,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 22.308,
+          "ms_ssim": 0.76543
+        },
+        "gap_psnr": 2.451
+      },
+      "0.75": {
+        "learned": {
+          "psnr": 26.148,
+          "ms_ssim": 0.81692,
+          "cbr": 0.75,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 24.192,
+          "ms_ssim": 0.79589
+        },
+        "gap_psnr": 1.956
+      },
+      "1.0": {
+        "learned": {
+          "psnr": 27.864,
+          "ms_ssim": 0.84665,
+          "cbr": 1.0,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 27.907,
+          "ms_ssim": 0.84684
+        },
+        "gap_psnr": -0.043
+      }
+    },
+    "0.2": {
+      "0.125": {
+        "learned": {
+          "psnr": 16.05,
+          "ms_ssim": 0.63809,
+          "cbr": 0.125,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 15.711,
+          "ms_ssim": 0.6201
+        },
+        "gap_psnr": 0.339
+      },
+      "0.25": {
+        "learned": {
+          "psnr": 18.206,
+          "ms_ssim": 0.68371,
+          "cbr": 0.25,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 17.12,
+          "ms_ssim": 0.65299
+        },
+        "gap_psnr": 1.086
+      },
+      "0.375": {
+        "learned": {
+          "psnr": 20.535,
+          "ms_ssim": 0.72171,
+          "cbr": 0.375,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 18.531,
+          "ms_ssim": 0.68719
+        },
+        "gap_psnr": 2.004
+      },
+      "0.5": {
+        "learned": {
+          "psnr": 22.434,
+          "ms_ssim": 0.75457,
+          "cbr": 0.5,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 20.069,
+          "ms_ssim": 0.72082
+        },
+        "gap_psnr": 2.365
+      },
+      "0.625": {
+        "learned": {
+          "psnr": 23.946,
+          "ms_ssim": 0.7826,
+          "cbr": 0.625,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 21.535,
+          "ms_ssim": 0.75364
+        },
+        "gap_psnr": 2.411
+      },
+      "0.75": {
+        "learned": {
+          "psnr": 25.139,
+          "ms_ssim": 0.80555,
+          "cbr": 0.75,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 23.368,
+          "ms_ssim": 0.78463
+        },
+        "gap_psnr": 1.771
+      },
+      "1.0": {
+        "learned": {
+          "psnr": 26.591,
+          "ms_ssim": 0.83634,
+          "cbr": 1.0,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 26.547,
+          "ms_ssim": 0.83618
+        },
+        "gap_psnr": 0.044
+      }
+    },
+    "0.3": {
+      "0.125": {
+        "learned": {
+          "psnr": 15.745,
+          "ms_ssim": 0.62276,
+          "cbr": 0.125,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 15.313,
+          "ms_ssim": 0.60754
+        },
+        "gap_psnr": 0.432
+      },
+      "0.25": {
+        "learned": {
+          "psnr": 17.307,
+          "ms_ssim": 0.65709,
+          "cbr": 0.25,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 16.295,
+          "ms_ssim": 0.63149
+        },
+        "gap_psnr": 1.012
+      },
+      "0.375": {
+        "learned": {
+          "psnr": 18.848,
+          "ms_ssim": 0.68639,
+          "cbr": 0.375,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 17.334,
+          "ms_ssim": 0.65615
+        },
+        "gap_psnr": 1.514
+      },
+      "0.5": {
+        "learned": {
+          "psnr": 20.079,
+          "ms_ssim": 0.71278,
+          "cbr": 0.5,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 18.386,
+          "ms_ssim": 0.68189
+        },
+        "gap_psnr": 1.693
+      },
+      "0.625": {
+        "learned": {
+          "psnr": 21.098,
+          "ms_ssim": 0.73775,
+          "cbr": 0.625,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 19.51,
+          "ms_ssim": 0.7095
+        },
+        "gap_psnr": 1.588
+      },
+      "0.75": {
+        "learned": {
+          "psnr": 21.981,
+          "ms_ssim": 0.75928,
+          "cbr": 0.75,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 20.675,
+          "ms_ssim": 0.73808
+        },
+        "gap_psnr": 1.306
+      },
+      "1.0": {
+        "learned": {
+          "psnr": 22.919,
+          "ms_ssim": 0.78998,
+          "cbr": 1.0,
+          "n_images": 50
+        },
+        "random": {
+          "psnr": 22.97,
+          "ms_ssim": 0.79064
+        },
+        "gap_psnr": -0.051
+      }
+    }
+  }
+}

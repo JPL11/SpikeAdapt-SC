@@ -1,0 +1,234 @@
+{
+  "q2_seed_correlation": {
+    "aid_rho1.0": {
+      "pearson_r": 0.548,
+      "pearson_p": 0.1008,
+      "spearman_r": 0.748,
+      "spearman_p": 0.0129,
+      "clean_mean": 95.49,
+      "clean_std": 0.29,
+      "noisy_mean": 91.89,
+      "noisy_std": 3.5
+    },
+    "aid_rho0.75": {
+      "pearson_r": 0.292,
+      "pearson_p": 0.4133,
+      "spearman_r": 0.479,
+      "spearman_p": 0.1615,
+      "clean_mean": 95.02,
+      "clean_std": 0.52,
+      "noisy_mean": 92.15,
+      "noisy_std": 2.72
+    },
+    "resisc45_rho1.0": {
+      "pearson_r": 0.499,
+      "pearson_p": 0.1416,
+      "spearman_r": 0.122,
+      "spearman_p": 0.7379,
+      "clean_mean": 92.59,
+      "clean_std": 0.15,
+      "noisy_mean": 84.85,
+      "noisy_std": 5.29
+    },
+    "resisc45_rho0.75": {
+      "pearson_r": 0.351,
+      "pearson_p": 0.32,
+      "spearman_r": 0.624,
+      "spearman_p": 0.0537,
+      "clean_mean": 92.34,
+      "clean_std": 0.32,
+      "noisy_mean": 86.18,
+      "noisy_std": 4.53
+    }
+  },
+  "q3_jscc_awgn": {
+    "aid": {
+      "awgn": {
+        "10": {
+          "mean": 96.06,
+          "std": 0.31
+        },
+        "5": {
+          "mean": 96.04,
+          "std": 0.3
+        },
+        "0": {
+          "mean": 95.99,
+          "std": 0.3
+        },
+        "-2": {
+          "mean": 95.94,
+          "std": 0.3
+        },
+        "-4": {
+          "mean": 95.88,
+          "std": 0.27
+        },
+        "-6": {
+          "mean": 95.71,
+          "std": 0.39
+        },
+        "-8": {
+          "mean": 95.29,
+          "std": 0.44
+        }
+      },
+      "bsc": {
+        "0.0": {
+          "mean": 96.05,
+          "std": 0.32
+        },
+        "0.05": {
+          "mean": 92.94,
+          "std": 1.09
+        },
+        "0.1": {
+          "mean": 89.51,
+          "std": 1.76
+        },
+        "0.15": {
+          "mean": 80.69,
+          "std": 2.9
+        },
+        "0.2": {
+          "mean": 62.32,
+          "std": 4.2
+        },
+        "0.25": {
+          "mean": 39.85,
+          "std": 5.62
+        },
+        "0.3": {
+          "mean": 22.98,
+          "std": 5.85
+        }
+      },
+      "clean": {
+        "mean": 96.05,
+        "std": 0.32
+      }
+    },
+    "resisc45": {
+      "awgn": {
+        "10": {
+          "mean": 92.9,
+          "std": 0.48
+        },
+        "5": {
+          "mean": 92.89,
+          "std": 0.49
+        },
+        "0": {
+          "mean": 92.88,
+          "std": 0.5
+        },
+        "-2": {
+          "mean": 92.86,
+          "std": 0.51
+        },
+        "-4": {
+          "mean": 92.72,
+          "std": 0.57
+        },
+        "-6": {
+          "mean": 92.38,
+          "std": 0.63
+        },
+        "-8": {
+          "mean": 91.65,
+          "std": 0.8
+        }
+      },
+      "bsc": {
+        "0.0": {
+          "mean": 92.9,
+          "std": 0.47
+        },
+        "0.05": {
+          "mean": 85.86,
+          "std": 4.02
+        },
+        "0.1": {
+          "mean": 80.26,
+          "std": 6.65
+        },
+        "0.15": {
+          "mean": 69.53,
+          "std": 9.53
+        },
+        "0.2": {
+          "mean": 51.18,
+          "std": 9.79
+        },
+        "0.25": {
+          "mean": 28.92,
+          "std": 6.81
+        },
+        "0.3": {
+          "mean": 12.43,
+          "std": 3.31
+        }
+      },
+      "clean": {
+        "mean": 92.9,
+        "std": 0.47
+      }
+    }
+  },
+  "q4_mask_interpolation": {
+    "0.0": {
+      "cosine_similarity": 1.0,
+      "l2_distance": 0.0,
+      "mean_importance": 0.5211,
+      "hamming_distance": 0.0
+    },
+    "0.05": {
+      "cosine_similarity": 1.0,
+      "l2_distance": 0.0003,
+      "mean_importance": 0.5214,
+      "hamming_distance": 0.0038
+    },
+    "0.1": {
+      "cosine_similarity": 1.0,
+      "l2_distance": 0.0006,
+      "mean_importance": 0.5217,
+      "hamming_distance": 0.0077
+    },
+    "0.15": {
+      "cosine_similarity": 1.0,
+      "l2_distance": 0.001,
+      "mean_importance": 0.5221,
+      "hamming_distance": 0.0122
+    },
+    "0.2": {
+      "cosine_similarity": 1.0,
+      "l2_distance": 0.0014,
+      "mean_importance": 0.5225,
+      "hamming_distance": 0.017
+    },
+    "0.25": {
+      "cosine_similarity": 1.0,
+      "l2_distance": 0.0018,
+      "mean_importance": 0.5229,
+      "hamming_distance": 0.0208
+    },
+    "0.3": {
+      "cosine_similarity": 1.0,
+      "l2_distance": 0.0023,
+      "mean_importance": 0.5234,
+      "hamming_distance": 0.024
+    },
+    "0.35": {
+      "cosine_similarity": 1.0,
+      "l2_distance": 0.0027,
+      "mean_importance": 0.5239,
+      "hamming_distance": 0.0286
+    },
+    "0.4": {
+      "cosine_similarity": 1.0,
+      "l2_distance": 0.0033,
+      "mean_importance": 0.5244,
+      "hamming_distance": 0.0332
+    }
+  }
+}

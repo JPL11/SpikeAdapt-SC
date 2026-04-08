@@ -1,0 +1,74 @@
+{
+  "aid": {
+    "energy": {
+      "dataset": "aid",
+      "n_images": 5000,
+      "firing_rates": {
+        "layer1_mean": 0.1401,
+        "layer2_mean": 0.1673,
+        "overall_mean": 0.1537,
+        "layer1_std": 0.0023,
+        "layer2_std": 0.0048
+      },
+      "operation_counts": {
+        "conv1_macs_per_step": 462422016,
+        "conv2_macs_per_step": 16257024,
+        "total_cnn_macs": 3829432320,
+        "synops_conv1": 3699376128,
+        "synops_conv2": 18218850,
+        "total_synops": 3717594978
+      },
+      "energy_pj": {
+        "cnn_encoder": 17615388672.0,
+        "snn_conservative": 17033527153.9,
+        "snn_optimistic": 3345835480.3
+      },
+      "energy_ratio": {
+        "conservative": 1.0,
+        "optimistic": 5.3
+      }
+    },
+    "latency": {
+      "backbone_ms": 0.489,
+      "snn_encoder_decoder_ms": 0.836,
+      "classifier_ms": 0.071,
+      "total_ms": 1.396
+    }
+  },
+  "resisc45": {
+    "energy": {
+      "dataset": "resisc45",
+      "n_images": 25200,
+      "firing_rates": {
+        "layer1_mean": 0.125,
+        "layer2_mean": 0.1677,
+        "overall_mean": 0.1464,
+        "layer1_std": 0.0028,
+        "layer2_std": 0.0051
+      },
+      "operation_counts": {
+        "conv1_macs_per_step": 462422016,
+        "conv2_macs_per_step": 16257024,
+        "total_cnn_macs": 3829432320,
+        "synops_conv1": 3699376128,
+        "synops_conv2": 16260789,
+        "total_synops": 3715636917
+      },
+      "energy_pj": {
+        "cnn_encoder": 17615388672.0,
+        "snn_conservative": 17031764899.1,
+        "snn_optimistic": 3344073225.5
+      },
+      "energy_ratio": {
+        "conservative": 1.0,
+        "optimistic": 5.3
+      }
+    },
+    "latency": {
+      "backbone_ms": 0.494,
+      "snn_encoder_decoder_ms": 0.855,
+      "classifier_ms": 0.072,
+      "total_ms": 1.421
+    }
+  }
+}

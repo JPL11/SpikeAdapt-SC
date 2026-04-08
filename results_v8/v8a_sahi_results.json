@@ -1,0 +1,32 @@
+{
+  "P1384": {
+    "baseline": 202,
+    "v8a": 198,
+    "v8a_sahi": 1065
+  },
+  "P0003": {
+    "baseline": 55,
+    "v8a": 77,
+    "v8a_sahi": 80
+  },
+  "P0499": {
+    "baseline": 17,
+    "v8a": 17,
+    "v8a_sahi": 46
+  },
+  "P0961": {
+    "baseline": 98,
+    "v8a": 52,
+    "v8a_sahi": 385
+  },
+  "P1821": {
+    "baseline": 152,
+    "v8a": 130,
+    "v8a_sahi": 320
+  },
+  "P2322": {
+    "baseline": 5,
+    "v8a": 5,
+    "v8a_sahi": 7
+  }
+}

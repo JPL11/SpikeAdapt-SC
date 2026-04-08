@@ -1,0 +1,268 @@
+{
+  "aid": {
+    "14x14": {
+      "0.5": {
+        "0.0": {
+          "learned": 95.18,
+          "random_mean": 95.28,
+          "random_std": 0.13,
+          "delta_learned_vs_random": -0.1
+        },
+        "0.15": {
+          "learned": 95.28,
+          "random_mean": 95.21,
+          "random_std": 0.11,
+          "delta_learned_vs_random": 0.07
+        },
+        "0.3": {
+          "learned": 93.52,
+          "random_mean": 91.96,
+          "random_std": 0.2,
+          "delta_learned_vs_random": 1.56
+        }
+      },
+      "0.75": {
+        "0.0": {
+          "learned": 95.46,
+          "random_mean": 95.33,
+          "random_std": 0.07,
+          "delta_learned_vs_random": 0.13
+        },
+        "0.15": {
+          "learned": 95.7,
+          "random_mean": 95.64,
+          "random_std": 0.1,
+          "delta_learned_vs_random": 0.06
+        },
+        "0.3": {
+          "learned": 93.2,
+          "random_mean": 93.24,
+          "random_std": 0.1,
+          "delta_learned_vs_random": -0.04
+        }
+      }
+    },
+    "7x7": {
+      "0.5": {
+        "0.0": {
+          "learned": 94.84,
+          "random_mean": 94.75,
+          "random_std": 0.14,
+          "delta_learned_vs_random": 0.09
+        },
+        "0.15": {
+          "learned": 95.16,
+          "random_mean": 94.59,
+          "random_std": 0.12,
+          "delta_learned_vs_random": 0.57
+        },
+        "0.3": {
+          "learned": 93.32,
+          "random_mean": 90.15,
+          "random_std": 0.24,
+          "delta_learned_vs_random": 3.17
+        }
+      },
+      "0.75": {
+        "0.0": {
+          "learned": 95.42,
+          "random_mean": 95.1,
+          "random_std": 0.11,
+          "delta_learned_vs_random": 0.32
+        },
+        "0.15": {
+          "learned": 95.62,
+          "random_mean": 95.46,
+          "random_std": 0.12,
+          "delta_learned_vs_random": 0.16
+        },
+        "0.3": {
+          "learned": 93.26,
+          "random_mean": 92.74,
+          "random_std": 0.18,
+          "delta_learned_vs_random": 0.52
+        }
+      }
+    },
+    "4x4": {
+      "0.5": {
+        "0.0": {
+          "learned": 94.58,
+          "random_mean": 93.7,
+          "random_std": 0.28,
+          "delta_learned_vs_random": 0.88
+        },
+        "0.15": {
+          "learned": 94.96,
+          "random_mean": 93.56,
+          "random_std": 0.22,
+          "delta_learned_vs_random": 1.41
+        },
+        "0.3": {
+          "learned": 91.96,
+          "random_mean": 87.56,
+          "random_std": 0.35,
+          "delta_learned_vs_random": 4.4
+        }
+      },
+      "0.75": {
+        "0.0": {
+          "learned": 95.2,
+          "random_mean": 94.84,
+          "random_std": 0.14,
+          "delta_learned_vs_random": 0.36
+        },
+        "0.15": {
+          "learned": 95.58,
+          "random_mean": 95.14,
+          "random_std": 0.13,
+          "delta_learned_vs_random": 0.44
+        },
+        "0.3": {
+          "learned": 92.98,
+          "random_mean": 91.45,
+          "random_std": 0.18,
+          "delta_learned_vs_random": 1.53
+        }
+      }
+    },
+    "baseline": {
+      "0.0": 95.18,
+      "0.15": 95.76,
+      "0.3": 92.7
+    }
+  },
+  "resisc45": {
+    "14x14": {
+      "0.5": {
+        "0.0": {
+          "learned": 89.89,
+          "random_mean": 92.46,
+          "random_std": 0.06,
+          "delta_learned_vs_random": -2.56
+        },
+        "0.15": {
+          "learned": 90.3,
+          "random_mean": 92.5,
+          "random_std": 0.07,
+          "delta_learned_vs_random": -2.19
+        },
+        "0.3": {
+          "learned": 86.68,
+          "random_mean": 89.22,
+          "random_std": 0.06,
+          "delta_learned_vs_random": -2.54
+        }
+      },
+      "0.75": {
+        "0.0": {
+          "learned": 91.99,
+          "random_mean": 92.55,
+          "random_std": 0.04,
+          "delta_learned_vs_random": -0.55
+        },
+        "0.15": {
+          "learned": 92.38,
+          "random_mean": 92.82,
+          "random_std": 0.05,
+          "delta_learned_vs_random": -0.44
+        },
+        "0.3": {
+          "learned": 86.77,
+          "random_mean": 88.92,
+          "random_std": 0.07,
+          "delta_learned_vs_random": -2.15
+        }
+      }
+    },
+    "7x7": {
+      "0.5": {
+        "0.0": {
+          "learned": 89.24,
+          "random_mean": 91.82,
+          "random_std": 0.1,
+          "delta_learned_vs_random": -2.58
+        },
+        "0.15": {
+          "learned": 89.59,
+          "random_mean": 91.79,
+          "random_std": 0.1,
+          "delta_learned_vs_random": -2.2
+        },
+        "0.3": {
+          "learned": 85.1,
+          "random_mean": 86.82,
+          "random_std": 0.08,
+          "delta_learned_vs_random": -1.73
+        }
+      },
+      "0.75": {
+        "0.0": {
+          "learned": 91.58,
+          "random_mean": 92.39,
+          "random_std": 0.06,
+          "delta_learned_vs_random": -0.81
+        },
+        "0.15": {
+          "learned": 92.07,
+          "random_mean": 92.63,
+          "random_std": 0.05,
+          "delta_learned_vs_random": -0.56
+        },
+        "0.3": {
+          "learned": 86.25,
+          "random_mean": 87.8,
+          "random_std": 0.1,
+          "delta_learned_vs_random": -1.55
+        }
+      }
+    },
+    "4x4": {
+      "0.5": {
+        "0.0": {
+          "learned": 89.22,
+          "random_mean": 90.26,
+          "random_std": 0.07,
+          "delta_learned_vs_random": -1.04
+        },
+        "0.15": {
+          "learned": 89.63,
+          "random_mean": 90.05,
+          "random_std": 0.1,
+          "delta_learned_vs_random": -0.42
+        },
+        "0.3": {
+          "learned": 83.62,
+          "random_mean": 82.68,
+          "random_std": 0.16,
+          "delta_learned_vs_random": 0.94
+        }
+      },
+      "0.75": {
+        "0.0": {
+          "learned": 91.65,
+          "random_mean": 91.95,
+          "random_std": 0.08,
+          "delta_learned_vs_random": -0.29
+        },
+        "0.15": {
+          "learned": 92.12,
+          "random_mean": 92.23,
+          "random_std": 0.07,
+          "delta_learned_vs_random": -0.12
+        },
+        "0.3": {
+          "learned": 85.73,
+          "random_mean": 85.95,
+          "random_std": 0.11,
+          "delta_learned_vs_random": -0.22
+        }
+      }
+    },
+    "baseline": {
+      "0.0": 92.5,
+      "0.15": 92.88,
+      "0.3": 85.23
+    }
+  }
+}

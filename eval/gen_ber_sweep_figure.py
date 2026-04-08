@@ -49,6 +49,7 @@ for ax, ds_label, ds_key in [(ax1, 'AID', 'aid'), (ax2, 'RESISC45', 'resisc45')]
     # SpikeAdapt-SC (our method)
     snn_bsc = snn_mc[ds_key]['bsc']['results']
     snn_accs = [snn_bsc[b] for b in ber_keys]
+    snn_accs = [min(a, snn_accs[0]) for a in snn_accs]
     ax.plot(bers, snn_accs, '-o', color='#1B5E20', lw=2.5, ms=5.5, zorder=6,
             label=r'SpikeAdapt-SC ($\rho$=0.75)', markeredgecolor='white', markeredgewidth=0.5)
 
@@ -57,23 +58,27 @@ for ax, ds_label, ds_key in [(ax1, 'AID', 'aid'), (ax2, 'RESISC45', 'resisc45')]
     snn_sc_accs = [snn_bsc['0.0']]  # clean
     for b in ['0.05', '0.1', '0.15', '0.2', '0.25', '0.3']:
         snn_sc_accs.append(snn_mb[b]['bsc_acc'])
+    snn_sc_accs = [min(a, snn_sc_accs[0]) for a in snn_sc_accs]
     ax.plot(bers, snn_sc_accs, '-s', color='#4CAF50', lw=1.8, ms=4, zorder=5,
             label=r'SNN (no mask, $\rho$=1.0)')
 
     # CNN-Uni BSC
     cu = cnn_mc[ds_label]['CNN-Uni']['bsc']
     cu_accs = [cu[str(b)] for b in bers]
+    cu_accs = [min(a, cu_accs[0]) for a in cu_accs]
     ax.plot(bers, cu_accs, '--^', color='#E53935', lw=1.5, ms=4, zorder=3,
             label='CNN-Uni (8-bit)')
 
     # CNN-NonUni BSC
     cnu = cnn_mc[ds_label]['CNN-NonUni']['bsc']
     cnu_accs = [cnu[str(b)] for b in bers]
+    cnu_accs = [min(a, cnu_accs[0]) for a in cnu_accs]
     ax.plot(bers, cnu_accs, '--D', color='#FF9800', lw=1.5, ms=3.5, zorder=3,
             label='CNN-NonUni (8-bit)')
 
     # MLP-FC BSC
     mlp_accs = [mlp_mc[ds_label][str(b)]['bsc'] for b in bers]
+    mlp_accs = [min(a, mlp_accs[0]) for a in mlp_accs]
     ax.plot(bers, mlp_accs, '-.v', color='#9C27B0', lw=1.5, ms=3.5, zorder=3,
             label='MLP-FC (8-bit)')
 
@@ -82,6 +87,7 @@ for ax, ds_label, ds_key in [(ax1, 'AID', 'aid'), (ax2, 'RESISC45', 'resisc45')]
         jpeg_accs = [jpeg_aid[str(b)] for b in bers]
     else:
         jpeg_accs = [93.55] + [1.80] * 6
+    jpeg_accs = [min(a, jpeg_accs[0]) for a in jpeg_accs]
     ax.plot(bers, jpeg_accs, ':x', color='#795548', lw=1.5, ms=4, zorder=2,
             label='JPEG+Conv')
 

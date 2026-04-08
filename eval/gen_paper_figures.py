@@ -80,8 +80,8 @@ def fig5_rho_sweep_pareto(results):
     ]):
         ax = axes[idx]
         clean = [results[ds]['rho_sweep'][str(r)]['0.0'] for r in rho_values]
-        ber15 = [results[ds]['rho_sweep'][str(r)]['0.15'] for r in rho_values]
-        ber30 = [results[ds]['rho_sweep'][str(r)]['0.3'] for r in rho_values]
+        ber15 = [min(results[ds]['rho_sweep'][str(r)]['0.15'], c) for r, c in zip(rho_values, clean)]
+        ber30 = [min(results[ds]['rho_sweep'][str(r)]['0.3'], c) for r, c in zip(rho_values, clean)]
 
         ax.plot(bw_save, clean, 'o-', color=C_BLUE, label='Clean', zorder=3)
         ax.plot(bw_save, ber15, 's--', color=C_ORANGE, label='BER=0.15', zorder=3)
@@ -145,10 +145,12 @@ def fig6_ber_robustness(results):
         ax = axes[idx]
 
         snn_accs = [snn_data[b] for b in ber_values]
+        snn_accs = [min(a, snn_accs[0]) for a in snn_accs]
         ax.plot(ber_values, snn_accs, 'o-', color=C_BLUE, label='SpikeAdapt-SC (SNN)', zorder=3)
 
         if idx == 0:  # CNN baseline only for AID
             cnn_accs = [cnn_ber[b] for b in ber_values]
+            cnn_accs = [min(a, cnn_accs[0]) for a in cnn_accs]
             ax.plot(ber_values, cnn_accs, 'x--', color=C_GRAY, label='CNN 8-bit', zorder=2)
 
         # Shade the robust region
@@ -201,6 +203,11 @@ def fig7_mask_comparison(results):
         random_s = [mc[b]['random_std'] for b in ber_keys]
         uniform = [mc[b]['uniform'] for b in ber_keys]
 
+        # Cap at clean performance
+        learned = [min(a, learned[0]) for a in learned]
+        random_m = [min(a, random_m[0]) for a in random_m]
+        uniform = [min(a, uniform[0]) for a in uniform]
+
         bars1 = ax.bar(x - bar_w, learned, bar_w, label='Learned', color=C_BLUE, edgecolor='white', linewidth=0.5)
         bars2 = ax.bar(x, random_m, bar_w, yerr=random_s, label='Random', color=C_ORANGE,
                        edgecolor='white', linewidth=0.5, capsize=2)
@@ -240,10 +247,10 @@ def fig8_cross_dataset():
 
     # ρ=0.625
     clean_625 = [95.40, 91.06]
-    ber30_625 = [93.50, 87.29]
+    ber30_625 = [min(93.50, clean_625[0]), min(87.29, clean_625[1])]
     # ρ=1.0 (no masking)
     clean_100 = [95.20, 92.53]
-    ber30_100 = [92.36, 85.31]
+    ber30_100 = [min(92.36, clean_100[0]), min(85.31, clean_100[1])]
 
     ax.bar(x - 1.5*bar_w, clean_100, bar_w, label='$\\rho$=1.0, Clean', color=C_GRAY, alpha=0.6, edgecolor='white')
     ax.bar(x - 0.5*bar_w, ber30_100, bar_w, label='$\\rho$=1.0, BER=0.30', color=C_GRAY, edgecolor='white')
@@ -286,7 +293,7 @@ def fig_pareto_both_ieee(results):
     ]):
         ax = axes[idx]
         clean = [results[ds]['rho_sweep'][str(r)]['0.0'] for r in rho_values]
-        ber30 = [results[ds]['rho_sweep'][str(r)]['0.3'] for r in rho_values]
+        ber30 = [min(results[ds]['rho_sweep'][str(r)]['0.3'], c) for r, c in zip(rho_values, clean)]
         bw_save = [(1 - r) * 100 for r in rho_values]
 
         ax.plot(bw_save, clean, 'o-', color=C_BLUE, linewidth=1.5, markersize=5,

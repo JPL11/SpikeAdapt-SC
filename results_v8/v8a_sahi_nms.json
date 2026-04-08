@@ -1,0 +1,17 @@
+{
+  "P0961": {
+    "baseline": 98,
+    "sahi_raw": 385,
+    "sahi_nms": 264
+  },
+  "P1384": {
+    "baseline": 202,
+    "sahi_raw": 1065,
+    "sahi_nms": 754
+  },
+  "P1821": {
+    "baseline": 152,
+    "sahi_raw": 320,
+    "sahi_nms": 208
+  }
+}
