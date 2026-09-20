@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software or its result artifacts, please cite it as below. Paper citations will be added upon publication."
+title: "SpikeAdapt-SC: Adaptive Spiking Semantic Communication for Aerial Platforms"
+authors:
+  - family-names: Li
+    given-names: Jacky
+    affiliation: "California State Polytechnic University, Pomona"
+    email: jpli@cpp.edu
+year: 2026
+url: "https://github.com/JPL11/SpikeAdapt-SC"
+license: MIT
