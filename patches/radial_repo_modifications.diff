@@ -1,0 +1,37 @@
+diff --git a/FFTRadNet/3-Evaluation.py b/FFTRadNet/3-Evaluation.py
+index 0924ac1..056ee9d 100644
+--- a/FFTRadNet/3-Evaluation.py
++++ b/FFTRadNet/3-Evaluation.py
+@@ -51,8 +51,15 @@ def main(config, checkpoint,difficult):
+ 
+ 
+     print('===========  Loading the model ==================:')
+-    dict = torch.load(checkpoint)
+-    net.load_state_dict(dict['net_state_dict'])
++    dict = torch.load(checkpoint, weights_only=False)
++    # checkpoint predates repo refactor: backbone->FPN, preproc->pre_enc, RAmap_header->RA_decoder
++    sd = {}
++    for k, v in dict['net_state_dict'].items():
++        k = k.replace('backbone.preproc.', 'FPN.pre_enc.')
++        k = k.replace('backbone.', 'FPN.')
++        k = k.replace('RAmap_header.', 'RA_decoder.')
++        sd[k] = v
++    net.load_state_dict(sd)
+     
+     print('===========  Running the evaluation ==================:')
+     run_FullEvaluation(net,test_loader,enc)
+diff --git a/FFTRadNet/utils/metrics.py b/FFTRadNet/utils/metrics.py
+index d8fc888..bdf79af 100644
+--- a/FFTRadNet/utils/metrics.py
++++ b/FFTRadNet/utils/metrics.py
+@@ -187,8 +187,8 @@ def GetFullMetrics(predictions,object_labels,range_min=5,range_max=100,IOU_thres
+             precision.append( 0) # When there is a detection, how much I m sure
+             recall.append(0)
+ 
+-        RangeError.append(range_error/nbObjects)
+-        AngleError.append(angle_error/nbObjects)
++        RangeError.append(range_error/nbObjects if nbObjects > 0 else 0.0)
++        AngleError.append(angle_error/nbObjects if nbObjects > 0 else 0.0)
+ 
+     perfs['precision']=precision
+     perfs['recall']=recall

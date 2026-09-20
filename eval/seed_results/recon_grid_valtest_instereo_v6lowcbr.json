@@ -1,0 +1,2168 @@
+{
+ "v6": {
+  "val": {
+   "cbr0.125_T1_ber0.0": {
+    "psnr": 18.1333,
+    "ms_ssim": 0.7222,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.05": {
+    "psnr": 17.8305,
+    "ms_ssim": 0.7159,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.1": {
+    "psnr": 17.4958,
+    "ms_ssim": 0.7074,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.15": {
+    "psnr": 17.3063,
+    "ms_ssim": 0.7018,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.2": {
+    "psnr": 17.0285,
+    "ms_ssim": 0.6917,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.25": {
+    "psnr": 16.7914,
+    "ms_ssim": 0.6834,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.3": {
+    "psnr": 16.5805,
+    "ms_ssim": 0.675,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.35": {
+    "psnr": 16.352,
+    "ms_ssim": 0.6649,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.4": {
+    "psnr": 16.1088,
+    "ms_ssim": 0.6549,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.0": {
+    "psnr": 19.3571,
+    "ms_ssim": 0.742,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.05": {
+    "psnr": 19.2008,
+    "ms_ssim": 0.7413,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.1": {
+    "psnr": 19.0251,
+    "ms_ssim": 0.7401,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.15": {
+    "psnr": 18.8987,
+    "ms_ssim": 0.7385,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.2": {
+    "psnr": 18.6127,
+    "ms_ssim": 0.7331,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.25": {
+    "psnr": 18.3778,
+    "ms_ssim": 0.7276,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.3": {
+    "psnr": 18.0007,
+    "ms_ssim": 0.7189,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.35": {
+    "psnr": 17.7933,
+    "ms_ssim": 0.7117,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.4": {
+    "psnr": 17.4932,
+    "ms_ssim": 0.7025,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.0": {
+    "psnr": 19.9207,
+    "ms_ssim": 0.7513,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.05": {
+    "psnr": 19.8807,
+    "ms_ssim": 0.7518,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.1": {
+    "psnr": 19.7944,
+    "ms_ssim": 0.7517,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.15": {
+    "psnr": 19.6905,
+    "ms_ssim": 0.7504,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.2": {
+    "psnr": 19.5728,
+    "ms_ssim": 0.7492,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.25": {
+    "psnr": 19.4482,
+    "ms_ssim": 0.7466,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.3": {
+    "psnr": 19.1936,
+    "ms_ssim": 0.741,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.35": {
+    "psnr": 18.9423,
+    "ms_ssim": 0.7354,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.4": {
+    "psnr": 18.6892,
+    "ms_ssim": 0.7281,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.0": {
+    "psnr": 20.2734,
+    "ms_ssim": 0.7556,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.05": {
+    "psnr": 20.3098,
+    "ms_ssim": 0.7568,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.1": {
+    "psnr": 20.2516,
+    "ms_ssim": 0.7575,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.15": {
+    "psnr": 20.0944,
+    "ms_ssim": 0.756,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.2": {
+    "psnr": 19.9325,
+    "ms_ssim": 0.7551,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.25": {
+    "psnr": 19.8452,
+    "ms_ssim": 0.7534,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.3": {
+    "psnr": 19.7116,
+    "ms_ssim": 0.7498,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.35": {
+    "psnr": 19.638,
+    "ms_ssim": 0.7449,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.4": {
+    "psnr": 19.4821,
+    "ms_ssim": 0.7391,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.0": {
+    "psnr": 19.4888,
+    "ms_ssim": 0.7735,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.05": {
+    "psnr": 19.3582,
+    "ms_ssim": 0.7722,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.1": {
+    "psnr": 19.0577,
+    "ms_ssim": 0.7664,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.15": {
+    "psnr": 18.6094,
+    "ms_ssim": 0.7559,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.2": {
+    "psnr": 18.3191,
+    "ms_ssim": 0.7479,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.25": {
+    "psnr": 18.1695,
+    "ms_ssim": 0.7419,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.3": {
+    "psnr": 17.8737,
+    "ms_ssim": 0.7318,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.35": {
+    "psnr": 17.6247,
+    "ms_ssim": 0.7214,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.4": {
+    "psnr": 17.4214,
+    "ms_ssim": 0.7105,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.0": {
+    "psnr": 20.964,
+    "ms_ssim": 0.7917,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.05": {
+    "psnr": 20.9153,
+    "ms_ssim": 0.795,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.1": {
+    "psnr": 20.7504,
+    "ms_ssim": 0.7953,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.15": {
+    "psnr": 20.4876,
+    "ms_ssim": 0.7927,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.2": {
+    "psnr": 20.1908,
+    "ms_ssim": 0.7905,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.25": {
+    "psnr": 19.9279,
+    "ms_ssim": 0.7849,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.3": {
+    "psnr": 19.5166,
+    "ms_ssim": 0.7777,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.35": {
+    "psnr": 19.2386,
+    "ms_ssim": 0.77,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.4": {
+    "psnr": 18.9639,
+    "ms_ssim": 0.761,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.0": {
+    "psnr": 21.5262,
+    "ms_ssim": 0.7983,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.05": {
+    "psnr": 21.6259,
+    "ms_ssim": 0.804,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.1": {
+    "psnr": 21.7163,
+    "ms_ssim": 0.8075,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.15": {
+    "psnr": 21.6149,
+    "ms_ssim": 0.809,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.2": {
+    "psnr": 21.52,
+    "ms_ssim": 0.8096,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.25": {
+    "psnr": 21.3338,
+    "ms_ssim": 0.8073,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.3": {
+    "psnr": 20.9956,
+    "ms_ssim": 0.8025,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.35": {
+    "psnr": 20.7818,
+    "ms_ssim": 0.7984,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.4": {
+    "psnr": 20.4299,
+    "ms_ssim": 0.7902,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.0": {
+    "psnr": 21.8827,
+    "ms_ssim": 0.8023,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.05": {
+    "psnr": 22.102,
+    "ms_ssim": 0.8107,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.1": {
+    "psnr": 22.1348,
+    "ms_ssim": 0.814,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.15": {
+    "psnr": 22.0158,
+    "ms_ssim": 0.8153,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.2": {
+    "psnr": 21.9458,
+    "ms_ssim": 0.8151,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.25": {
+    "psnr": 21.9058,
+    "ms_ssim": 0.8145,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.3": {
+    "psnr": 21.7144,
+    "ms_ssim": 0.8108,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.35": {
+    "psnr": 21.4473,
+    "ms_ssim": 0.8049,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.4": {
+    "psnr": 21.1811,
+    "ms_ssim": 0.7962,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.0": {
+    "psnr": 19.7478,
+    "ms_ssim": 0.7751,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.05": {
+    "psnr": 19.6448,
+    "ms_ssim": 0.7781,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.1": {
+    "psnr": 19.5091,
+    "ms_ssim": 0.779,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.15": {
+    "psnr": 19.4712,
+    "ms_ssim": 0.78,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.2": {
+    "psnr": 19.2557,
+    "ms_ssim": 0.7765,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.25": {
+    "psnr": 19.138,
+    "ms_ssim": 0.7753,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.3": {
+    "psnr": 18.9858,
+    "ms_ssim": 0.7691,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.35": {
+    "psnr": 18.6869,
+    "ms_ssim": 0.7593,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.4": {
+    "psnr": 18.5495,
+    "ms_ssim": 0.7543,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.0": {
+    "psnr": 20.5997,
+    "ms_ssim": 0.7768,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.05": {
+    "psnr": 20.7333,
+    "ms_ssim": 0.7869,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.1": {
+    "psnr": 20.7297,
+    "ms_ssim": 0.7921,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.15": {
+    "psnr": 20.6814,
+    "ms_ssim": 0.7989,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.2": {
+    "psnr": 20.5842,
+    "ms_ssim": 0.8009,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.25": {
+    "psnr": 20.3939,
+    "ms_ssim": 0.8013,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.3": {
+    "psnr": 20.1673,
+    "ms_ssim": 0.8014,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.35": {
+    "psnr": 20.0109,
+    "ms_ssim": 0.7981,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.4": {
+    "psnr": 19.6217,
+    "ms_ssim": 0.7923,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.0": {
+    "psnr": 20.7547,
+    "ms_ssim": 0.7718,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.05": {
+    "psnr": 20.8649,
+    "ms_ssim": 0.7832,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.1": {
+    "psnr": 21.0067,
+    "ms_ssim": 0.7957,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.15": {
+    "psnr": 21.1534,
+    "ms_ssim": 0.8062,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.2": {
+    "psnr": 21.2133,
+    "ms_ssim": 0.8128,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.25": {
+    "psnr": 21.1759,
+    "ms_ssim": 0.817,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.3": {
+    "psnr": 20.9992,
+    "ms_ssim": 0.8173,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.35": {
+    "psnr": 20.825,
+    "ms_ssim": 0.8156,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.4": {
+    "psnr": 20.4593,
+    "ms_ssim": 0.8085,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.0": {
+    "psnr": 20.6107,
+    "ms_ssim": 0.7689,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.05": {
+    "psnr": 20.8611,
+    "ms_ssim": 0.7844,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.1": {
+    "psnr": 21.0451,
+    "ms_ssim": 0.7985,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.15": {
+    "psnr": 21.2351,
+    "ms_ssim": 0.81,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.2": {
+    "psnr": 21.3587,
+    "ms_ssim": 0.8173,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.25": {
+    "psnr": 21.3495,
+    "ms_ssim": 0.8216,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.3": {
+    "psnr": 21.1398,
+    "ms_ssim": 0.8207,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.35": {
+    "psnr": 20.8371,
+    "ms_ssim": 0.8157,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.4": {
+    "psnr": 20.5706,
+    "ms_ssim": 0.8093,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.0": {
+    "psnr": 20.165,
+    "ms_ssim": 0.7476,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.05": {
+    "psnr": 20.1932,
+    "ms_ssim": 0.7552,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.1": {
+    "psnr": 20.0839,
+    "ms_ssim": 0.7607,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.15": {
+    "psnr": 19.9483,
+    "ms_ssim": 0.7647,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.2": {
+    "psnr": 19.8264,
+    "ms_ssim": 0.7679,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.25": {
+    "psnr": 19.6743,
+    "ms_ssim": 0.7705,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.3": {
+    "psnr": 19.6908,
+    "ms_ssim": 0.7737,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.35": {
+    "psnr": 19.3747,
+    "ms_ssim": 0.7691,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.4": {
+    "psnr": 19.188,
+    "ms_ssim": 0.7651,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.0": {
+    "psnr": 19.7836,
+    "ms_ssim": 0.6905,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.05": {
+    "psnr": 19.885,
+    "ms_ssim": 0.7048,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.1": {
+    "psnr": 19.9619,
+    "ms_ssim": 0.7192,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.15": {
+    "psnr": 20.0112,
+    "ms_ssim": 0.7324,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.2": {
+    "psnr": 20.0676,
+    "ms_ssim": 0.7468,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.25": {
+    "psnr": 20.0653,
+    "ms_ssim": 0.7547,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.3": {
+    "psnr": 19.9324,
+    "ms_ssim": 0.7642,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.35": {
+    "psnr": 19.8524,
+    "ms_ssim": 0.7751,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.4": {
+    "psnr": 19.6497,
+    "ms_ssim": 0.7766,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.0": {
+    "psnr": 19.47,
+    "ms_ssim": 0.6811,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.05": {
+    "psnr": 19.6171,
+    "ms_ssim": 0.6991,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.1": {
+    "psnr": 19.8157,
+    "ms_ssim": 0.7182,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.15": {
+    "psnr": 19.904,
+    "ms_ssim": 0.7347,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.2": {
+    "psnr": 19.9647,
+    "ms_ssim": 0.7463,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.25": {
+    "psnr": 20.0287,
+    "ms_ssim": 0.7625,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.3": {
+    "psnr": 19.9913,
+    "ms_ssim": 0.7719,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.35": {
+    "psnr": 19.9147,
+    "ms_ssim": 0.7789,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.4": {
+    "psnr": 19.85,
+    "ms_ssim": 0.7854,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.0": {
+    "psnr": 19.3964,
+    "ms_ssim": 0.6765,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.05": {
+    "psnr": 19.6251,
+    "ms_ssim": 0.6982,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.1": {
+    "psnr": 19.8146,
+    "ms_ssim": 0.7196,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.15": {
+    "psnr": 19.9301,
+    "ms_ssim": 0.7397,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.2": {
+    "psnr": 20.0711,
+    "ms_ssim": 0.7606,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.25": {
+    "psnr": 20.0793,
+    "ms_ssim": 0.7744,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.3": {
+    "psnr": 20.1942,
+    "ms_ssim": 0.7881,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.35": {
+    "psnr": 19.9813,
+    "ms_ssim": 0.7939,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.4": {
+    "psnr": 19.9256,
+    "ms_ssim": 0.7974,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.0": {
+    "psnr": 20.655,
+    "ms_ssim": 0.7343,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.05": {
+    "psnr": 20.7838,
+    "ms_ssim": 0.7378,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.1": {
+    "psnr": 20.8925,
+    "ms_ssim": 0.7472,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.15": {
+    "psnr": 20.9458,
+    "ms_ssim": 0.7531,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.2": {
+    "psnr": 21.0552,
+    "ms_ssim": 0.7643,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.25": {
+    "psnr": 21.0923,
+    "ms_ssim": 0.7715,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.3": {
+    "psnr": 21.0335,
+    "ms_ssim": 0.7754,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.35": {
+    "psnr": 20.9558,
+    "ms_ssim": 0.7788,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.4": {
+    "psnr": 20.964,
+    "ms_ssim": 0.7792,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.0": {
+    "psnr": 19.6747,
+    "ms_ssim": 0.6764,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.05": {
+    "psnr": 19.9362,
+    "ms_ssim": 0.6895,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.1": {
+    "psnr": 20.2191,
+    "ms_ssim": 0.7065,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.15": {
+    "psnr": 20.51,
+    "ms_ssim": 0.7203,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.2": {
+    "psnr": 20.6319,
+    "ms_ssim": 0.7326,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.25": {
+    "psnr": 20.8462,
+    "ms_ssim": 0.7502,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.3": {
+    "psnr": 21.0257,
+    "ms_ssim": 0.7632,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.35": {
+    "psnr": 21.008,
+    "ms_ssim": 0.7757,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.4": {
+    "psnr": 20.9683,
+    "ms_ssim": 0.7841,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.0": {
+    "psnr": 19.342,
+    "ms_ssim": 0.6763,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.05": {
+    "psnr": 19.7049,
+    "ms_ssim": 0.6972,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.1": {
+    "psnr": 20.0743,
+    "ms_ssim": 0.7185,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.15": {
+    "psnr": 20.3227,
+    "ms_ssim": 0.7381,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.2": {
+    "psnr": 20.5529,
+    "ms_ssim": 0.7534,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.25": {
+    "psnr": 20.796,
+    "ms_ssim": 0.7715,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.3": {
+    "psnr": 20.7749,
+    "ms_ssim": 0.7806,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.35": {
+    "psnr": 20.7683,
+    "ms_ssim": 0.7913,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.4": {
+    "psnr": 20.7362,
+    "ms_ssim": 0.7955,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.0": {
+    "psnr": 19.1933,
+    "ms_ssim": 0.6705,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.05": {
+    "psnr": 19.6303,
+    "ms_ssim": 0.6964,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.1": {
+    "psnr": 19.9639,
+    "ms_ssim": 0.7202,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.15": {
+    "psnr": 20.2767,
+    "ms_ssim": 0.7428,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.2": {
+    "psnr": 20.5708,
+    "ms_ssim": 0.7641,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.25": {
+    "psnr": 20.8352,
+    "ms_ssim": 0.7867,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.3": {
+    "psnr": 20.8469,
+    "ms_ssim": 0.796,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.35": {
+    "psnr": 20.796,
+    "ms_ssim": 0.8066,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.4": {
+    "psnr": 20.8409,
+    "ms_ssim": 0.8111,
+    "payload_bits": 3801088,
+    "n": 25
+   }
+  },
+  "test": {
+   "cbr0.125_T1_ber0.0": {
+    "psnr": 18.3737,
+    "ms_ssim": 0.7142,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.05": {
+    "psnr": 18.1153,
+    "ms_ssim": 0.7083,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.1": {
+    "psnr": 17.9579,
+    "ms_ssim": 0.7052,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.15": {
+    "psnr": 17.6903,
+    "ms_ssim": 0.698,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.2": {
+    "psnr": 17.4638,
+    "ms_ssim": 0.6907,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.25": {
+    "psnr": 17.2495,
+    "ms_ssim": 0.6824,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.3": {
+    "psnr": 17.1242,
+    "ms_ssim": 0.6757,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.35": {
+    "psnr": 16.9506,
+    "ms_ssim": 0.6671,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T1_ber0.4": {
+    "psnr": 16.8247,
+    "ms_ssim": 0.6594,
+    "payload_bits": 114688,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.0": {
+    "psnr": 19.4744,
+    "ms_ssim": 0.736,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.05": {
+    "psnr": 19.2952,
+    "ms_ssim": 0.7351,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.1": {
+    "psnr": 19.2276,
+    "ms_ssim": 0.7353,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.15": {
+    "psnr": 19.0433,
+    "ms_ssim": 0.7321,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.2": {
+    "psnr": 18.9608,
+    "ms_ssim": 0.7289,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.25": {
+    "psnr": 18.6877,
+    "ms_ssim": 0.7236,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.3": {
+    "psnr": 18.4534,
+    "ms_ssim": 0.7173,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.35": {
+    "psnr": 18.2271,
+    "ms_ssim": 0.7107,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T2_ber0.4": {
+    "psnr": 17.9881,
+    "ms_ssim": 0.7016,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.0": {
+    "psnr": 20.2059,
+    "ms_ssim": 0.7484,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.05": {
+    "psnr": 20.1359,
+    "ms_ssim": 0.7494,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.1": {
+    "psnr": 20.0524,
+    "ms_ssim": 0.7492,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.15": {
+    "psnr": 19.9239,
+    "ms_ssim": 0.7471,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.2": {
+    "psnr": 19.8019,
+    "ms_ssim": 0.7455,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.25": {
+    "psnr": 19.6303,
+    "ms_ssim": 0.7417,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.3": {
+    "psnr": 19.4534,
+    "ms_ssim": 0.7374,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.35": {
+    "psnr": 19.2972,
+    "ms_ssim": 0.732,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T4_ber0.4": {
+    "psnr": 19.1151,
+    "ms_ssim": 0.7254,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.0": {
+    "psnr": 20.4185,
+    "ms_ssim": 0.7502,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.05": {
+    "psnr": 20.4132,
+    "ms_ssim": 0.7517,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.1": {
+    "psnr": 20.3548,
+    "ms_ssim": 0.7506,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.15": {
+    "psnr": 20.2321,
+    "ms_ssim": 0.7492,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.2": {
+    "psnr": 20.0258,
+    "ms_ssim": 0.7465,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.25": {
+    "psnr": 19.8223,
+    "ms_ssim": 0.7424,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.3": {
+    "psnr": 19.6785,
+    "ms_ssim": 0.7381,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.35": {
+    "psnr": 19.7109,
+    "ms_ssim": 0.734,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.125_T8_ber0.4": {
+    "psnr": 19.5666,
+    "ms_ssim": 0.7277,
+    "payload_bits": 475136,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.0": {
+    "psnr": 19.3416,
+    "ms_ssim": 0.7574,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.05": {
+    "psnr": 19.0748,
+    "ms_ssim": 0.754,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.1": {
+    "psnr": 18.8508,
+    "ms_ssim": 0.7495,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.15": {
+    "psnr": 18.5493,
+    "ms_ssim": 0.7426,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.2": {
+    "psnr": 18.3022,
+    "ms_ssim": 0.7349,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.25": {
+    "psnr": 18.1189,
+    "ms_ssim": 0.7299,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.3": {
+    "psnr": 17.9783,
+    "ms_ssim": 0.7224,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.35": {
+    "psnr": 17.722,
+    "ms_ssim": 0.7126,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T1_ber0.4": {
+    "psnr": 17.599,
+    "ms_ssim": 0.703,
+    "payload_bits": 229376,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.0": {
+    "psnr": 20.9504,
+    "ms_ssim": 0.779,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.05": {
+    "psnr": 20.7978,
+    "ms_ssim": 0.7804,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.1": {
+    "psnr": 20.6992,
+    "ms_ssim": 0.7817,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.15": {
+    "psnr": 20.5374,
+    "ms_ssim": 0.7815,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.2": {
+    "psnr": 20.1562,
+    "ms_ssim": 0.7758,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.25": {
+    "psnr": 19.8644,
+    "ms_ssim": 0.7717,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.3": {
+    "psnr": 19.6618,
+    "ms_ssim": 0.7675,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.35": {
+    "psnr": 19.384,
+    "ms_ssim": 0.7604,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T2_ber0.4": {
+    "psnr": 19.1838,
+    "ms_ssim": 0.7518,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.0": {
+    "psnr": 21.6013,
+    "ms_ssim": 0.783,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.05": {
+    "psnr": 21.6806,
+    "ms_ssim": 0.7882,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.1": {
+    "psnr": 21.7275,
+    "ms_ssim": 0.7926,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.15": {
+    "psnr": 21.8207,
+    "ms_ssim": 0.7962,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.2": {
+    "psnr": 21.7656,
+    "ms_ssim": 0.7964,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.25": {
+    "psnr": 21.6663,
+    "ms_ssim": 0.7953,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.3": {
+    "psnr": 21.4593,
+    "ms_ssim": 0.7922,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.35": {
+    "psnr": 21.0701,
+    "ms_ssim": 0.7852,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T4_ber0.4": {
+    "psnr": 20.8421,
+    "ms_ssim": 0.7776,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.0": {
+    "psnr": 21.9203,
+    "ms_ssim": 0.7855,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.05": {
+    "psnr": 22.0632,
+    "ms_ssim": 0.791,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.1": {
+    "psnr": 22.0178,
+    "ms_ssim": 0.7949,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.15": {
+    "psnr": 21.9534,
+    "ms_ssim": 0.7973,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.2": {
+    "psnr": 21.9193,
+    "ms_ssim": 0.7983,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.25": {
+    "psnr": 21.9097,
+    "ms_ssim": 0.7975,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.3": {
+    "psnr": 21.816,
+    "ms_ssim": 0.7947,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.35": {
+    "psnr": 21.6079,
+    "ms_ssim": 0.7895,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.25_T8_ber0.4": {
+    "psnr": 21.3234,
+    "ms_ssim": 0.7807,
+    "payload_bits": 950272,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.0": {
+    "psnr": 20.3952,
+    "ms_ssim": 0.7821,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.05": {
+    "psnr": 20.2083,
+    "ms_ssim": 0.7817,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.1": {
+    "psnr": 20.0037,
+    "ms_ssim": 0.7822,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.15": {
+    "psnr": 19.7662,
+    "ms_ssim": 0.7785,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.2": {
+    "psnr": 19.568,
+    "ms_ssim": 0.7752,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.25": {
+    "psnr": 19.2594,
+    "ms_ssim": 0.7685,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.3": {
+    "psnr": 19.0727,
+    "ms_ssim": 0.7638,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.35": {
+    "psnr": 18.8709,
+    "ms_ssim": 0.7562,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T1_ber0.4": {
+    "psnr": 18.7048,
+    "ms_ssim": 0.7485,
+    "payload_bits": 458752,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.0": {
+    "psnr": 21.0727,
+    "ms_ssim": 0.7719,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.05": {
+    "psnr": 21.1598,
+    "ms_ssim": 0.7803,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.1": {
+    "psnr": 21.1648,
+    "ms_ssim": 0.7865,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.15": {
+    "psnr": 21.176,
+    "ms_ssim": 0.7926,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.2": {
+    "psnr": 21.1312,
+    "ms_ssim": 0.7964,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.25": {
+    "psnr": 20.9205,
+    "ms_ssim": 0.7973,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.3": {
+    "psnr": 20.6484,
+    "ms_ssim": 0.7942,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.35": {
+    "psnr": 20.3627,
+    "ms_ssim": 0.791,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T2_ber0.4": {
+    "psnr": 20.2215,
+    "ms_ssim": 0.788,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.0": {
+    "psnr": 20.8023,
+    "ms_ssim": 0.7605,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.05": {
+    "psnr": 20.9733,
+    "ms_ssim": 0.7716,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.1": {
+    "psnr": 21.0434,
+    "ms_ssim": 0.7803,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.15": {
+    "psnr": 21.0774,
+    "ms_ssim": 0.7884,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.2": {
+    "psnr": 21.1326,
+    "ms_ssim": 0.7974,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.25": {
+    "psnr": 21.0001,
+    "ms_ssim": 0.7996,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.3": {
+    "psnr": 21.0111,
+    "ms_ssim": 0.8039,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.35": {
+    "psnr": 20.846,
+    "ms_ssim": 0.8023,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T4_ber0.4": {
+    "psnr": 20.6434,
+    "ms_ssim": 0.7978,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.0": {
+    "psnr": 20.7384,
+    "ms_ssim": 0.7603,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.05": {
+    "psnr": 20.8574,
+    "ms_ssim": 0.7711,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.1": {
+    "psnr": 20.8731,
+    "ms_ssim": 0.7788,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.15": {
+    "psnr": 20.8617,
+    "ms_ssim": 0.7866,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.2": {
+    "psnr": 20.7166,
+    "ms_ssim": 0.7908,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.25": {
+    "psnr": 20.5843,
+    "ms_ssim": 0.7941,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.3": {
+    "psnr": 20.4691,
+    "ms_ssim": 0.7964,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.35": {
+    "psnr": 20.3058,
+    "ms_ssim": 0.7944,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.5_T8_ber0.4": {
+    "psnr": 20.1943,
+    "ms_ssim": 0.7891,
+    "payload_bits": 1900544,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.0": {
+    "psnr": 20.876,
+    "ms_ssim": 0.7662,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.05": {
+    "psnr": 20.7541,
+    "ms_ssim": 0.7676,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.1": {
+    "psnr": 20.6809,
+    "ms_ssim": 0.7732,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.15": {
+    "psnr": 20.535,
+    "ms_ssim": 0.7737,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.2": {
+    "psnr": 20.3627,
+    "ms_ssim": 0.7754,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.25": {
+    "psnr": 20.1523,
+    "ms_ssim": 0.7762,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.3": {
+    "psnr": 19.8738,
+    "ms_ssim": 0.7731,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.35": {
+    "psnr": 19.7611,
+    "ms_ssim": 0.7703,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T1_ber0.4": {
+    "psnr": 19.4309,
+    "ms_ssim": 0.7644,
+    "payload_bits": 688128,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.0": {
+    "psnr": 20.0022,
+    "ms_ssim": 0.7083,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.05": {
+    "psnr": 20.2241,
+    "ms_ssim": 0.7216,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.1": {
+    "psnr": 20.3952,
+    "ms_ssim": 0.7329,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.15": {
+    "psnr": 20.589,
+    "ms_ssim": 0.7449,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.2": {
+    "psnr": 20.6768,
+    "ms_ssim": 0.7564,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.25": {
+    "psnr": 20.816,
+    "ms_ssim": 0.7664,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.3": {
+    "psnr": 20.8697,
+    "ms_ssim": 0.7791,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.35": {
+    "psnr": 20.7393,
+    "ms_ssim": 0.7793,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T2_ber0.4": {
+    "psnr": 20.5219,
+    "ms_ssim": 0.7798,
+    "payload_bits": 1376256,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.0": {
+    "psnr": 19.6177,
+    "ms_ssim": 0.6939,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.05": {
+    "psnr": 19.733,
+    "ms_ssim": 0.7067,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.1": {
+    "psnr": 19.8493,
+    "ms_ssim": 0.7218,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.15": {
+    "psnr": 20.0861,
+    "ms_ssim": 0.7392,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.2": {
+    "psnr": 20.1892,
+    "ms_ssim": 0.7513,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.25": {
+    "psnr": 20.2628,
+    "ms_ssim": 0.7631,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.3": {
+    "psnr": 20.2259,
+    "ms_ssim": 0.7714,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.35": {
+    "psnr": 20.1155,
+    "ms_ssim": 0.7769,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T4_ber0.4": {
+    "psnr": 19.9515,
+    "ms_ssim": 0.7778,
+    "payload_bits": 2752512,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.0": {
+    "psnr": 19.39,
+    "ms_ssim": 0.6863,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.05": {
+    "psnr": 19.5819,
+    "ms_ssim": 0.704,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.1": {
+    "psnr": 19.7507,
+    "ms_ssim": 0.7211,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.15": {
+    "psnr": 19.8585,
+    "ms_ssim": 0.739,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.2": {
+    "psnr": 19.9459,
+    "ms_ssim": 0.7523,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.25": {
+    "psnr": 20.0472,
+    "ms_ssim": 0.7673,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.3": {
+    "psnr": 19.9352,
+    "ms_ssim": 0.7757,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.35": {
+    "psnr": 19.7225,
+    "ms_ssim": 0.7782,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr0.75_T8_ber0.4": {
+    "psnr": 19.5586,
+    "ms_ssim": 0.7785,
+    "payload_bits": 2850816,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.0": {
+    "psnr": 21.4339,
+    "ms_ssim": 0.7564,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.05": {
+    "psnr": 21.7096,
+    "ms_ssim": 0.763,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.1": {
+    "psnr": 21.7816,
+    "ms_ssim": 0.7652,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.15": {
+    "psnr": 21.8225,
+    "ms_ssim": 0.7703,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.2": {
+    "psnr": 21.7446,
+    "ms_ssim": 0.7772,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.25": {
+    "psnr": 21.5492,
+    "ms_ssim": 0.7781,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.3": {
+    "psnr": 21.3209,
+    "ms_ssim": 0.7793,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.35": {
+    "psnr": 21.2056,
+    "ms_ssim": 0.7804,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T1_ber0.4": {
+    "psnr": 20.8484,
+    "ms_ssim": 0.7747,
+    "payload_bits": 917504,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.0": {
+    "psnr": 19.8326,
+    "ms_ssim": 0.6905,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.05": {
+    "psnr": 20.1738,
+    "ms_ssim": 0.705,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.1": {
+    "psnr": 20.5193,
+    "ms_ssim": 0.7211,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.15": {
+    "psnr": 20.7486,
+    "ms_ssim": 0.7336,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.2": {
+    "psnr": 21.0407,
+    "ms_ssim": 0.7482,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.25": {
+    "psnr": 21.2607,
+    "ms_ssim": 0.7605,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.3": {
+    "psnr": 21.4171,
+    "ms_ssim": 0.7716,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.35": {
+    "psnr": 21.5651,
+    "ms_ssim": 0.7821,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T2_ber0.4": {
+    "psnr": 21.5616,
+    "ms_ssim": 0.7864,
+    "payload_bits": 1835008,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.0": {
+    "psnr": 19.5762,
+    "ms_ssim": 0.6883,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.05": {
+    "psnr": 19.8873,
+    "ms_ssim": 0.7057,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.1": {
+    "psnr": 20.0981,
+    "ms_ssim": 0.7208,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.15": {
+    "psnr": 20.3494,
+    "ms_ssim": 0.7369,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.2": {
+    "psnr": 20.5931,
+    "ms_ssim": 0.7546,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.25": {
+    "psnr": 20.8044,
+    "ms_ssim": 0.7693,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.3": {
+    "psnr": 20.9829,
+    "ms_ssim": 0.7818,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.35": {
+    "psnr": 21.0943,
+    "ms_ssim": 0.7895,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T4_ber0.4": {
+    "psnr": 20.9897,
+    "ms_ssim": 0.7917,
+    "payload_bits": 3670016,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.0": {
+    "psnr": 19.3866,
+    "ms_ssim": 0.6796,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.05": {
+    "psnr": 19.6828,
+    "ms_ssim": 0.6991,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.1": {
+    "psnr": 19.9955,
+    "ms_ssim": 0.7206,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.15": {
+    "psnr": 20.2049,
+    "ms_ssim": 0.7364,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.2": {
+    "psnr": 20.395,
+    "ms_ssim": 0.7562,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.25": {
+    "psnr": 20.6624,
+    "ms_ssim": 0.774,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.3": {
+    "psnr": 20.6172,
+    "ms_ssim": 0.7841,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.35": {
+    "psnr": 20.6948,
+    "ms_ssim": 0.7919,
+    "payload_bits": 3801088,
+    "n": 25
+   },
+   "cbr1.0_T8_ber0.4": {
+    "psnr": 20.6511,
+    "ms_ssim": 0.7944,
+    "payload_bits": 3801088,
+    "n": 25
+   }
+  }
+ }
+}

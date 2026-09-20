@@ -1,0 +1,195 @@
+{
+ "params": {
+  "n_blocks": 40000,
+  "blk_len_sim": 256,
+  "v_ms": 20.0,
+  "fc_ghz": 2.4,
+  "rs_msps": 10.0,
+  "fd_hz": 160.0,
+  "coherence_time_ms": 2.6437,
+  "sym_per_coherence_physical": 26437.5,
+  "k_db": 9.44
+ },
+ "sweep": [
+  {
+   "snr_db": -2,
+   "ber_emp": 0.14448,
+   "ber_mgf": 0.14399,
+   "ber_match_pct": 0.3,
+   "run_len_corr": 1.2,
+   "run_len_iid": 1.169,
+   "autocorr_corr": 0.0238,
+   "autocorr_iid": 0.0,
+   "after_interleave": {
+    "0.25x": {
+     "depth_sym": 64,
+     "run_len": 1.169,
+     "autocorr": 0.0003
+    },
+    "1x": {
+     "depth_sym": 256,
+     "run_len": 1.169,
+     "autocorr": 0.0002
+    },
+    "4x": {
+     "depth_sym": 1024,
+     "run_len": 1.169,
+     "autocorr": 0.0004
+    }
+   }
+  },
+  {
+   "snr_db": 0,
+   "ber_emp": 0.09416,
+   "ber_mgf": 0.09421,
+   "ber_match_pct": 0.1,
+   "run_len_corr": 1.14,
+   "run_len_iid": 1.105,
+   "autocorr_corr": 0.0314,
+   "autocorr_iid": 0.0004,
+   "after_interleave": {
+    "0.25x": {
+     "depth_sym": 64,
+     "run_len": 1.104,
+     "autocorr": -0.0003
+    },
+    "1x": {
+     "depth_sym": 256,
+     "run_len": 1.104,
+     "autocorr": -0.0004
+    },
+    "4x": {
+     "depth_sym": 1024,
+     "run_len": 1.104,
+     "autocorr": -0.0002
+    }
+   }
+  },
+  {
+   "snr_db": 3,
+   "ber_emp": 0.03748,
+   "ber_mgf": 0.03752,
+   "ber_match_pct": 0.1,
+   "run_len_corr": 1.08,
+   "run_len_iid": 1.039,
+   "autocorr_corr": 0.0383,
+   "autocorr_iid": 0.0003,
+   "after_interleave": {
+    "0.25x": {
+     "depth_sym": 64,
+     "run_len": 1.039,
+     "autocorr": 0.0005
+    },
+    "1x": {
+     "depth_sym": 256,
+     "run_len": 1.039,
+     "autocorr": -0.0004
+    },
+    "4x": {
+     "depth_sym": 1024,
+     "run_len": 1.039,
+     "autocorr": 0.0001
+    }
+   }
+  },
+  {
+   "snr_db": 6,
+   "ber_emp": 0.00982,
+   "ber_mgf": 0.00984,
+   "ber_match_pct": 0.2,
+   "run_len_corr": 1.05,
+   "run_len_iid": 1.01,
+   "autocorr_corr": 0.0391,
+   "autocorr_iid": 0.0002,
+   "after_interleave": {
+    "0.25x": {
+     "depth_sym": 64,
+     "run_len": 1.01,
+     "autocorr": -0.0003
+    },
+    "1x": {
+     "depth_sym": 256,
+     "run_len": 1.01,
+     "autocorr": -0.0001
+    },
+    "4x": {
+     "depth_sym": 1024,
+     "run_len": 1.01,
+     "autocorr": -0.0004
+    }
+   }
+  },
+  {
+   "snr_db": 9,
+   "ber_emp": 0.00176,
+   "ber_mgf": 0.00177,
+   "ber_match_pct": 0.7,
+   "run_len_corr": 1.05,
+   "run_len_iid": 1.002,
+   "autocorr_corr": 0.0417,
+   "autocorr_iid": 0.0003,
+   "after_interleave": {
+    "0.25x": {
+     "depth_sym": 64,
+     "run_len": 1.002,
+     "autocorr": -0.0001
+    },
+    "1x": {
+     "depth_sym": 256,
+     "run_len": 1.002,
+     "autocorr": 0.0001
+    },
+    "4x": {
+     "depth_sym": 1024,
+     "run_len": 1.002,
+     "autocorr": 0.0005
+    }
+   }
+  }
+ ],
+ "k_sweep_snr_db": 3,
+ "k_sweep": [
+  {
+   "k_db": 0.0,
+   "ber": 0.08102,
+   "run_len": 1.25,
+   "autocorr": 0.1299,
+   "autocorr_after_4x": -0.0006
+  },
+  {
+   "k_db": 3.0,
+   "ber": 0.06808,
+   "run_len": 1.21,
+   "autocorr": 0.115,
+   "autocorr_after_4x": 0.0004
+  },
+  {
+   "k_db": 5.0,
+   "ber": 0.05693,
+   "run_len": 1.17,
+   "autocorr": 0.0919,
+   "autocorr_after_4x": -0.0003
+  },
+  {
+   "k_db": 10.0,
+   "ber": 0.03553,
+   "run_len": 1.07,
+   "autocorr": 0.0329,
+   "autocorr_after_4x": -0.0001
+  },
+  {
+   "k_db": 15.0,
+   "ber": 0.02713,
+   "run_len": 1.04,
+   "autocorr": 0.0095,
+   "autocorr_after_4x": -0.0003
+  }
+ ],
+ "checks": {
+  "marginal_ber_matches_mgf": true,
+  "raw_errors_bursty_at_midK": false,
+  "burstiness_rises_at_lowK": true,
+  "deep_interleave_restores_memoryless": true
+ },
+ "conclusion": "Marginal BER matches the MGF model at every SNR, so the BSC crossover p is correct. Error burstiness is ELEVATION-dependent: at high K (near zenith, LoS-dominated A2G) the link is near-AWGN and errors are already nearly iid, so the memoryless-BSC holds directly; at low K (low elevation, Rayleigh-like deep fades) errors cluster within a coherence block (~26438 symbols at v=20.0 m/s, f_c=2.4 GHz). Block interleaving deeper than one coherence length drives the residual autocorrelation to the iid level in all cases, so the memoryless-BSC reduction the papers assume is justified under interleaved transmission (and holds even without it at high elevation)."
+}

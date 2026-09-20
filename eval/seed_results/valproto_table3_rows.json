@@ -1,0 +1,123 @@
+{
+ "protocol": "3-seed means (42/123/456); VAL policy, TEST scoring; budget<=0.75; 200 pilot draws; dynamic: matched streams, full-slot to p=0.50, hold-down",
+ "aid": {
+  "fixed_full": {
+   "acc": 94.76,
+   "payload": 1.0
+  },
+  "fixed_r075": {
+   "acc": 93.96,
+   "payload": 0.75
+  },
+  "bracket_below": {
+   "acc": 88.34,
+   "payload": 0.4688
+  },
+  "bracket_above": {
+   "acc": 90.35,
+   "payload": 0.5625
+  },
+  "rho_only_e05": {
+   "acc": 93.57,
+   "payload": 0.6795
+  },
+  "tprime_only_e05": {
+   "acc": 91.56,
+   "payload": 0.5975
+  },
+  "joint_e05": {
+   "acc": 94.37,
+   "payload": 0.5485
+  },
+  "joint_e10": {
+   "acc": 93.99,
+   "payload": 0.4842
+  },
+  "oracle_gap_payload_pp": 0.21,
+  "dynamic": {
+   "joint_hold": {
+    "acc": 79.16,
+    "payload": 0.5262
+   },
+   "joint_stale": {
+    "acc": 79.0,
+    "payload": 0.5131
+   },
+   "joint_genie": {
+    "acc": 79.55,
+    "payload": 0.5142
+   },
+   "tonly_hold": {
+    "acc": 74.67,
+    "payload": 0.5744
+   },
+   "fixed_full": {
+    "acc": 78.1,
+    "payload": 1.0
+   },
+   "joint_hold_cond": 94.86,
+   "joint_genie_cond": 95.13,
+   "fixed_full_cond": 95.49
+  }
+ },
+ "resisc45": {
+  "fixed_full": {
+   "acc": 90.74,
+   "payload": 1.0
+  },
+  "fixed_r075": {
+   "acc": 91.05,
+   "payload": 0.75
+  },
+  "bracket_below": {
+   "acc": 85.08,
+   "payload": 0.4688
+  },
+  "bracket_above": {
+   "acc": 84.74,
+   "payload": 0.5625
+  },
+  "rho_only_e05": {
+   "acc": 91.05,
+   "payload": 0.625
+  },
+  "tprime_only_e05": {
+   "acc": 83.51,
+   "payload": 0.6508
+  },
+  "joint_e05": {
+   "acc": 91.17,
+   "payload": 0.522
+  },
+  "joint_e10": {
+   "acc": 90.96,
+   "payload": 0.4803
+  },
+  "oracle_gap_payload_pp": 0.04,
+  "dynamic": {
+   "joint_hold": {
+    "acc": 74.69,
+    "payload": 0.5099
+   },
+   "joint_stale": {
+    "acc": 74.6,
+    "payload": 0.5032
+   },
+   "joint_genie": {
+    "acc": 74.99,
+    "payload": 0.5032
+   },
+   "tonly_hold": {
+    "acc": 69.58,
+    "payload": 0.6303
+   },
+   "fixed_full": {
+    "acc": 73.2,
+    "payload": 1.0
+   },
+   "joint_hold_cond": 91.4,
+   "joint_genie_cond": 91.6,
+   "fixed_full_cond": 91.32
+  }
+ }
+}

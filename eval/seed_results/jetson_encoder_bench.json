@@ -1,0 +1,29 @@
+{
+ "device": "Orin",
+ "power_mode": "schedutil",
+ "idle_power_mw": 3422.151257731959,
+ "front": {
+  "latency_ms": 14.574399094028111,
+  "power_mw": 10170.67482352941,
+  "iters": 2059,
+  "dyn_energy_mj": 98.35567574338575
+ },
+ "sasc_T8": {
+  "latency_ms": 43.24605794736219,
+  "power_mw": 7959.70351473137,
+  "iters": 694,
+  "dyn_energy_mj": 196.23124784538064
+ },
+ "sasc_T4": {
+  "latency_ms": 30.24731263999016,
+  "power_mw": 8360.95635862069,
+  "iters": 992,
+  "dyn_energy_mj": 149.38558195455957
+ },
+ "cnn1bit": {
+  "latency_ms": 15.900295667078431,
+  "power_mw": 10174.982311418686,
+  "iters": 1891,
+  "dyn_energy_mj": 107.37201034344774
+ }
+}

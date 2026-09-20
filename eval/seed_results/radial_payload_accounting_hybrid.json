@@ -1,0 +1,29 @@
+{
+ "per_level": {
+  "x2": {
+   "tx_rate": 0.75,
+   "firing_rate": 0.3081,
+   "bits_per_frame": 1769472
+  },
+  "x3": {
+   "tx_rate": 0.75,
+   "firing_rate": 0.3124,
+   "bits_per_frame": 442368
+  },
+  "x4": {
+   "tx_rate": 0.75,
+   "firing_rate": 0.3284,
+   "bits_per_frame": 110592
+  }
+ },
+ "spike_bits_per_frame": 2322432,
+ "float32_bits_per_frame": 58195968,
+ "quant8_bits_per_frame": 14548992,
+ "quant4_bits_per_frame": 7274496,
+ "ratio_vs_float32": 25.06,
+ "ratio_vs_quant8": 6.26,
+ "ratio_vs_quant4": 3.13,
+ "T": 8,
+ "C_spike": 36,
+ "ckpt": "/home/jpli/SemCom/runs/fftradnet_snn_radial.pth"
+}

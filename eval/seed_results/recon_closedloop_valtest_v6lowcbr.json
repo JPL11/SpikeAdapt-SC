@@ -1,0 +1,36 @@
+{
+ "params": {
+  "eps": 0.3,
+  "pilot": 256,
+  "mc": 200,
+  "h": 100.0
+ },
+ "task": "KITTI image reconstruction (PSNR dB)",
+ "protocol": "policy on VAL surface, PSNR on TEST surface; KITTI transfer set; A2G h=100m suburban; pilot-noise MC; envelope p<=0.40",
+ "joint": {
+  "psnr_adaptive": 19.0158,
+  "psnr_fixed": 18.3388,
+  "payload_saving": 0.7866,
+  "waypoints_used": 19,
+  "waypoints_truncated": 4
+ },
+ "ronly": {
+  "psnr_adaptive": 18.4479,
+  "psnr_fixed": 18.3388,
+  "payload_saving": 0.5,
+  "waypoints_used": 19,
+  "waypoints_truncated": 4
+ },
+ "tonly": {
+  "psnr_adaptive": 19.0388,
+  "psnr_fixed": 18.3388,
+  "payload_saving": 0.7586,
+  "waypoints_used": 19,
+  "waypoints_truncated": 4
+ },
+ "best_fixed_below": {
+  "psnr": 18.7193,
+  "payload_frac": 0.181,
+  "cell": "cbr0.75_T1"
+ }
+}

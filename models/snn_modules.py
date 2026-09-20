@@ -221,6 +221,42 @@ class Rayleigh_Channel(nn.Module):
         return decoded
 
 
+class Rician_Channel(nn.Module):
+    """Rician fading channel with AWGN (air-to-ground LoS + multipath).
+
+    y = h*x + n with h = sqrt(K/(K+1))*h_LoS + sqrt(1/(K+1))*h_scatter,
+    where h_LoS is the deterministic line-of-sight component (unit magnitude)
+    and h_scatter ~ CN(0,1) models the diffuse multipath.
+    K (linear) is the Rician K-factor; K->0 gives Rayleigh, K->inf gives AWGN.
+    BPSK modulation, perfect CSI at receiver (coherent detection).
+    """
+    def __init__(self, k_factor_db=10.0):
+        super().__init__()
+        self.k_factor_db = k_factor_db
+
+    def forward(self, x, snr_db):
+        if snr_db >= 100:
+            return x
+        bpsk = 2.0 * x - 1.0
+        snr_linear = 10 ** (snr_db / 10.0)
+        K = 10 ** (self.k_factor_db / 10.0)
+        # LoS component: deterministic, unit power (phase absorbed by CSI)
+        los = math.sqrt(K / (K + 1.0))
+        # Scatter component: CN(0, 1/(K+1))
+        scale = math.sqrt(1.0 / (2.0 * (K + 1.0)))
+        h_real = los + torch.randn_like(bpsk) * scale
+        h_imag = torch.randn_like(bpsk) * scale
+        h_mag = torch.sqrt(h_real**2 + h_imag**2)
+        noise_std = 1.0 / math.sqrt(2 * snr_linear)
+        noise = torch.randn_like(bpsk) * noise_std
+        received = h_mag * bpsk + noise
+        equalized = received / (h_mag + 1e-8)
+        decoded = (equalized > 0).float()
+        if self.training:
+            return x + (decoded - x).detach()
+        return decoded
+
+
 class BEC_Channel(nn.Module):
     """Binary Erasure Channel.
     
@@ -244,6 +280,7 @@ def get_channel(channel_type):
         'bsc': BSC_Channel,
         'awgn': AWGN_Channel,
         'rayleigh': Rayleigh_Channel,
+        'rician': Rician_Channel,
         'bec': BEC_Channel,
     }
     if channel_type not in channels:

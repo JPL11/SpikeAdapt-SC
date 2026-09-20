@@ -1,0 +1,1391 @@
+{
+ "B": 12,
+ "T": 80,
+ "seeds": 8,
+ "delta": 0.15,
+ "rhos": [
+  0.25,
+  0.5,
+  0.75,
+  1.0
+ ],
+ "conf_thresh": 0.25,
+ "split_q": {
+  "0": 0.2676748469235041,
+  "1": 0.0625865482897463,
+  "2": 0.02240119748598346,
+  "3": 0.00958649620103813
+ },
+ "csi_lut": {
+  "0.05": [
+   1,
+   1,
+   1,
+   1,
+   1,
+   2,
+   2
+  ],
+  "0.1": [
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   2
+  ]
+ },
+ "n_cal": 133,
+ "ber_max": 0.27869948825368795,
+ "agg": {
+  "fixed_full": {
+   "payload": [
+    1.0,
+    0.0
+   ],
+   "loss": [
+    0.4910672991472185,
+    0.0066034520722034066
+   ],
+   "loss_fade": [
+    0.5039210742512776,
+    0.01656840160877985
+   ],
+   "outage": [
+    0.004687500000000001,
+    0.00869963181692191
+   ],
+   "outage_fade": [
+    0.015,
+    0.02783882181415011
+   ],
+   "outage_benign": [
+    0.0,
+    0.0
+   ],
+   "n_forced": [
+    0.0,
+    0.0
+   ],
+   "tier_hist": [
+    0.0,
+    0.0,
+    0.0,
+    80.0
+   ],
+   "coverage": null
+  },
+  "csi@0.05": {
+   "payload": [
+    0.571875,
+    0.0
+   ],
+   "loss": [
+    0.5161911008327655,
+    0.006740003263673386
+   ],
+   "loss_fade": [
+    0.5190121491962891,
+    0.012472856588385916
+   ],
+   "outage": [
+    0.18906250000000002,
+    0.05743117484215345
+   ],
+   "outage_fade": [
+    0.10500000000000001,
+    0.052678268764263694
+   ],
+   "outage_benign": [
+    0.22674418604651164,
+    0.0811874421149357
+   ],
+   "n_forced": [
+    0.0,
+    0.0
+   ],
+   "tier_hist": [
+    0.0,
+    57.0,
+    23.0,
+    0.0
+   ],
+   "coverage": null
+  },
+  "heur@0.05": {
+   "payload": [
+    0.84140625,
+    0.01395357117147794
+   ],
+   "loss": [
+    0.5222965565130497,
+    0.007311153647989244
+   ],
+   "loss_fade": [
+    0.542788495414839,
+    0.013016352917079766
+   ],
+   "outage": [
+    0.2578125,
+    0.03694247005480278
+   ],
+   "outage_fade": [
+    0.325,
+    0.058094750193111264
+   ],
+   "outage_benign": [
+    0.2325581395348837,
+    0.06042037700821665
+   ],
+   "n_forced": [
+    0.125,
+    0.33071891388307384
+   ],
+   "tier_hist": [
+    0.0,
+    66.0,
+    13.4,
+    0.6
+   ],
+   "coverage": null
+  },
+  "oracle@0.05": {
+   "payload": [
+    0.9171875,
+    0.03617449032121946
+   ],
+   "loss": [
+    0.5066682459570293,
+    0.005755375006451982
+   ],
+   "loss_fade": [
+    0.5194991821940641,
+    0.015886611063728132
+   ],
+   "outage": [
+    0.0015625,
+    0.004133986423538423
+   ],
+   "outage_fade": [
+    0.005,
+    0.013228756555322954
+   ],
+   "outage_benign": [
+    0.0,
+    0.0
+   ],
+   "n_forced": [
+    0.125,
+    0.33071891388307384
+   ],
+   "tier_hist": [
+    2.2,
+    51.0,
+    24.6,
+    2.1
+   ],
+   "coverage": null
+  },
+  "split@0.05": {
+   "payload": [
+    1.253125,
+    0.0
+   ],
+   "loss": [
+    0.4959590484191888,
+    0.00766167187776295
+   ],
+   "loss_fade": [
+    0.5143039415438458,
+    0.014293934250761677
+   ],
+   "outage": [
+    0.0359375,
+    0.020191949973937636
+   ],
+   "outage_fade": [
+    0.08499999999999999,
+    0.050744457825461095
+   ],
+   "outage_benign": [
+    0.00872093023255814,
+    0.011258672518044816
+   ],
+   "n_forced": [
+    0.0,
+    0.0
+   ],
+   "tier_hist": [
+    0.0,
+    0.0,
+    80.0,
+    0.0
+   ],
+   "coverage": [
+    0.8171875000000001,
+    0.03694247005480279
+   ]
+  },
+  "mond@0.05": {
+   "payload": [
+    1.16875,
+    0.011267347735824986
+   ],
+   "loss": [
+    0.5005387563246706,
+    0.006966859978697816
+   ],
+   "loss_fade": [
+    0.5142905563452406,
+    0.013953339964687901
+   ],
+   "outage": [
+    0.071875,
+    0.023175620272173948
+   ],
+   "outage_fade": [
+    0.065,
+    0.05634713834792322
+   ],
+   "outage_benign": [
+    0.07267441860465115,
+    0.035721528277454964
+   ],
+   "n_forced": [
+    0.0,
+    0.0
+   ],
+   "tier_hist": [
+    0.0,
+    13.5,
+    66.5,
+    0.0
+   ],
+   "coverage": [
+    0.8046875,
+    0.018684782411095925
+   ]
+  },
+  "mond@0.10": {
+   "payload": [
+    0.75,
+    0.0
+   ],
+   "loss": [
+    0.5303690505021588,
+    0.006225067518351516
+   ],
+   "loss_fade": [
+    0.5651557153483724,
+    0.015753389463591998
+   ],
+   "outage": [
+    0.0890625,
+    0.015857643070456597
+   ],
+   "outage_fade": [
+    0.225,
+    0.0526782687642637
+   ],
+   "outage_benign": [
+    0.020348837209302327,
+    0.013941370707304416
+   ],
+   "n_forced": [
+    0.0,
+    0.0
+   ],
+   "tier_hist": [
+    0.0,
+    80.0,
+    0.0,
+    0.0
+   ],
+   "coverage": [
+    0.7921875,
+    0.03746743377588061
+   ]
+  },
+  "oracle@0.10": {
+   "payload": [
+    0.70390625,
+    0.023580294176229026
+   ],
+   "loss": [
+    0.5317190138710198,
+    0.007168421931920145
+   ],
+   "loss_fade": [
+    0.5418967572911865,
+    0.016239393731727208
+   ],
+   "outage": [
+    0.0,
+    0.0
+   ],
+   "outage_fade": [
+    0.0,
+    0.0
+   ],
+   "outage_benign": [
+    0.0,
+    0.0
+   ],
+   "n_forced": [
+    0.0,
+    0.0
+   ],
+   "tier_hist": [
+    13.5,
+    60.4,
+    6.1,
+    0.0
+   ],
+   "coverage": null
+  }
+ },
+ "per_seed": [
+  {
+   "fixed_full": {
+    "payload": 1.0,
+    "loss": 0.48092172627467883,
+    "loss_fade": 0.5035149515133295,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     0,
+     80
+    ],
+    "coverage": null
+   },
+   "csi@0.05": {
+    "payload": 0.571875,
+    "loss": 0.5052535767357853,
+    "loss_fade": 0.5203305445661153,
+    "outage": 0.1375,
+    "outage_fade": 0.08,
+    "outage_benign": 0.13953488372093023,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     57,
+     23,
+     0
+    ],
+    "coverage": null
+   },
+   "heur@0.05": {
+    "payload": 0.8375,
+    "loss": 0.5091652607730743,
+    "loss_fade": 0.5443900536605168,
+    "outage": 0.2,
+    "outage_fade": 0.24,
+    "outage_benign": 0.13953488372093023,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     67,
+     12,
+     1
+    ],
+    "coverage": null
+   },
+   "oracle@0.05": {
+    "payload": 0.875,
+    "loss": 0.49890245203520767,
+    "loss_fade": 0.5264440504796689,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     3,
+     55,
+     21,
+     1
+    ],
+    "coverage": null
+   },
+   "split@0.05": {
+    "payload": 1.253125,
+    "loss": 0.4851805857851,
+    "loss_fade": 0.5159387362077866,
+    "outage": 0.05,
+    "outage_fade": 0.16,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     80,
+     0
+    ],
+    "coverage": 0.8625
+   },
+   "mond@0.05": {
+    "payload": 1.140625,
+    "loss": 0.4893735241650855,
+    "loss_fade": 0.5174075984699642,
+    "outage": 0.0625,
+    "outage_fade": 0.16,
+    "outage_benign": 0.023255813953488372,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     18,
+     62,
+     0
+    ],
+    "coverage": 0.8375
+   },
+   "mond@0.10": {
+    "payload": 0.75,
+    "loss": 0.5201507937510478,
+    "loss_fade": 0.5737993710712466,
+    "outage": 0.1,
+    "outage_fade": 0.28,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     80,
+     0,
+     0
+    ],
+    "coverage": 0.8
+   },
+   "oracle@0.10": {
+    "payload": 0.7,
+    "loss": 0.520791736401733,
+    "loss_fade": 0.5392502388141487,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     15,
+     58,
+     7,
+     0
+    ],
+    "coverage": null
+   }
+  },
+  {
+   "fixed_full": {
+    "payload": 1.0,
+    "loss": 0.4927716447997895,
+    "loss_fade": 0.49736341802377815,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     0,
+     80
+    ],
+    "coverage": null
+   },
+   "csi@0.05": {
+    "payload": 0.571875,
+    "loss": 0.5193205761333327,
+    "loss_fade": 0.5095022508038216,
+    "outage": 0.2375,
+    "outage_fade": 0.16,
+    "outage_benign": 0.3023255813953488,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     57,
+     23,
+     0
+    ],
+    "coverage": null
+   },
+   "heur@0.05": {
+    "payload": 0.85,
+    "loss": 0.5288027947700069,
+    "loss_fade": 0.5367882846371501,
+    "outage": 0.2875,
+    "outage_fade": 0.32,
+    "outage_benign": 0.27906976744186046,
+    "n_forced": 1,
+    "tier_hist": [
+     0,
+     65,
+     14,
+     1
+    ],
+    "coverage": null
+   },
+   "oracle@0.05": {
+    "payload": 0.953125,
+    "loss": 0.5039901862719984,
+    "loss_fade": 0.5128167452449298,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     1,
+     49,
+     27,
+     3
+    ],
+    "coverage": null
+   },
+   "split@0.05": {
+    "payload": 1.253125,
+    "loss": 0.49826282535491007,
+    "loss_fade": 0.5085331447926921,
+    "outage": 0.05,
+    "outage_fade": 0.08,
+    "outage_benign": 0.023255813953488372,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     80,
+     0
+    ],
+    "coverage": 0.775
+   },
+   "mond@0.05": {
+    "payload": 1.171875,
+    "loss": 0.5039471151790382,
+    "loss_fade": 0.5079947897218249,
+    "outage": 0.1125,
+    "outage_fade": 0.12,
+    "outage_benign": 0.13953488372093023,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     13,
+     67,
+     0
+    ],
+    "coverage": 0.775
+   },
+   "mond@0.10": {
+    "payload": 0.75,
+    "loss": 0.5373402241131122,
+    "loss_fade": 0.5575399455509111,
+    "outage": 0.0875,
+    "outage_fade": 0.24,
+    "outage_benign": 0.023255813953488372,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     80,
+     0,
+     0
+    ],
+    "coverage": 0.7125
+   },
+   "oracle@0.10": {
+    "payload": 0.7125,
+    "loss": 0.5339597000107105,
+    "loss_fade": 0.5312032509237287,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     12,
+     62,
+     6,
+     0
+    ],
+    "coverage": null
+   }
+  },
+  {
+   "fixed_full": {
+    "payload": 1.0,
+    "loss": 0.48944746238134124,
+    "loss_fade": 0.49651408295890453,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     0,
+     80
+    ],
+    "coverage": null
+   },
+   "csi@0.05": {
+    "payload": 0.571875,
+    "loss": 0.5141706333329031,
+    "loss_fade": 0.5092909669867138,
+    "outage": 0.175,
+    "outage_fade": 0.08,
+    "outage_benign": 0.23255813953488372,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     57,
+     23,
+     0
+    ],
+    "coverage": null
+   },
+   "heur@0.05": {
+    "payload": 0.8625,
+    "loss": 0.5187414973447636,
+    "loss_fade": 0.5315453943880716,
+    "outage": 0.3,
+    "outage_fade": 0.4,
+    "outage_benign": 0.27906976744186046,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     63,
+     16,
+     1
+    ],
+    "coverage": null
+   },
+   "oracle@0.05": {
+    "payload": 0.9375,
+    "loss": 0.5051045954189478,
+    "loss_fade": 0.5075446799819151,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     2,
+     49,
+     26,
+     3
+    ],
+    "coverage": null
+   },
+   "split@0.05": {
+    "payload": 1.253125,
+    "loss": 0.49128532560137533,
+    "loss_fade": 0.49981847842788624,
+    "outage": 0.025,
+    "outage_fade": 0.04,
+    "outage_benign": 0.023255813953488372,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     80,
+     0
+    ],
+    "coverage": 0.775
+   },
+   "mond@0.05": {
+    "payload": 1.178125,
+    "loss": 0.49772664063351196,
+    "loss_fade": 0.506520059800834,
+    "outage": 0.0625,
+    "outage_fade": 0.04,
+    "outage_benign": 0.046511627906976744,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     12,
+     68,
+     0
+    ],
+    "coverage": 0.8
+   },
+   "mond@0.10": {
+    "payload": 0.75,
+    "loss": 0.5275914013355822,
+    "loss_fade": 0.558682406659143,
+    "outage": 0.0875,
+    "outage_fade": 0.24,
+    "outage_benign": 0.023255813953488372,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     80,
+     0,
+     0
+    ],
+    "coverage": 0.775
+   },
+   "oracle@0.10": {
+    "payload": 0.71875,
+    "loss": 0.5282911403783018,
+    "loss_fade": 0.5354157925836236,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     10,
+     65,
+     5,
+     0
+    ],
+    "coverage": null
+   }
+  },
+  {
+   "fixed_full": {
+    "payload": 1.0,
+    "loss": 0.4880678846598121,
+    "loss_fade": 0.4859234694888837,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     0,
+     80
+    ],
+    "coverage": null
+   },
+   "csi@0.05": {
+    "payload": 0.571875,
+    "loss": 0.5214617155433799,
+    "loss_fade": 0.5134053623717797,
+    "outage": 0.3125,
+    "outage_fade": 0.2,
+    "outage_benign": 0.3953488372093023,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     57,
+     23,
+     0
+    ],
+    "coverage": null
+   },
+   "heur@0.05": {
+    "payload": 0.825,
+    "loss": 0.522551401583408,
+    "loss_fade": 0.5285215598062386,
+    "outage": 0.3125,
+    "outage_fade": 0.4,
+    "outage_benign": 0.3023255813953488,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     68,
+     12,
+     0
+    ],
+    "coverage": null
+   },
+   "oracle@0.05": {
+    "payload": 0.9875,
+    "loss": 0.507018977475487,
+    "loss_fade": 0.5066444545122023,
+    "outage": 0.0125,
+    "outage_fade": 0.04,
+    "outage_benign": 0.0,
+    "n_forced": 1,
+    "tier_hist": [
+     1,
+     44,
+     31,
+     4
+    ],
+    "coverage": null
+   },
+   "split@0.05": {
+    "payload": 1.253125,
+    "loss": 0.496075480345477,
+    "loss_fade": 0.4986411992437301,
+    "outage": 0.0375,
+    "outage_fade": 0.12,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     80,
+     0
+    ],
+    "coverage": 0.7875
+   },
+   "mond@0.05": {
+    "payload": 1.171875,
+    "loss": 0.5022228117680373,
+    "loss_fade": 0.5043660216349698,
+    "outage": 0.1,
+    "outage_fade": 0.12,
+    "outage_benign": 0.09302325581395349,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     13,
+     67,
+     0
+    ],
+    "coverage": 0.8
+   },
+   "mond@0.10": {
+    "payload": 0.75,
+    "loss": 0.5301118171041278,
+    "loss_fade": 0.543750303922584,
+    "outage": 0.0875,
+    "outage_fade": 0.16,
+    "outage_benign": 0.046511627906976744,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     80,
+     0,
+     0
+    ],
+    "coverage": 0.775
+   },
+   "oracle@0.10": {
+    "payload": 0.74375,
+    "loss": 0.5307673367775554,
+    "loss_fade": 0.5341482158164225,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     7,
+     67,
+     6,
+     0
+    ],
+    "coverage": null
+   }
+  },
+  {
+   "fixed_full": {
+    "payload": 1.0,
+    "loss": 0.5019466925507213,
+    "loss_fade": 0.4824306518851788,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     0,
+     80
+    ],
+    "coverage": null
+   },
+   "csi@0.05": {
+    "payload": 0.571875,
+    "loss": 0.5260572307272656,
+    "loss_fade": 0.5017153495598259,
+    "outage": 0.175,
+    "outage_fade": 0.12,
+    "outage_benign": 0.18604651162790697,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     57,
+     23,
+     0
+    ],
+    "coverage": null
+   },
+   "heur@0.05": {
+    "payload": 0.83125,
+    "loss": 0.5345565323617122,
+    "loss_fade": 0.5303296132798482,
+    "outage": 0.2375,
+    "outage_fade": 0.36,
+    "outage_benign": 0.18604651162790697,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     68,
+     11,
+     1
+    ],
+    "coverage": null
+   },
+   "oracle@0.05": {
+    "payload": 0.9,
+    "loss": 0.5146535553208873,
+    "loss_fade": 0.4950279133732826,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     3,
+     51,
+     25,
+     1
+    ],
+    "coverage": null
+   },
+   "split@0.05": {
+    "payload": 1.253125,
+    "loss": 0.5095403345549604,
+    "loss_fade": 0.4984567403602771,
+    "outage": 0.05,
+    "outage_fade": 0.12,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     80,
+     0
+    ],
+    "coverage": 0.8625
+   },
+   "mond@0.05": {
+    "payload": 1.165625,
+    "loss": 0.5118048504649295,
+    "loss_fade": 0.49164454216356157,
+    "outage": 0.075,
+    "outage_fade": 0.0,
+    "outage_benign": 0.09302325581395349,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     14,
+     66,
+     0
+    ],
+    "coverage": 0.7875
+   },
+   "mond@0.10": {
+    "payload": 0.75,
+    "loss": 0.5399540825042392,
+    "loss_fade": 0.5441438535637941,
+    "outage": 0.1,
+    "outage_fade": 0.28,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     80,
+     0,
+     0
+    ],
+    "coverage": 0.8125
+   },
+   "oracle@0.10": {
+    "payload": 0.6625,
+    "loss": 0.546218169211862,
+    "loss_fade": 0.5175521126205196,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     21,
+     52,
+     7,
+     0
+    ],
+    "coverage": null
+   }
+  },
+  {
+   "fixed_full": {
+    "payload": 1.0,
+    "loss": 0.4919479703667031,
+    "loss_fade": 0.5352113142507905,
+    "outage": 0.025,
+    "outage_fade": 0.08,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     0,
+     80
+    ],
+    "coverage": null
+   },
+   "csi@0.05": {
+    "payload": 0.571875,
+    "loss": 0.5149078296854602,
+    "loss_fade": 0.5430693337460417,
+    "outage": 0.2,
+    "outage_fade": 0.12,
+    "outage_benign": 0.23255813953488372,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     57,
+     23,
+     0
+    ],
+    "coverage": null
+   },
+   "heur@0.05": {
+    "payload": 0.83125,
+    "loss": 0.52184870140235,
+    "loss_fade": 0.5625712933714986,
+    "outage": 0.2625,
+    "outage_fade": 0.24,
+    "outage_benign": 0.3023255813953488,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     67,
+     13,
+     0
+    ],
+    "coverage": null
+   },
+   "oracle@0.05": {
+    "payload": 0.89375,
+    "loss": 0.5056516732916297,
+    "loss_fade": 0.5458291733595416,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     3,
+     53,
+     22,
+     2
+    ],
+    "coverage": null
+   },
+   "split@0.05": {
+    "payload": 1.253125,
+    "loss": 0.4942286558843042,
+    "loss_fade": 0.5349259714987366,
+    "outage": 0.0625,
+    "outage_fade": 0.12,
+    "outage_benign": 0.023255813953488372,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     80,
+     0
+    ],
+    "coverage": 0.8
+   },
+   "mond@0.05": {
+    "payload": 1.178125,
+    "loss": 0.5002863983176042,
+    "loss_fade": 0.5389081303273341,
+    "outage": 0.075,
+    "outage_fade": 0.04,
+    "outage_benign": 0.09302325581395349,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     12,
+     68,
+     0
+    ],
+    "coverage": 0.8
+   },
+   "mond@0.10": {
+    "payload": 0.75,
+    "loss": 0.5258842049929636,
+    "loss_fade": 0.5855482544155364,
+    "outage": 0.05,
+    "outage_fade": 0.12,
+    "outage_benign": 0.023255813953488372,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     80,
+     0,
+     0
+    ],
+    "coverage": 0.85
+   },
+   "oracle@0.10": {
+    "payload": 0.69375,
+    "loss": 0.5333672934527377,
+    "loss_fade": 0.5736014811536796,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     14,
+     61,
+     5,
+     0
+    ],
+    "coverage": null
+   }
+  },
+  {
+   "fixed_full": {
+    "payload": 1.0,
+    "loss": 0.4842541116699256,
+    "loss_fade": 0.5214728525630457,
+    "outage": 0.0125,
+    "outage_fade": 0.04,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     0,
+     80
+    ],
+    "coverage": null
+   },
+   "csi@0.05": {
+    "payload": 0.571875,
+    "loss": 0.5072848210302032,
+    "loss_fade": 0.5294044680779448,
+    "outage": 0.15,
+    "outage_fade": 0.04,
+    "outage_benign": 0.18604651162790697,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     57,
+     23,
+     0
+    ],
+    "coverage": null
+   },
+   "heur@0.05": {
+    "payload": 0.83125,
+    "loss": 0.5164607601340482,
+    "loss_fade": 0.5637054450118109,
+    "outage": 0.2375,
+    "outage_fade": 0.32,
+    "outage_benign": 0.18604651162790697,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     67,
+     13,
+     0
+    ],
+    "coverage": null
+   },
+   "oracle@0.05": {
+    "payload": 0.90625,
+    "loss": 0.501293464430466,
+    "loss_fade": 0.5366976694261385,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     2,
+     53,
+     23,
+     2
+    ],
+    "coverage": null
+   },
+   "split@0.05": {
+    "payload": 1.253125,
+    "loss": 0.4882391515538679,
+    "loss_fade": 0.5330338065508864,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     80,
+     0
+    ],
+    "coverage": 0.8625
+   },
+   "mond@0.05": {
+    "payload": 1.171875,
+    "loss": 0.4919903960189817,
+    "loss_fade": 0.5288319648040375,
+    "outage": 0.05,
+    "outage_fade": 0.04,
+    "outage_benign": 0.046511627906976744,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     13,
+     67,
+     0
+    ],
+    "coverage": 0.8125
+   },
+   "mond@0.10": {
+    "payload": 0.75,
+    "loss": 0.526685878244374,
+    "loss_fade": 0.5865682736510223,
+    "outage": 0.1,
+    "outage_fade": 0.24,
+    "outage_benign": 0.023255813953488372,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     80,
+     0,
+     0
+    ],
+    "coverage": 0.8
+   },
+   "oracle@0.10": {
+    "payload": 0.71875,
+    "loss": 0.5248718338362932,
+    "loss_fade": 0.5584931363922745,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     12,
+     61,
+     7,
+     0
+    ],
+    "coverage": null
+   }
+  },
+  {
+   "fixed_full": {
+    "payload": 1.0,
+    "loss": 0.4991809004747763,
+    "loss_fade": 0.5089378533263105,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     0,
+     80
+    ],
+    "coverage": null
+   },
+   "csi@0.05": {
+    "payload": 0.571875,
+    "loss": 0.5210724234737933,
+    "loss_fade": 0.5253789174580697,
+    "outage": 0.125,
+    "outage_fade": 0.04,
+    "outage_benign": 0.13953488372093023,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     57,
+     23,
+     0
+    ],
+    "coverage": null
+   },
+   "heur@0.05": {
+    "payload": 0.8625,
+    "loss": 0.5262455037350352,
+    "loss_fade": 0.5444563191635778,
+    "outage": 0.225,
+    "outage_fade": 0.32,
+    "outage_benign": 0.18604651162790697,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     63,
+     16,
+     1
+    ],
+    "coverage": null
+   },
+   "oracle@0.05": {
+    "payload": 0.884375,
+    "loss": 0.5167310634116105,
+    "loss_fade": 0.5249887711748346,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     3,
+     54,
+     22,
+     1
+    ],
+    "coverage": null
+   },
+   "split@0.05": {
+    "payload": 1.253125,
+    "loss": 0.5048600282735156,
+    "loss_fade": 0.525083455268772,
+    "outage": 0.0125,
+    "outage_fade": 0.04,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     0,
+     80,
+     0
+    ],
+    "coverage": 0.8125
+   },
+   "mond@0.05": {
+    "payload": 1.171875,
+    "loss": 0.5069583140501758,
+    "loss_fade": 0.5186513438393989,
+    "outage": 0.0375,
+    "outage_fade": 0.0,
+    "outage_benign": 0.046511627906976744,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     13,
+     67,
+     0
+    ],
+    "coverage": 0.825
+   },
+   "mond@0.10": {
+    "payload": 0.75,
+    "loss": 0.5352340019718229,
+    "loss_fade": 0.571213313952742,
+    "outage": 0.1,
+    "outage_fade": 0.24,
+    "outage_benign": 0.023255813953488372,
+    "n_forced": 0,
+    "tier_hist": [
+     0,
+     80,
+     0,
+     0
+    ],
+    "coverage": 0.8125
+   },
+   "oracle@0.10": {
+    "payload": 0.68125,
+    "loss": 0.5354849008989648,
+    "loss_fade": 0.5455098300250945,
+    "outage": 0.0,
+    "outage_fade": 0.0,
+    "outage_benign": 0.0,
+    "n_forced": 0,
+    "tier_hist": [
+     17,
+     57,
+     6,
+     0
+    ],
+    "coverage": null
+   }
+  }
+ ],
+ "runtime_s": 7239.4
+}

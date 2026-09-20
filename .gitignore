@@ -66,3 +66,20 @@ paper/*.bak
 
 # Archive directory (kept locally, not pushed)
 # archive/
+
+# Raw datasets (huge, local only)
+InStereo2K/
+datasets/*
+!datasets/DOTAv2.yaml
+!datasets/DOTAv1_split.yaml
+!datasets/prepare_dotav2.py
+runs/
+paper/figures/*.aux
+radial_repo/
+*.npz
+datasets_ul/
+evsenseqa/
+*.pt
+*.bak
+*.status
+eval/recon_grid_status

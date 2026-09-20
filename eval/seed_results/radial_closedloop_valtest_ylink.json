@@ -1,0 +1,60 @@
+{
+ "params": {
+  "eps": 0.01,
+  "pilot": 256,
+  "mc": 200,
+  "h": 100.0,
+  "grid": "eval/seed_results/radial_ylink_grid_valtest.json",
+  "out": "eval/seed_results/radial_closedloop_valtest_ylink.json"
+ },
+ "protocol": "policy on VAL surface, accuracy on TEST surface; A2G h=100m suburban; pilot-noise MC; envelope p<=0.40",
+ "joint": {
+  "mAP_adaptive": 0.9468,
+  "mAR_adaptive": 0.8844,
+  "mAP_fixed": 0.8848,
+  "mAR_fixed": 0.8944,
+  "payload_saving": 0.4871,
+  "per_seed_mAP_adaptive": [
+   0.9449,
+   0.9255,
+   0.97
+  ]
+ },
+ "ronly": {
+  "mAP_adaptive": 0.8858,
+  "mAR_adaptive": 0.8992,
+  "mAP_fixed": 0.8848,
+  "mAR_fixed": 0.8944,
+  "payload_saving": 0.4199,
+  "per_seed_mAP_adaptive": [
+   0.8883,
+   0.8703,
+   0.8987
+  ]
+ },
+ "tonly": {
+  "mAP_adaptive": 0.9498,
+  "mAR_adaptive": 0.8784,
+  "mAP_fixed": 0.8848,
+  "mAR_fixed": 0.8944,
+  "payload_saving": 0.1451,
+  "per_seed_mAP_adaptive": [
+   0.9548,
+   0.9252,
+   0.9694
+  ]
+ },
+ "best_fixed_below": {
+  "mAP": 0.9155,
+  "payload_frac": 0.375,
+  "cell": "rho0.5_T6"
+ },
+ "loso": {
+  "mAP_adaptive": 0.9322,
+  "mAR_adaptive": 0.8929,
+  "mAP_fixed": 0.8848,
+  "mAR_fixed": 0.8944,
+  "payload_saving": 0.4872,
+  "worst_mAP": 0.9055
+ }
+}

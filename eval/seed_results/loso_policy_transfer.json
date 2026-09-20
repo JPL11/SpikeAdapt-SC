@@ -1,0 +1,132 @@
+{
+ "aid": {
+  "pairs": {
+   "42->42": {
+    "acc": 94.38,
+    "payload": 0.4634
+   },
+   "42->123": {
+    "acc": 92.06,
+    "payload": 0.4634
+   },
+   "42->456": {
+    "acc": 92.68,
+    "payload": 0.4634
+   },
+   "123->42": {
+    "acc": 93.02,
+    "payload": 0.5007
+   },
+   "123->123": {
+    "acc": 94.29,
+    "payload": 0.5007
+   },
+   "123->456": {
+    "acc": 91.64,
+    "payload": 0.5007
+   },
+   "456->42": {
+    "acc": 94.15,
+    "payload": 0.5865
+   },
+   "456->123": {
+    "acc": 94.59,
+    "payload": 0.5865
+   },
+   "456->456": {
+    "acc": 93.72,
+    "payload": 0.5865
+   },
+   "min(others)->42": {
+    "acc": 94.14,
+    "payload": 0.5861
+   },
+   "min(others)->123": {
+    "acc": 94.37,
+    "payload": 0.5608
+   },
+   "min(others)->456": {
+    "acc": 93.51,
+    "payload": 0.5458
+   }
+  },
+  "matched_acc_mean": 94.13011635064578,
+  "transfer_acc_mean": 93.02280797634997,
+  "transfer_acc_std": 1.156181263139527,
+  "transfer_payload_mean": 0.5168752604166666,
+  "worst_pair": {
+   "acc": 91.64,
+   "policy_seed": "123",
+   "eval_seed": "456"
+  },
+  "pooled_acc_mean": 94.00781218325885,
+  "pooled_acc_worst": 93.51235069018978,
+  "pooled_payload_mean": 0.5642097222222223,
+  "fixed_full_acc_mean": 94.64402524712135
+ },
+ "resisc45": {
+  "pairs": {
+   "42->42": {
+    "acc": 90.34,
+    "payload": 0.6017
+   },
+   "42->123": {
+    "acc": 91.09,
+    "payload": 0.6017
+   },
+   "42->456": {
+    "acc": 87.52,
+    "payload": 0.6017
+   },
+   "123->42": {
+    "acc": 88.96,
+    "payload": 0.4797
+   },
+   "123->123": {
+    "acc": 90.91,
+    "payload": 0.4797
+   },
+   "123->456": {
+    "acc": 87.4,
+    "payload": 0.4797
+   },
+   "456->42": {
+    "acc": 89.85,
+    "payload": 0.5281
+   },
+   "456->123": {
+    "acc": 91.25,
+    "payload": 0.5281
+   },
+   "456->456": {
+    "acc": 88.21,
+    "payload": 0.5281
+   },
+   "min(others)->42": {
+    "acc": 89.85,
+    "payload": 0.5281
+   },
+   "min(others)->123": {
+    "acc": 91.3,
+    "payload": 0.5923
+   },
+   "min(others)->456": {
+    "acc": 87.49,
+    "payload": 0.5977
+   }
+  },
+  "matched_acc_mean": 89.82160074747935,
+  "transfer_acc_mean": 89.34407625642278,
+  "transfer_acc_std": 1.6859179764832555,
+  "transfer_payload_mean": 0.5365285590277779,
+  "worst_pair": {
+   "acc": 87.4,
+   "policy_seed": "123",
+   "eval_seed": "456"
+  },
+  "pooled_acc_mean": 89.5490985563256,
+  "pooled_acc_worst": 87.49281189537702,
+  "pooled_payload_mean": 0.5726974826388888,
+  "fixed_full_acc_mean": 89.4652780931926
+ }
+}

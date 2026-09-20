@@ -1,0 +1,39 @@
+{
+ "params": {
+  "eps": 0.3,
+  "pilot": 256,
+  "mc": 200,
+  "h": 100.0,
+  "grid": "eval/seed_results/recon_grid_valtest_instereo.json",
+  "out": "eval/seed_results/recon_closedloop_valtest_instereo.json",
+  "tag": "InStereo2K (in-distribution, v6)"
+ },
+ "task": "image reconstruction (PSNR dB) \u2014 InStereo2K (in-distribution, v6)",
+ "protocol": "policy on VAL surface, PSNR on TEST surface; A2G h=100m suburban; pilot-noise MC; envelope p<=0.40",
+ "joint": {
+  "psnr_adaptive": 27.4119,
+  "psnr_fixed": 27.3616,
+  "payload_saving": 0.0345,
+  "waypoints_used": 19,
+  "waypoints_truncated": 4
+ },
+ "ronly": {
+  "psnr_adaptive": 27.3616,
+  "psnr_fixed": 27.3616,
+  "payload_saving": 0.0,
+  "waypoints_used": 19,
+  "waypoints_truncated": 4
+ },
+ "tonly": {
+  "psnr_adaptive": 27.4119,
+  "psnr_fixed": 27.3616,
+  "payload_saving": 0.0345,
+  "waypoints_used": 19,
+  "waypoints_truncated": 4
+ },
+ "best_fixed_below": {
+  "psnr": 25.9948,
+  "payload_frac": 0.7241,
+  "cell": "cbr0.75_T4"
+ }
+}

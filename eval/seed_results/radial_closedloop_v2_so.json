@@ -1,0 +1,321 @@
+{
+ "params": {
+  "eps": 0.01,
+  "pilot": 256,
+  "mc": 200,
+  "h": 100.0,
+  "suffix": "_so"
+ },
+ "ber_max": 0.4,
+ "policy": {
+  "0.0": {
+   "rho": 0.5,
+   "T": 6,
+   "payload_bits": 1161216
+  },
+  "0.05": {
+   "rho": 0.5,
+   "T": 6,
+   "payload_bits": 1161216
+  },
+  "0.1": {
+   "rho": 0.5,
+   "T": 6,
+   "payload_bits": 1161216
+  },
+  "0.15": {
+   "rho": 0.5,
+   "T": 6,
+   "payload_bits": 1161216
+  },
+  "0.2": {
+   "rho": 0.5,
+   "T": 6,
+   "payload_bits": 1161216
+  },
+  "0.25": {
+   "rho": 0.5,
+   "T": 8,
+   "payload_bits": 1548288
+  },
+  "0.3": {
+   "rho": 0.5,
+   "T": 8,
+   "payload_bits": 1548288
+  },
+  "0.35": {
+   "rho": 0.5,
+   "T": 8,
+   "payload_bits": 1548288
+  },
+  "0.4": {
+   "rho": 0.5,
+   "T": 8,
+   "payload_bits": 1548288
+  }
+ },
+ "per_seed": {
+  "42": {
+   "mAP_adaptive": 0.9537,
+   "mAR_adaptive": 0.9059,
+   "mAP_fixed": 0.8918,
+   "mAR_fixed": 0.9157,
+   "payload_saving": 0.558,
+   "waypoints_used": 19,
+   "waypoints_truncated": 4,
+   "trajectory": [
+    {
+     "d_m": 200.0,
+     "ber": 0.0,
+     "mAP_adaptive": 0.9188,
+     "mAR_adaptive": 0.9776,
+     "mAP_fixed": 0.7655405644063485,
+     "mAR_fixed": 0.9858039858039859,
+     "payload_adaptive": 1161216,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 300.0,
+     "ber": 0.0001,
+     "mAP_adaptive": 0.9188,
+     "mAR_adaptive": 0.9776,
+     "mAP_fixed": 0.7655405644063485,
+     "mAR_fixed": 0.9858039858039859,
+     "payload_adaptive": 1161216,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 400.0,
+     "ber": 0.0003,
+     "mAP_adaptive": 0.9188,
+     "mAR_adaptive": 0.9776,
+     "mAP_fixed": 0.7655405644063485,
+     "mAR_fixed": 0.9858039858039859,
+     "payload_adaptive": 1161216,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 500.0,
+     "ber": 0.0017,
+     "mAP_adaptive": 0.9188,
+     "mAR_adaptive": 0.9776,
+     "mAP_fixed": 0.7655405644063485,
+     "mAR_fixed": 0.9858039858039859,
+     "payload_adaptive": 1161216,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 600.0,
+     "ber": 0.011,
+     "mAP_adaptive": 0.9188,
+     "mAR_adaptive": 0.9776,
+     "mAP_fixed": 0.7655405644063485,
+     "mAR_fixed": 0.9858039858039859,
+     "payload_adaptive": 1161216,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 700.0,
+     "ber": 0.0462,
+     "mAP_adaptive": 0.9386,
+     "mAR_adaptive": 0.9756,
+     "mAP_fixed": 0.798889640278164,
+     "mAR_fixed": 0.9879879879879879,
+     "payload_adaptive": 1161216,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 800.0,
+     "ber": 0.1062,
+     "mAP_adaptive": 0.9485,
+     "mAR_adaptive": 0.9686,
+     "mAP_fixed": 0.8268292218912818,
+     "mAR_fixed": 0.9855309855309855,
+     "payload_adaptive": 1161216,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 900.0,
+     "ber": 0.1668,
+     "mAP_adaptive": 0.9627,
+     "mAR_adaptive": 0.9606,
+     "mAP_fixed": 0.8599973591402552,
+     "mAR_fixed": 0.9853944853944855,
+     "payload_adaptive": 1161216,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 1000.0,
+     "ber": 0.2163,
+     "mAP_adaptive": 0.9483,
+     "mAR_adaptive": 0.9591,
+     "mAP_fixed": 0.8959245952164243,
+     "mAR_fixed": 0.984984984984985,
+     "payload_adaptive": 1302497,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 1100.0,
+     "ber": 0.2545,
+     "mAP_adaptive": 0.9405,
+     "mAR_adaptive": 0.9683,
+     "mAP_fixed": 0.9299237353604278,
+     "mAR_fixed": 0.9770679770679771,
+     "payload_adaptive": 1494097,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 1200.0,
+     "ber": 0.284,
+     "mAP_adaptive": 0.9597,
+     "mAR_adaptive": 0.9574,
+     "mAP_fixed": 0.9619527246237592,
+     "mAR_fixed": 0.9602784602784603,
+     "payload_adaptive": 1536675,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 1300.0,
+     "ber": 0.3071,
+     "mAP_adaptive": 0.9589,
+     "mAR_adaptive": 0.9612,
+     "mAP_fixed": 0.9619527246237592,
+     "mAR_fixed": 0.9602784602784603,
+     "payload_adaptive": 1546352,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 1400.0,
+     "ber": 0.3256,
+     "mAP_adaptive": 0.9777,
+     "mAR_adaptive": 0.8894,
+     "mAP_fixed": 0.9790671970717582,
+     "mAR_fixed": 0.894075894075894,
+     "payload_adaptive": 1548288,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 1500.0,
+     "ber": 0.3408,
+     "mAP_adaptive": 0.9777,
+     "mAR_adaptive": 0.8894,
+     "mAP_fixed": 0.9790671970717582,
+     "mAR_fixed": 0.894075894075894,
+     "payload_adaptive": 1548288,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 1600.0,
+     "ber": 0.3534,
+     "mAP_adaptive": 0.9777,
+     "mAR_adaptive": 0.8894,
+     "mAP_fixed": 0.9790671970717582,
+     "mAR_fixed": 0.894075894075894,
+     "payload_adaptive": 1548288,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 1700.0,
+     "ber": 0.3641,
+     "mAP_adaptive": 0.9777,
+     "mAR_adaptive": 0.8894,
+     "mAP_fixed": 0.9790671970717582,
+     "mAR_fixed": 0.894075894075894,
+     "payload_adaptive": 1548288,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 1800.0,
+     "ber": 0.3733,
+     "mAP_adaptive": 0.9777,
+     "mAR_adaptive": 0.8894,
+     "mAP_fixed": 0.9790671970717582,
+     "mAR_fixed": 0.894075894075894,
+     "payload_adaptive": 1548288,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 1900.0,
+     "ber": 0.3812,
+     "mAP_adaptive": 0.9899,
+     "mAR_adaptive": 0.5631,
+     "mAP_fixed": 0.993198031635342,
+     "mAR_fixed": 0.579033579033579,
+     "payload_adaptive": 1548288,
+     "payload_fixed": 3096576
+    },
+    {
+     "d_m": 2000.0,
+     "ber": 0.3882,
+     "mAP_adaptive": 0.9899,
+     "mAR_adaptive": 0.5631,
+     "mAP_fixed": 0.993198031635342,
+     "mAR_fixed": 0.579033579033579,
+     "payload_adaptive": 1548288,
+     "payload_fixed": 3096576
+    }
+   ]
+  },
+  "123": {
+   "mAP_adaptive": 0.937,
+   "mAR_adaptive": 0.9055,
+   "mAP_fixed": 0.8676,
+   "mAR_fixed": 0.9148,
+   "payload_saving": 0.5578,
+   "waypoints_used": 19,
+   "waypoints_truncated": 4
+  },
+  "456": {
+   "mAP_adaptive": 0.9514,
+   "mAR_adaptive": 0.8411,
+   "mAP_fixed": 0.8846,
+   "mAR_fixed": 0.8519,
+   "payload_saving": 0.5577,
+   "waypoints_used": 19,
+   "waypoints_truncated": 4
+  }
+ },
+ "mission_mean": {
+  "mAP_adaptive": 0.9474,
+  "mAR_adaptive": 0.8842,
+  "mAP_fixed": 0.8813,
+  "mAR_fixed": 0.8941,
+  "payload_saving": 0.5578
+ },
+ "loso": {
+  "42": {
+   "mAP_adaptive": 0.9537,
+   "mAR_adaptive": 0.906,
+   "mAP_fixed": 0.8918,
+   "mAR_fixed": 0.9157,
+   "payload_saving": 0.5579,
+   "waypoints_used": 19,
+   "waypoints_truncated": 4
+  },
+  "123": {
+   "mAP_adaptive": 0.9369,
+   "mAR_adaptive": 0.9056,
+   "mAP_fixed": 0.8676,
+   "mAR_fixed": 0.9148,
+   "payload_saving": 0.5577,
+   "waypoints_used": 19,
+   "waypoints_truncated": 4
+  },
+  "456": {
+   "mAP_adaptive": 0.9535,
+   "mAR_adaptive": 0.832,
+   "mAP_fixed": 0.8846,
+   "mAR_fixed": 0.8519,
+   "payload_saving": 0.5374,
+   "waypoints_used": 19,
+   "waypoints_truncated": 4
+  }
+ },
+ "loso_mean": {
+  "mAP_adaptive": 0.948,
+  "mAR_adaptive": 0.8812,
+  "mAP_fixed": 0.8813,
+  "mAR_fixed": 0.8941,
+  "payload_saving": 0.551
+ }
+}

@@ -1,0 +1,51 @@
+{
+ "params": {
+  "eps": 1.0,
+  "pilot": 256,
+  "mc": 200,
+  "h": 100.0
+ },
+ "task": "free-space segmentation (mIoU)",
+ "protocol": "policy on VAL surface, mIoU on TEST surface; A2G h=100m suburban; pilot-noise MC; envelope p<=0.40",
+ "joint": {
+  "mIoU_adaptive": 76.1347,
+  "mIoU_fixed": 76.4887,
+  "payload_saving": 0.3334,
+  "per_seed_mIoU_adaptive": [
+   76.5867,
+   76.0607,
+   75.7568
+  ]
+ },
+ "ronly": {
+  "mIoU_adaptive": 76.1909,
+  "mIoU_fixed": 76.4887,
+  "payload_saving": 0.3206,
+  "per_seed_mIoU_adaptive": [
+   76.5909,
+   76.0499,
+   75.932
+  ]
+ },
+ "tonly": {
+  "mIoU_adaptive": 76.4215,
+  "mIoU_fixed": 76.4887,
+  "payload_saving": 0.0411,
+  "per_seed_mIoU_adaptive": [
+   76.6003,
+   76.4178,
+   76.2463
+  ]
+ },
+ "best_fixed_below": {
+  "mIoU": 74.9331,
+  "payload_frac": 0.5,
+  "cell": "rho0.5_T8"
+ },
+ "loso": {
+  "mIoU_adaptive": 76.0236,
+  "mIoU_fixed": 76.4887,
+  "payload_saving": 0.3413,
+  "worst_mIoU": 75.9509
+ }
+}

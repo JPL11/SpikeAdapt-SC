@@ -1,0 +1,137 @@
+{
+ "eps": 0.01,
+ "per_heldout_seed": {
+  "42": {
+   "policy": {
+    "0.0": {
+     "rho": 0.75,
+     "T": 6,
+     "payload_bits": 1741824
+    },
+    "0.05": {
+     "rho": 0.75,
+     "T": 6,
+     "payload_bits": 1741824
+    },
+    "0.1": {
+     "rho": 0.75,
+     "T": 6,
+     "payload_bits": 1741824
+    },
+    "0.15": {
+     "rho": 0.5,
+     "T": 8,
+     "payload_bits": 1548288
+    },
+    "0.2": {
+     "rho": 0.5,
+     "T": 8,
+     "payload_bits": 1548288
+    },
+    "0.25": {
+     "rho": 0.5,
+     "T": 8,
+     "payload_bits": 1548288
+    },
+    "0.3": {
+     "rho": 0.5,
+     "T": 8,
+     "payload_bits": 1548288
+    }
+   },
+   "mAP_adaptive": 0.9777,
+   "mAP_fixed": 0.9577,
+   "payload_saving": 0.481
+  },
+  "123": {
+   "policy": {
+    "0.0": {
+     "rho": 0.75,
+     "T": 6,
+     "payload_bits": 1741824
+    },
+    "0.05": {
+     "rho": 0.75,
+     "T": 6,
+     "payload_bits": 1741824
+    },
+    "0.1": {
+     "rho": 0.5,
+     "T": 8,
+     "payload_bits": 1548288
+    },
+    "0.15": {
+     "rho": 0.5,
+     "T": 8,
+     "payload_bits": 1548288
+    },
+    "0.2": {
+     "rho": 0.5,
+     "T": 8,
+     "payload_bits": 1548288
+    },
+    "0.25": {
+     "rho": 0.5,
+     "T": 8,
+     "payload_bits": 1548288
+    },
+    "0.3": {
+     "rho": 0.5,
+     "T": 8,
+     "payload_bits": 1548288
+    }
+   },
+   "mAP_adaptive": 0.9617,
+   "mAP_fixed": 0.9322,
+   "payload_saving": 0.4837
+  },
+  "456": {
+   "policy": {
+    "0.0": {
+     "rho": 0.5,
+     "T": 6,
+     "payload_bits": 1161216
+    },
+    "0.05": {
+     "rho": 0.5,
+     "T": 6,
+     "payload_bits": 1161216
+    },
+    "0.1": {
+     "rho": 0.5,
+     "T": 6,
+     "payload_bits": 1161216
+    },
+    "0.15": {
+     "rho": 0.5,
+     "T": 8,
+     "payload_bits": 1548288
+    },
+    "0.2": {
+     "rho": 0.5,
+     "T": 8,
+     "payload_bits": 1548288
+    },
+    "0.25": {
+     "rho": 0.5,
+     "T": 8,
+     "payload_bits": 1548288
+    },
+    "0.3": {
+     "rho": 0.5,
+     "T": 8,
+     "payload_bits": 1548288
+    }
+   },
+   "mAP_adaptive": 0.9489,
+   "mAP_fixed": 0.9433,
+   "payload_saving": 0.538
+  }
+ },
+ "summary": {
+  "mAP_adaptive_mean": 0.9628,
+  "mAP_adaptive_std": 0.0144,
+  "mAP_fixed_mean": 0.9444,
+  "payload_saving_mean": 0.5009
+ }
+}

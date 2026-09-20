@@ -1,0 +1,39 @@
+{
+ "params": {
+  "eps": 0.3,
+  "pilot": 256,
+  "mc": 200,
+  "h": 100.0,
+  "grid": "/home/jpli/SemCom/eval/seed_results/recon_grid_valtest.json",
+  "out": "/home/jpli/SemCom/eval/seed_results/recon_closedloop_valtest.json",
+  "tag": "KITTI (transfer, v6)"
+ },
+ "task": "image reconstruction (PSNR dB) \u2014 KITTI (transfer, v6)",
+ "protocol": "policy on VAL surface, PSNR on TEST surface; A2G h=100m suburban; pilot-noise MC; envelope p<=0.40",
+ "joint": {
+  "psnr_adaptive": 19.8464,
+  "psnr_fixed": 19.9428,
+  "payload_saving": 0.255,
+  "waypoints_used": 19,
+  "waypoints_truncated": 4
+ },
+ "ronly": {
+  "psnr_adaptive": 19.9428,
+  "psnr_fixed": 19.9428,
+  "payload_saving": 0.0,
+  "waypoints_used": 19,
+  "waypoints_truncated": 4
+ },
+ "tonly": {
+  "psnr_adaptive": 19.8466,
+  "psnr_fixed": 19.9428,
+  "payload_saving": 0.2544,
+  "waypoints_used": 19,
+  "waypoints_truncated": 4
+ },
+ "best_fixed_below": {
+  "psnr": 19.5136,
+  "payload_frac": 0.4828,
+  "cell": "cbr1.0_T2"
+ }
+}

@@ -1,0 +1,18 @@
+{
+ "released_anchor": {
+  "mAP": 0.9849,
+  "mAR": 0.917,
+  "mIoU": 74.64
+ },
+ "finetuned_anchor": {
+  "mAP": 0.9564196353933618,
+  "mAR": 0.96996996996997,
+  "mIoU": 77.60118573480611
+ },
+ "recipe": {
+  "epochs": 10,
+  "lr": 0.0001,
+  "batch": 4,
+  "note": "clean features, no bottleneck, no channel"
+ }
+}

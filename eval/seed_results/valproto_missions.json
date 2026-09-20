@@ -1,0 +1,56 @@
+{
+ "protocol": "policy on VAL surface, accuracy on TEST surface; budget rho*T'/T<=0.75; pilot 256b; envelope p<=0.30",
+ "eps_pp": 0.5,
+ "aid": {
+  "static": {
+   "acc": 94.37,
+   "acc_std": 1.12,
+   "payload": 0.5485,
+   "fixed_acc": 94.76
+  },
+  "loso": {
+   "acc": 93.59,
+   "acc_worst": 92.94,
+   "payload": 0.5924,
+   "fixed_acc": 94.76
+  },
+  "dynamic": {
+   "acc": 79.42,
+   "payload": 0.5249,
+   "fixed_acc": 78.4,
+   "cond_acc_le030": 94.86,
+   "frac_beyond_train_envelope": 0.178,
+   "tail": {
+    "frac_below_half_clean": 0.1797,
+    "min_step_acc": 2.24,
+    "fixed_min": 2.24
+   }
+  }
+ },
+ "resisc45": {
+  "static": {
+   "acc": 91.17,
+   "acc_std": 0.27,
+   "payload": 0.522,
+   "fixed_acc": 90.74
+  },
+  "loso": {
+   "acc": 91.08,
+   "acc_worst": 91.02,
+   "payload": 0.539,
+   "fixed_acc": 90.74
+  },
+  "dynamic": {
+   "acc": 75.06,
+   "payload": 0.5096,
+   "fixed_acc": 73.59,
+   "cond_acc_le030": 91.42,
+   "frac_beyond_train_envelope": 0.178,
+   "tail": {
+    "frac_below_half_clean": 0.1891,
+    "min_step_acc": 2.24,
+    "fixed_min": 2.05
+   }
+  }
+ }
+}

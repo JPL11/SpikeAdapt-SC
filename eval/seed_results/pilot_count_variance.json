@@ -1,0 +1,35 @@
+{
+ "params": {
+  "pilot": 256,
+  "blk_len": 256,
+  "k_db": 9.44,
+  "n_blocks": 40960,
+  "spreads": [
+   1,
+   4,
+   16,
+   64
+  ]
+ },
+ "snr-6": {
+  "pbar": 0.2478,
+  "var_ratio_spread1": 4.311,
+  "var_ratio_spread4": 1.824,
+  "var_ratio_spread16": 1.21,
+  "var_ratio_spread64": 1.018
+ },
+ "snr-4": {
+  "pbar": 0.197,
+  "var_ratio_spread1": 5.791,
+  "var_ratio_spread4": 2.176,
+  "var_ratio_spread16": 1.317,
+  "var_ratio_spread64": 1.133
+ },
+ "snr-2": {
+  "pbar": 0.144,
+  "var_ratio_spread1": 7.465,
+  "var_ratio_spread4": 2.614,
+  "var_ratio_spread16": 1.381,
+  "var_ratio_spread64": 1.074
+ }
+}

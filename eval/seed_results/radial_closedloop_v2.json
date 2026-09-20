@@ -1,0 +1,128 @@
+{
+ "params": {
+  "eps": 0.01,
+  "pilot": 256,
+  "mc": 200,
+  "h": 100.0
+ },
+ "ber_max": 0.4,
+ "policy": {
+  "0.0": {
+   "rho": 0.75,
+   "T": 6,
+   "payload_bits": 1741824
+  },
+  "0.05": {
+   "rho": 0.75,
+   "T": 6,
+   "payload_bits": 1741824
+  },
+  "0.1": {
+   "rho": 0.5,
+   "T": 8,
+   "payload_bits": 1548288
+  },
+  "0.15": {
+   "rho": 0.5,
+   "T": 8,
+   "payload_bits": 1548288
+  },
+  "0.2": {
+   "rho": 0.5,
+   "T": 8,
+   "payload_bits": 1548288
+  },
+  "0.25": {
+   "rho": 0.5,
+   "T": 8,
+   "payload_bits": 1548288
+  },
+  "0.3": {
+   "rho": 0.5,
+   "T": 8,
+   "payload_bits": 1548288
+  },
+  "0.35": {
+   "rho": 0.5,
+   "T": 8,
+   "payload_bits": 1548288
+  },
+  "0.4": {
+   "rho": 0.5,
+   "T": 8,
+   "payload_bits": 1548288
+  }
+ },
+ "per_seed": {
+  "42": {
+   "mAP_adaptive": 0.9782,
+   "mAR_adaptive": 0.9513,
+   "mAP_fixed": 0.9571,
+   "mAR_fixed": 0.9649,
+   "payload_saving": 0.4802,
+   "waypoints_used": 19,
+   "waypoints_truncated": 4
+  },
+  "123": {
+   "mAP_adaptive": 0.9628,
+   "mAR_adaptive": 0.9557,
+   "mAP_fixed": 0.9284,
+   "mAR_fixed": 0.9684,
+   "payload_saving": 0.4801,
+   "waypoints_used": 19,
+   "waypoints_truncated": 4
+  },
+  "456": {
+   "mAP_adaptive": 0.9587,
+   "mAR_adaptive": 0.9473,
+   "mAP_fixed": 0.9406,
+   "mAR_fixed": 0.9599,
+   "payload_saving": 0.4802,
+   "waypoints_used": 19,
+   "waypoints_truncated": 4
+  }
+ },
+ "mission_mean": {
+  "mAP_adaptive": 0.9666,
+  "mAR_adaptive": 0.9514,
+  "mAP_fixed": 0.942,
+  "mAR_fixed": 0.9644,
+  "payload_saving": 0.4802
+ },
+ "loso": {
+  "42": {
+   "mAP_adaptive": 0.9797,
+   "mAR_adaptive": 0.949,
+   "mAP_fixed": 0.9571,
+   "mAR_fixed": 0.9649,
+   "payload_saving": 0.4773,
+   "waypoints_used": 19,
+   "waypoints_truncated": 4
+  },
+  "123": {
+   "mAP_adaptive": 0.9628,
+   "mAR_adaptive": 0.9558,
+   "mAP_fixed": 0.9284,
+   "mAR_fixed": 0.9684,
+   "payload_saving": 0.4801,
+   "waypoints_used": 19,
+   "waypoints_truncated": 4
+  },
+  "456": {
+   "mAP_adaptive": 0.9442,
+   "mAR_adaptive": 0.9423,
+   "mAP_fixed": 0.9406,
+   "mAR_fixed": 0.9599,
+   "payload_saving": 0.5457,
+   "waypoints_used": 19,
+   "waypoints_truncated": 4
+  }
+ },
+ "loso_mean": {
+  "mAP_adaptive": 0.9622,
+  "mAR_adaptive": 0.949,
+  "mAP_fixed": 0.942,
+  "mAR_fixed": 0.9644,
+  "payload_saving": 0.501
+ }
+}

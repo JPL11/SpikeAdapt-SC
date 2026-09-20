@@ -217,12 +217,18 @@ class SpikeAdaptSC_Det(nn.Module):
         masked_sp, masked_mem, mask = self.masker(
             spikes, mems, importance, self.training, target_rate_override)
         recv_sp = [self.channel(s, noise_param) for s in masked_sp]
-        recv_mem = []
-        for m in masked_mem:
-            if noise_param > 0:
-                recv_mem.append(m + torch.randn_like(m) * noise_param * 0.5)
-            else:
-                recv_mem.append(m)
+        # SPIKES_ONLY=1: binary-only transport — the membrane summary is NOT
+        # transmitted (decoder receives zeros and must be trained this way).
+        # Default (unset) keeps the original hybrid behavior for provenance.
+        if os.environ.get('SPIKES_ONLY', '') == '1':
+            recv_mem = [torch.zeros_like(m) for m in masked_mem]
+        else:
+            recv_mem = []
+            for m in masked_mem:
+                if noise_param > 0:
+                    recv_mem.append(m + torch.randn_like(m) * noise_param * 0.5)
+                else:
+                    recv_mem.append(m)
         decoded = self.decoder(recv_sp, recv_mem)
         return decoded, {
             'tx_rate': mask.mean().item(),
